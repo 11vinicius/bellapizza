@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bella Massa - Cardápio Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#922521',
+                        brandBg: '#fef5e6',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .btn-tab { @apply flex-1 py-4 text-white font-bold transition-all border-b-4 border-transparent; }
+            .btn-tab.active { @apply bg-white/20 border-white; }
+            
+            /* Overlay padrão para todos os modais */
+            .modal-container { @apply fixed inset-0 bg-black/70 z-[1000] flex items-center justify-center hidden p-4; }
+            
+            /* Conteúdo centralizado para todos os modais */
+            .modal-content-center { @apply bg-brandBg w-full max-w-md p-6 rounded-[2rem] max-h-[90vh] overflow-y-auto shadow-2xl animate-[popIn_0.2s_ease-out]; }
+            
+            .flavor-card { @apply bg-white border-2 border-transparent p-4 rounded-xl text-center cursor-pointer shadow-sm font-semibold transition-all; }
+            .flavor-card.selected { @apply border-primary bg-[#fde8e7] text-primary; }
+            .counter-btn { @apply w-10 h-10 bg-white rounded-full shadow-md text-primary font-black text-xl flex items-center justify-center active:scale-90 transition-transform; }
+            
+            /* Modal Central de Alerta (específico) */
+            .modal-alert-content { @apply bg-white rounded-3xl p-8 w-full max-w-xs text-center shadow-2xl animate-[popIn_0.2s_ease-out]; }
+        }
+        @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    </style>
+</head>
+
+<body class="bg-brandBg text-gray-800 pb-24">
+
+    <div id="alertModal" class="modal-container" style="z-index: 3000;" onclick="closeAlert()">
+        <div class="modal-alert-content" onclick="event.stopPropagation()">
+            <div id="alertIcon" class="text-6xl mb-4"></div>
+            <h3 id="alertTitle" class="text-2xl font-bold text-gray-800 mb-2"></h3>
+            <p id="alertMessage" class="text-gray-600 mb-8 leading-relaxed"></p>
+            <button onclick="closeAlert()"
+                class="w-full bg-primary text-white py-4 rounded-2xl font-bold uppercase shadow-lg active:scale-95 transition-transform">Entendido</button>
+        </div>
+    </div>
+
+    <header class="bg-white flex justify-between items-center shadow-md px-6 py-2">
+        <img src="/bellamassa.png" alt="Bella Massa" class="w-[120px]">
+        <div class="relative cursor-pointer" onclick="showCart()">
+            <i class="fas fa-shopping-cart text-primary text-2xl"></i>
+            <span id="cartBadge"
+                class="absolute -top-2 -right-2 bg-green-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden font-bold">0</span>
+        </div>
+    </header>
+
+    <nav class="tabs flex bg-primary sticky top-0 z-50 shadow-lg font-sans">
+        <button id="btn-pizzas" class="btn-tab active uppercase text-xs tracking-widest"
+            onclick="openTab('pizzas')">Pizzas & Combos</button>
+        <button id="btn-bebidas" class="btn-tab uppercase text-xs tracking-widest"
+            onclick="openTab('bebidas')">Bebidas</button>
+    </nav>
+
+    <main class="container max-w-xl mx-auto p-4">
+        <div id="pizzas" class="category-section block space-y-4">
+            <div class="product-card bg-white p-4 rounded-xl flex justify-between items-center shadow-sm">
+                <div>
+                    <h3 class="font-bold text-primary text-lg">Combo 3 Pizzas</h3>
+                    <p class="text-sm text-gray-500 italic">Escolha até 3 sabores</p>
+                    <span class="font-bold text-xl text-primary font-sans">R$ 99,90</span>
+                </div>
+                <button
+                    class="bg-primary text-white w-12 h-12 rounded-full text-2xl flex items-center justify-center shadow-lg active:scale-90 transition-all font-bold"
+                    onclick="openSelectionModal(3, 'Combo 3 Pizzas', 99.90)">+</button>
+            </div>
+            <div class="product-card bg-white p-4 rounded-xl flex justify-between items-center shadow-sm">
+                <div>
+                    <h3 class="font-bold text-primary text-lg">Combo 2 Pizzas</h3>
+                    <p class="text-sm text-gray-500 italic">Escolha até 2 sabores</p>
+                    <span class="font-bold text-xl text-primary font-sans">R$ 79,90</span>
+                </div>
+                <button
+                    class="bg-primary text-white w-12 h-12 rounded-full text-2xl flex items-center justify-center shadow-lg active:scale-90 transition-all font-bold"
+                    onclick="openSelectionModal(2, 'Combo 2 Pizzas', 79.90)">+</button>
+            </div>
+        </div>
+    </main>
+
+    <div id="selectionModal" class="modal-container" onclick="handleOutsideClick(event)">
+        <div class="modal-content-center">
+            <div id="step1">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 id="modalTitle" class="text-xl font-bold text-primary italic">Sabores</h2>
+                    <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold">PASSO
+                        1/2</span>
+                </div>
+                <p id="modalSubtitle" class="text-xs text-gray-500 mb-4 text-center">Selecione os sabores</p>
+                <div id="flavorContainer" class="space-y-2 mb-6"></div>
+                <div class="flex gap-2">
+                    <button class="flex-1 bg-gray-200 text-gray-500 py-3 rounded-xl font-bold uppercase text-xs"
+                        onclick="closeModal('selectionModal')">Sair</button>
+                    <button class="flex-1 bg-primary text-white py-3 rounded-xl font-bold uppercase text-xs shadow-md"
+                        onclick="goToStep(2)">Próximo</button>
+                </div>
+            </div>
+
+            <div id="step2" class="hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-primary italic">Borda</h2>
+                    <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold">PASSO
+                        2/2</span>
+                </div>
+                <div id="bordaContainer" class="grid grid-cols-1 gap-2 mb-6">
+                    <div class="flavor-card borda-opt" onclick="selectBorda(this, 'Sem Borda')">Sem Borda</div>
+                    <div class="flavor-card borda-opt" onclick="selectBorda(this, 'Catupiry')">Catupiry</div>
+                    <div class="flavor-card borda-opt" onclick="selectBorda(this, 'Cheddar')">Cheddar</div>
+                </div>
+                <div class="flex gap-2">
+                    <button
+                        class="flex-1 bg-white border border-gray-200 text-gray-400 py-3 rounded-xl font-bold uppercase text-xs"
+                        onclick="goToStep(1)">Voltar</button>
+                    <button class="flex-1 bg-primary text-white py-3 rounded-xl font-bold uppercase text-xs shadow-md"
+                        onclick="confirmSelection()">Concluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cartModal" class="modal-container" onclick="handleOutsideClick(event)">
+        <div class="modal-content-center">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-primary italic">Seu Pedido</h2>
+                <button onclick="closeModal('cartModal')" class="text-gray-400"><i
+                        class="fas fa-times text-xl"></i></button>
+            </div>
+
+            <div id="cartList" class="space-y-3 mb-6"></div>
+
+            <div class="space-y-3 bg-white p-4 rounded-3xl border border-gray-100 shadow-inner mb-6">
+                <input type="text" id="nome" placeholder="Nome"
+                    class="w-full p-3 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm">
+                <input type="text" id="endereco" placeholder="Endereço Completo"
+                    class="w-full p-3 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm">
+                <select id="pagamento"
+                    class="w-full p-3 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm">
+                    <option value="Pix">Pix</option>
+                    <option value="Cartão">Cartão</option>
+                    <option value="Dinheiro">Dinheiro</option>
+                </select>
+                <textarea id="obs" placeholder="Alguma observação?"
+                    class="w-full p-3 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm h-16"></textarea>
+            </div>
+
+            <button
+                class="w-full bg-green-600 text-white py-4 rounded-2xl font-bold uppercase flex items-center justify-center gap-3 shadow-lg active:scale-95 transition-all"
+                onclick="sendWhatsApp()">
+                <i class="fab fa-whatsapp text-xl"></i> Enviar Pedido
+            </button>
+        </div>
+    </div>
+
+    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-md bg-primary text-white p-4 rounded-[2rem] flex justify-between items-center font-bold shadow-2xl z-40 cursor-pointer active:scale-95 transition-transform"
+        onclick="showCart()">
+        <span class="flex items-center gap-2 uppercase text-xs tracking-wider ml-2">
+            <i class="fas fa-shopping-bag"></i> Carrinho
+        </span>
+        <span id="totalDisplay" class="bg-white text-primary px-5 py-2 rounded-full font-black text-lg font-sans">R$
+            0,00</span>
+    </div>
+
+    <script>
+        let cart = [];
+        let currentTask = { max: 0, name: '', price: 0, selectedBorda: 'Sem Borda' };
+        let flavorSelections = {};
+        const saboresPizza = ["Mista", "Portuguesa", "Frango c/ Catupiry", "Cuiabana", "Calabresa", "4 Queijos", "Marguerita", "Bacon c/ Milho"];
+
+        function showAlert(message, type = 'error') {
+            const modal = document.getElementById('alertModal');
+            document.getElementById('alertIcon').innerHTML = type === 'success' ? '✨' : '🔔';
+            document.getElementById('alertTitle').innerText = type === 'success' ? 'Sucesso!' : 'Atenção';
+            document.getElementById('alertMessage').innerText = message;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeAlert() {
+            const modal = document.getElementById('alertModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function openTab(id) {
+            document.querySelectorAll('.category-section').forEach(s => s.classList.add('hidden'));
+            document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.remove('hidden');
+            document.getElementById('btn-' + id).classList.add('active');
+        }
+
+        function openSelectionModal(max, name, price) {
+            currentTask = { max, name, price, selectedBorda: 'Sem Borda' };
+            flavorSelections = {};
+            saboresPizza.forEach(s => flavorSelections[s] = 0);
+            document.getElementById('modalTitle').innerText = name;
+            renderFlavorSteps();
+            goToStep(1);
+            const modal = document.getElementById('selectionModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function renderFlavorSteps() {
+            const container = document.getElementById('flavorContainer');
+            container.innerHTML = saboresPizza.map(s => `
+                <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-50 shadow-sm">
+                    <span class="font-bold text-gray-700 text-sm font-sans">${s}</span>
+                    <div class="flex items-center gap-3 bg-gray-50 rounded-full px-2 py-1">
+                        <button onclick="changeFlavorQty('${s}', -1)" class="w-8 h-8 bg-white rounded-full shadow text-primary font-black text-lg">-</button>
+                        <span id="qty-${s}" class="font-bold min-w-[15px] text-center text-sm font-sans">0</span>
+                        <button onclick="changeFlavorQty('${s}', 1)" class="w-8 h-8 bg-white rounded-full shadow text-primary font-black text-lg">+</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function changeFlavorQty(sabor, delta) {
+            const totalSelected = Object.values(flavorSelections).reduce((a, b) => a + b, 0);
+            if (delta > 0 && totalSelected >= currentTask.max) {
+                return showAlert(`Limite de ${currentTask.max} sabores atingido.`);
+            }
+            if (delta < 0 && flavorSelections[sabor] <= 0) return;
+            flavorSelections[sabor] += delta;
+            document.getElementById(`qty-${sabor}`).innerText = flavorSelections[sabor];
+            document.getElementById('modalSubtitle').innerText = `Selecionado: ${totalSelected + delta} de ${currentTask.max}`;
+        }
+
+        function goToStep(step) {
+            if (step === 2) {
+                const total = Object.values(flavorSelections).reduce((a, b) => a + b, 0);
+                if (total !== currentTask.max) return showAlert(`Selecione os ${currentTask.max} sabores.`);
+                document.getElementById('step1').classList.add('hidden');
+                document.getElementById('step2').classList.remove('hidden');
+            } else {
+                document.getElementById('step1').classList.remove('hidden');
+                document.getElementById('step2').classList.add('hidden');
+            }
+        }
+
+        function selectBorda(element, borda) {
+            document.querySelectorAll('.borda-opt').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            currentTask.selectedBorda = borda;
+        }
+
+        function confirmSelection() {
+            const flavorsArray = [];
+            for (const [sabor, qtd] of Object.entries(flavorSelections)) {
+                if (qtd > 0) flavorsArray.push(`${qtd}x ${sabor}`);
+            }
+            cart.push({
+                nome: `${currentTask.name} (${flavorsArray.join(' + ')})`,
+                borda: currentTask.selectedBorda,
+                preco: currentTask.price
+            });
+            updateUI();
+            closeModal('selectionModal');
+            showAlert('Pizza adicionada!', 'success');
+        }
+
+        function updateUI() {
+            const total = cart.reduce((acc, item) => acc + item.preco, 0);
+            document.getElementById('totalDisplay').innerText = `R$ ${total.toFixed(2)}`;
+            const badge = document.getElementById('cartBadge');
+            if (cart.length > 0) {
+                badge.innerText = cart.length;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function showCart() {
+            const list = document.getElementById('cartList');
+            if (cart.length === 0) {
+                list.innerHTML = "<div class='text-center py-10'><p class='text-gray-400'>Carrinho vazio</p></div>";
+            } else {
+                list.innerHTML = cart.map((item, i) => `
+                <div class="flex justify-between items-center bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                    <div><b class="text-primary text-xs uppercase">${item.nome}</b><br><small class="text-gray-400 font-bold text-[10px] tracking-widest">${item.borda ? 'Borda: ' + item.borda : ''}</small></div>
+                    <div class="text-right"><b class="block text-primary text-sm font-sans">R$ ${item.preco.toFixed(2)}</b><button onclick="removeItem(${i})" class="text-red-400 text-[10px] font-black uppercase">Remover</button></div>
+                </div>`).join('');
+            }
+            const modal = document.getElementById('cartModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function removeItem(i) {
+            cart.splice(i, 1);
+            updateUI();
+            showCart();
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+            document.getElementById(id).classList.remove('flex');
+        }
+
+        function handleOutsideClick(event) {
+            if (event.target.classList.contains('modal-container')) {
+                closeModal(event.target.id);
+            }
+        }
+
+        function sendWhatsApp() {
+            const nome = document.getElementById('nome').value;
+            const endereco = document.getElementById('endereco').value;
+            if (!nome || !endereco) return showAlert("Preencha nome e endereço.");
+
+            let msg = `*NOVO PEDIDO - BELLA MASSA*\n--------------------------\n`;
+            msg += `*Cliente:* ${nome}\n*Endereço:* ${endereco}\n*Pagamento:* ${document.getElementById('pagamento').value}\n`;
+            msg += `--------------------------\n*ITENS:*\n`;
+            cart.forEach(item => { msg += `• ${item.nome} ${item.borda ? '\n  - Borda: ' + item.borda : ''}\n`; });
+            const total = cart.reduce((acc, item) => acc + item.preco, 0);
+            msg += `--------------------------\n*TOTAL: R$ ${total.toFixed(2)}*`;
+
+            window.open(`https://wa.me/5500987654321?text=${encodeURIComponent(msg)}`);
+        }
+    </script>
+</body>
+
+</html>
