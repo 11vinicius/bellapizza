@@ -14,7 +14,7 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#922521',
+                        primary: '#d10207',
                         brandBg: '#fef5e6',
                     }
                 }
@@ -37,6 +37,13 @@
             .modal-alert-content { @apply bg-white rounded-3xl p-8 w-full max-w-xs text-center shadow-2xl animate-[popIn_0.2s_ease-out]; }
         }
         @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes tabFadeIn {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .category-section.tab-enter { animation: tabFadeIn 0.35s ease-out forwards; }
+        .btn-tab { transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease; }
+        .btn-tab.active { transform: scale(1.02); }
     </style>
 </head>
 
@@ -58,8 +65,8 @@
     </div>
 
     <header class="bg-white flex justify-between items-center shadow-md px-6 py-2">
-        <img src="./bellamassa.png" alt="Bella Massa" class="w-[120px]">
-        <div class="relative cursor-pointer" onclick="showCart()">
+        <img src="./bellamassa.png" alt="Bella Massa" class="w-[120px] rounded-full">
+        <div class=" relative cursor-pointer" onclick="showCart()">
             <i class="fas fa-shopping-cart text-primary text-2xl"></i>
             <span id="cartBadge"
                 class="absolute -top-2 -right-2 bg-green-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden font-bold">0</span>
@@ -254,10 +261,19 @@
         }
 
         function openTab(id) {
-            document.querySelectorAll('.category-section').forEach(s => s.classList.add('hidden'));
+            document.querySelectorAll('.category-section').forEach(s => {
+                s.classList.add('hidden');
+                s.classList.remove('block', 'tab-enter');
+            });
             document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.remove('hidden');
+            const target = document.getElementById(id);
+            target.classList.remove('hidden');
+            target.classList.add('block', 'tab-enter');
             document.getElementById('btn-' + id).classList.add('active');
+            target.addEventListener('animationend', function onEnd() {
+                target.classList.remove('tab-enter');
+                target.removeEventListener('animationend', onEnd);
+            }, { once: true });
         }
 
         function openSelectionModal(max, name, price, hasBorda) {
