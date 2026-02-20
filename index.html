@@ -76,8 +76,8 @@
     <nav class="tabs flex bg-primary sticky top-0 z-50 shadow-lg font-sans">
         <button id="btn-pizzas" class="btn-tab active uppercase text-[14px] tracking-tighter"
             onclick="openTab('pizzas')">Pizzas Salgadas</button>
-        <button id="btn-doces" class="btn-tab uppercase text-[14px] tracking-tighter" onclick="openTab('doces')">Pizzas
-            Doces</button>
+        <!-- <button id="btn-doces" class="btn-tab uppercase text-[14px] tracking-tighter" onclick="openTab('doces')">Pizzas
+            Doces</button> -->
         <button id="btn-bebidas" class="btn-tab uppercase text-[14px] tracking-tighter"
             onclick="openTab('bebidas')">Bebidas</button>
     </nav>
@@ -110,11 +110,7 @@
                     <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold">PASSO
                         2/2</span>
                 </div>
-                <div id="bordaContainer" class="grid grid-cols-1 gap-2 mb-6">
-                    <div class="flavor-card borda-opt" onclick="selectBorda(this, 'Sem Borda')">Sem Borda</div>
-                    <div class="flavor-card borda-opt" onclick="selectBorda(this, 'Catupiry')">Catupiry</div>
-                    <div class="flavor-card borda-opt" onclick="selectBorda(this, 'Cheddar')">Cheddar</div>
-                </div>
+                <div id="bordaContainer" class="grid grid-cols-1 gap-2 mb-6"></div>
                 <div class="flex gap-2">
                     <button
                         class="flex-1 bg-white border border-gray-200 text-gray-400 py-3 rounded-xl font-bold uppercase text-xs"
@@ -191,44 +187,162 @@
 
     <script>
         const listaPizzas = [
-            { id: 1, nome: "Combo 3 Pizzas", desc: "Escolha até 3 sabores", preco: 99.90, max: 3, borda: true },
-            { id: 2, nome: "Combo 2 Pizzas", desc: "Escolha até 2 sabores", preco: 79.90, max: 2, borda: true },
-            { id: 5, nome: "Pizza Tradicional", desc: "Pizza Inteira Salgada", preco: 55.90, max: 2, borda: true }
+            {
+                id: 1,
+                nome: "Combo 3 Pizzas",
+                desc: "Escolha até 3 sabores",
+                preco: 99.90,
+                max: 3,
+                borda: true,
+                foto: "https://img.uenicdn.com/cdn-cgi/image/width=1024,fit=crop,f=auto/image/upload/v1544801901/category/shutterstock_571691737.jpg"
+            },
+            {
+                id: 2,
+                nome: "Combo 2 Pizzas",
+                desc: "Escolha até 2 sabores",
+                preco: 79.90,
+                max: 2,
+                borda: true,
+                foto: "https://s3.us-west-2.amazonaws.com/whatsmenu/production/pizzariahamburgueriameatsvespasiano/products/494508/t2pizzajpg"
+            },
+            {
+                id: 5,
+                nome: "Pizza Tradicional",
+                desc: "Pizza Inteira Salgada",
+                preco: 44.90,
+                max: 2,
+                borda: true,
+                foto: "https://swiftbr.vteximg.com.br/arquivos/ids/213885-636-636/618283-pizza-artesanal-calabresa_inn.jpg?v=639051131497770000"
+            }
         ];
+
 
         const listaDoces = [
-            { id: 201, nome: "Pizza Chocolate", desc: "Chocolate ao leite", preco: 45.90 },
-            { id: 202, nome: "Pizza Prestígio", desc: "Chocolate com coco", preco: 45.90 },
-            { id: 203, nome: "Pizza Romeu e Julieta", desc: "Queijo com goiabada", preco: 45.90 },
-            { id: 204, nome: "Pizza Banana c/ Canela", desc: "Banana e açúcar", preco: 45.90 }
+            {
+                id: 201,
+                nome: "Pizza Chocolate",
+                desc: "Chocolate ao leite",
+                preco: 45.90,
+                foto: "https://instagram.fcgb1-1.fna.fbcdn.net/v/t39.30808-6/435693923_18418922071048582_4461348753245569872_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&ig_cache_key=MzMzOTAyMzMyMjQ1NDk1NDc5Ng%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4OTU5LnNkci5DMyJ9&_nc_ohc=cCilaQPKcyEQ7kNvwGTgJpR&_nc_oc=AdnVu0_VKZ45NZ9T5UbJKmiTdLEfyo4A2BzaRlgD42F8TnD_DT6CxBhvmvUXP5jUVs-NLDxCG3XXmTDpzjr55J6E&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fcgb1-1.fna&_nc_gid=VPnOvX1AutAnU5i4H1Zi3Q&oh=00_Afv8WtgNaVRdXTVPmgbc3hCHZKF6F-kMnl-d3Yx6Bb0wAw&oe=699BA267"
+            },
+            {
+                id: 202,
+                nome: "Pizza Prestígio",
+                desc: "Chocolate com coco",
+                preco: 45.90,
+                foto: "https://instagram.fcgb1-1.fna.fbcdn.net/v/t51.75761-15/482910789_18073110325783580_361274072064261522_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&ig_cache_key=MzU4MjUyMTczNzI5ODIyNjk0MA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjExNzl4MTE3OS5zZHIuQzMifQ%3D%3D&_nc_ohc=4uyhmiVuQFIQ7kNvwE7KsJu&_nc_oc=AdnQTxWvQNpp_uxahC-a61uKfHG2S3YV8-SsGPDU9IJJbysOn1pkJtUpk9L6PE5LmeVNEtBlqKLQdawGwT7spYGt&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fcgb1-1.fna&_nc_gid=qBaEi_q13EtVyBnm1Mj05g&oh=00_Aft6gMZU49uQDjNwzFjolic_oFPpqR-DzJZqc46Rdn1e6A&oe=699B7877"
+            },
+            {
+                id: 203,
+                nome: "Pizza Romeu e Julieta",
+                desc: "Queijo com goiabada",
+                preco: 45.90,
+                foto: "https://beatoven.com.br/wp-content/uploads/2024/11/sq-romeu-e-julieta.jpg"
+            },
+            {
+                id: 204,
+                nome: "Pizza Banana c/ Canela",
+                desc: "Banana e açúcar",
+                preco: 45.90,
+                foto: "https://instagram.fcgb1-1.fna.fbcdn.net/v/t39.30808-6/494198820_1276102007857951_6511198047695237086_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=107&ig_cache_key=MzUwMTM2MzQwNTcxNTA0MTU3NA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjIwNDh4MjA0OC5zZHIuQzMifQ%3D%3D&_nc_ohc=pwSfVy8_KqQQ7kNvwH8XiQR&_nc_oc=AdlrlEq_Yd6d5YgF8LV2V_now3gh5aOsKiGg5fH0WpEfrycPI_Dkl8-QVY4CadVbgcxeEPjLmoWjS9zMW1EE6yVK&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fcgb1-1.fna&_nc_gid=7JdmDFen0NHQaPzYm11IGQ&oh=00_AfsvrM7RTTUf8FPJ16u9siDGrHioxeVGDrwtNrqlLggOfQ&oe=699B9786"
+            }
         ];
+
 
         const listaBebidas = [
-            { id: 101, nome: "Coca-Cola 2L", desc: "Geladinha", preco: 14.00 },
-            { id: 102, nome: "Guaraná 2L", desc: "Antarctica", preco: 12.00 },
-            { id: 104, nome: "Coca-Cola Lata", desc: "350ml", preco: 6.00 },
+            {
+                id: 101,
+                nome: "Coca-Cola 2L",
+                desc: "Geladinha",
+                preco: 14.00,
+                foto: "https://swiftbr.vteximg.com.br/arquivos/ids/208244-636-636/622530-coca-cola-garrafa_mck.jpg?v=638862948323200000"
+            },
+            {
+                id: 102,
+                nome: "Kitubaiana 2L",
+                desc: "Maraja ",
+                preco: 12.00,
+                foto: "https://marajarefrigerantes.com.br/storage/2022/11/Kitunaina-2L.png"
+            },
+            {
+                id: 104,
+                nome: "Coca-Cola Lata",
+                desc: "350ml",
+                preco: 6.00,
+                foto: "https://swiftbr.vteximg.com.br/arquivos/ids/212288-636-636/622532-coca-cola-lata_mck.jpg?v=638995819113070000"
+            }
         ];
 
-        const saboresSalgados = [
-            { nome: "Mussarela", desc: "Molho de tomate, mussarela e orégano" },
-            { nome: "Calabresa", desc: "Molho de tomate, mussarela, calabresa fatiada, cebola e orégano" },
-            { nome: "Presunto e Mussarela", desc: "Molho de tomate, mussarela e presunto" },
-            { nome: "Frango com Catupiry", desc: "Molho de tomate, mussarela, frango desfiado temperado e requeijão tipo catupiry" },
-            { nome: "Portuguesa", desc: "Molho de tomate, mussarela, presunto, ovo, cebola e azeitona" },
-            { nome: "Quatro Queijos", desc: "Molho de tomate, mussarela, requeijão, parmesão ralado e provolone" },
-            { nome: "Bacon", desc: "Molho de tomate, mussarela e bacon em cubos crocante" },
-            { nome: "Moda da Casa", desc: "Molho de tomate, mussarela, calabresa, bacon e cebola" }
+        const listaBordas = [
+            'Sem Borda',
+            'Catupiry',
+            'Cheddar',
+            'Creme de Alho'
         ];
+
+
+        const saboresSalgados = [
+            {
+                nome: "Mussarela",
+                desc: "Molho de tomate, mussarela e orégano",
+                foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            },
+            {
+                nome: "Calabresa",
+                desc: "Molho de tomate, mussarela, calabresa fatiada, cebola e orégano",
+                foto: "https://cantinagiovannifreddo.com.br/wp-content/uploads/2023/09/PIZZA-DE-CALABRESA.webp"
+            },
+            {
+                nome: "Mista",
+                desc: "Molho de tomate, mussarela, presunto, bacon, milho e orégano",
+                foto: "https://www.pizzariaatlantico.com.br/img/produtos/22-07-18-11-pizza-de-presunto-01.jpg"
+            },
+            {
+                nome: "Frango com Catupiry",
+                desc: "Molho de tomate, mussarela, frango desfiado temperado e requeijão tipo catupiry",
+                foto: "https://cantinagiovannifreddo.com.br/wp-content/uploads/2024/10/37f450b2-9115-415b-93ce-e484421ce3d5-800x841.jpg"
+            },
+            {
+                nome: "Portuguesa",
+                desc: "Molho de tomate, mussarela, presunto, ovo, cebola e azeitona",
+                foto: "https://www.ogastronomo.com.br/upload/389528334-curiosidades-sobre-a-pizza-portuguesa.jpg"
+            },
+            {
+                nome: "Quatro Queijos",
+                desc: "Molho de tomate, mussarela, requeijão, parmesão ralado e provolone",
+                foto: "https://www.receitasnestle.com.br/sites/default/files/styles/recipe_detail_desktop_new/public/srh_recipes/d036cd01122da62bf581784f52d99b3a.jpg?itok=rLpIJBbu"
+            },
+            {
+                nome: "Bacon",
+                desc: "Molho de tomate, mussarela e bacon em cubos crocante",
+                foto: "https://www.seara.com.br/wp-content/uploads/2025/09/R0524_SL_pizza_de_bacon_com_requeijao-1200x675-1.webp"
+            },
+            {
+                nome: "Moda da Casa",
+                desc: "Molho de tomate, mussarela, calabresa, bacon fatiado, cebola e pimentão",
+                foto: "https://i.ytimg.com/vi/Pv7LsXAoAv8/maxresdefault.jpg"
+            }
+        ];
+
+
 
 
         let cart = [];
         let currentTask = { max: 0, name: '', price: 0, selectedBorda: 'Sem Borda', hasBorda: true };
         let flavorSelections = {};
 
+        function renderBordas() {
+            document.getElementById('bordaContainer').innerHTML = listaBordas.map(b => `
+                <div class="flavor-card borda-opt" onclick="selectBorda(this, '${b}')">${b}</div>
+            `).join('');
+        }
+
         function renderMenu() {
+            renderBordas();
             document.getElementById('pizzas').innerHTML = listaPizzas.map(p => `
-                <div class="product-card bg-white p-4 rounded-xl flex justify-between items-center shadow-sm">
-                    <div>
+                <div class="product-card bg-white p-4 rounded-xl flex items-center gap-3 shadow-sm">
+                    <img src="${p.foto}" alt="${p.nome}" class="w-20 h-20 rounded-2xl object-cover flex-shrink-0">
+                    <div class="flex-1">
                         <h3 class="font-bold text-primary text-lg">${p.nome}</h3>
                         <p class="text-sm text-gray-500 italic">${p.desc}</p>
                         <span class="font-bold text-xl text-primary font-sans">R$ ${p.preco.toFixed(2).replace('.', ',')}</span>
@@ -237,20 +351,22 @@
                         onclick="openSelectionModal(${p.max}, '${p.nome}', ${p.preco}, ${p.borda})">+</button>
                 </div>`).join('');
 
-            document.getElementById('doces').innerHTML = listaDoces.map(d => `
-                <div class="product-card bg-white p-4 rounded-xl flex justify-between items-center shadow-sm">
-                    <div>
-                        <h3 class="font-bold text-primary text-lg">${d.nome}</h3>
-                        <p class="text-sm text-gray-500 italic">${d.desc}</p>
-                        <span class="font-bold text-xl text-primary font-sans">R$ ${d.preco.toFixed(2).replace('.', ',')}</span>
-                    </div>
-                    <button class="bg-primary text-white w-12 h-12 rounded-full text-2xl flex items-center justify-center shadow-lg active:scale-90 font-bold"
-                        onclick="addToCart('${d.nome}', ${d.preco})">+</button>
-                </div>`).join('');
+            // document.getElementById('doces').innerHTML = listaDoces.map(d => `
+            //     <div class="product-card bg-white p-4 rounded-xl flex items-center gap-3 shadow-sm">
+            //         <img src="${d.foto}" alt="${d.nome}" class="w-20 h-20 rounded-2xl object-cover flex-shrink-0">
+            //         <div class="flex-1">
+            //             <h3 class="font-bold text-primary text-lg">${d.nome}</h3>
+            //             <p class="text-sm text-gray-500 italic">${d.desc}</p>
+            //             <span class="font-bold text-xl text-primary font-sans">R$ ${d.preco.toFixed(2).replace('.', ',')}</span>
+            //         </div>
+            //         <button class="bg-primary text-white w-12 h-12 rounded-full text-2xl flex items-center justify-center shadow-lg active:scale-90 font-bold"
+            //             onclick="addToCart('${d.nome}', ${d.preco})">+</button>
+            //     </div>`).join('');
 
             document.getElementById('bebidas').innerHTML = listaBebidas.map(b => `
-                <div class="product-card bg-white p-4 rounded-xl flex justify-between items-center shadow-sm">
-                    <div>
+                <div class="product-card bg-white p-4 rounded-xl flex items-center gap-3 shadow-sm">
+                    <img src="${b.foto}" alt="${b.nome}" class="w-16 h-16 rounded-2xl object-cover flex-shrink-0">
+                    <div class="flex-1">
                         <h3 class="font-bold text-primary text-lg">${b.nome}</h3>
                         <p class="text-sm text-gray-500 italic">${b.desc}</p>
                         <span class="font-bold text-xl text-primary font-sans">R$ ${b.preco.toFixed(2).replace('.', ',')}</span>
@@ -290,7 +406,8 @@
 
         function renderFlavorSteps() {
             document.getElementById('flavorContainer').innerHTML = saboresSalgados.map(s => `
-                <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
+                <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-100 shadow-sm gap-3">
+                    <img src="${s.foto}" alt="${s.nome}" class="w-14 h-14 rounded-xl object-cover flex-shrink-0">
                     <div class="flex-1 pr-2">
                         <span class="font-bold text-gray-700 text-sm font-sans block">${s.nome}</span>
                         <small class="text-[14px] text-gray-400 leading-tight block">${s.desc}</small>
@@ -464,7 +581,7 @@
             (window, document, 'script',
                 'https://connect.facebook.net/en_US/fbevents.js');
 
-        fbq('init', '1429740198780090');
+        fbq('init', '784923854077490');
         fbq('track', 'PageView');
     </script>
 
