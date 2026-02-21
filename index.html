@@ -14,7 +14,7 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#d10207',
+                        primary: '#000000',
                         brandBg: '#fef5e6',
                     }
                 }
@@ -23,8 +23,8 @@
     </script>
     <style type="text/tailwindcss">
         @layer components {
-            .btn-tab { @apply flex-1 py-2 text-white font-bold transition-all border-b-4 border-transparent; }
-            .btn-tab.active { @apply bg-white/20 border-white; }
+            .btn-tab { @apply ml-4 mr-2 py-2 text-white font-bold transition-all border-b-2 border-transparent; }
+            .btn-tab.active { @apply bg-white/20 border-black; }
             .modal-container { @apply fixed inset-0 bg-black/70 z-[1000] flex items-center justify-center hidden p-4; }
             .modal-content-center { 
                 @apply bg-brandBg w-full max-w-md p-6 rounded-[2rem] max-h-[90vh] overflow-y-auto shadow-2xl animate-[popIn_0.2s_ease-out];
@@ -65,7 +65,7 @@
     </div>
 
     <header class="bg-white flex justify-between items-center shadow-md px-6 py-2">
-        <img src="./bellamassa.png" alt="Bella Massa" class="w-[120px] rounded-full">
+        <img src="bellamassa.png" alt="Bella Massa" class="w-[120px] rounded-full">
         <div class=" relative cursor-pointer" onclick="showCart()">
             <i class="fas fa-shopping-cart text-primary text-2xl"></i>
             <span id="cartBadge"
@@ -73,12 +73,12 @@
         </div>
     </header>
 
-    <nav class="tabs flex bg-primary sticky top-0 z-50 shadow-lg font-sans">
-        <button id="btn-pizzas" class="btn-tab active uppercase text-[14px] tracking-tighter"
+    <nav class="tabs flex sticky top-0 z-50 bg-white border-t-2 shadow-lg font-sans">
+        <button id="btn-pizzas" class="btn-tab active uppercase text-[14px] text-black tracking-tighter"
             onclick="openTab('pizzas')">Pizzas Salgadas</button>
         <!-- <button id="btn-doces" class="btn-tab uppercase text-[14px] tracking-tighter" onclick="openTab('doces')">Pizzas
             Doces</button> -->
-        <button id="btn-bebidas" class="btn-tab uppercase text-[14px] tracking-tighter"
+        <button id="btn-bebidas" class="btn-tab uppercase text-black text-[14px] tracking-tighter"
             onclick="openTab('bebidas')">Bebidas</button>
     </nav>
 
