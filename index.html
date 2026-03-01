@@ -80,12 +80,51 @@
             Doces</button> -->
         <button id="btn-bebidas" class="btn-tab uppercase text-black text-[14px] tracking-tighter"
             onclick="openTab('bebidas')">Bebidas</button>
+        <button id="btn-info" class="btn-tab uppercase text-black text-[14px] tracking-tighter"
+            onclick="openTab('info')">Mais Informações</button>
     </nav>
 
     <main class="container max-w-xl mx-auto p-4">
         <div id="pizzas" class="category-section block space-y-4"></div>
         <div id="doces" class="category-section hidden space-y-4"></div>
         <div id="bebidas" class="category-section hidden space-y-4"></div>
+        <div id="info" class="category-section hidden space-y-4">
+            <div class="bg-white rounded-2xl shadow-sm p-5 space-y-4">
+                <div class="flex items-start gap-3">
+                    <div
+                        class="w-10 h-10 rounded-full bg-primary/5 text-primary flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold tracking-[0.25em] uppercase text-gray-500 mb-1">Localização</p>
+                        <p class="text-sm text-gray-700 leading-snug">
+                            Endereço da Bella Massa<br>
+                            <span class="text-gray-500 text-xs">Rua Rio de Janeiro N° 399 bairro Nova Várzea
+                                Grande</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="border-t border-dashed border-gray-200 pt-4 mt-1 flex items-start gap-3">
+                    <div
+                        class="w-10 h-10 rounded-full bg-green-600/10 text-green-600 flex items-center justify-center flex-shrink-0">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-xs font-bold tracking-[0.25em] uppercase text-gray-500 mb-1">WhatsApp</p>
+                        <p class="text-sm text-gray-700 leading-snug mb-2">
+                            Tire dúvidas ou faça seu pedido também pelo WhatsApp.
+                        </p>
+                        <a href="https://wa.me/5565992507339" target="_blank"
+                            class="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-full text-xs font-bold uppercase shadow-md active:scale-95">
+                            <i class="fab fa-whatsapp text-base"></i>
+                            Conversar no WhatsApp
+                        </a>
+                        <p class="text-[11px] text-gray-500 mt-1">(65) 9 9250-7339</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <div id="selectionModal" class="modal-container" onclick="handleOutsideClick(event)">
@@ -285,45 +324,180 @@
 
         const saboresSalgados = [
             {
-                nome: "Mussarela",
-                desc: "Molho de tomate, mussarela e orégano",
-                foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+                "nome": "4 QUEIJOS",
+                "desc": "MOLHO ESPECIAL, MUSSARELA, PARMESÃO, CATUPIRY, ORÉGANO E AZEITONA.",
+                "foto": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80"
             },
             {
-                nome: "Calabresa",
-                desc: "Molho de tomate, mussarela, calabresa fatiada, cebola e orégano",
-                foto: "https://cantinagiovannifreddo.com.br/wp-content/uploads/2023/09/PIZZA-DE-CALABRESA.webp"
+                "nome": "A MODA DA CASA",
+                "desc": "MOLHO ESPECIAL, MUSSARELA, FRANGO DESFIADO, MILHO, CATUPIRY, ORÉGANO E AZEITONA.",
+                "foto": "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=800&q=80"
             },
             {
-                nome: "Mista",
-                desc: "Molho de tomate, mussarela, presunto, bacon, milho e orégano",
-                foto: "https://www.pizzariaatlantico.com.br/img/produtos/22-07-18-11-pizza-de-presunto-01.jpg"
+                "nome": "BACON COM MILHO",
+                "desc": "MOLHO ESPECIAL, MUSSARELA, BACON, MILHO, ORÉGANO E AZEITONA.",
+                "foto": "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?auto=format&fit=crop&w=800&q=80"
             },
             {
-                nome: "Frango com Catupiry",
-                desc: "Molho de tomate, mussarela, frango desfiado temperado e requeijão tipo catupiry",
-                foto: "https://cantinagiovannifreddo.com.br/wp-content/uploads/2024/10/37f450b2-9115-415b-93ce-e484421ce3d5-800x841.jpg"
+                "nome": "CALABRESA",
+                "desc": "MOLHO ESPECIAL, MUSSARELA, CALABRESA, CEBOLA, ORÉGANO E AZEITONA.",
+                "foto": "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=800&q=80"
             },
             {
-                nome: "Portuguesa",
-                desc: "Molho de tomate, mussarela, presunto, ovo, cebola e azeitona",
-                foto: "https://www.ogastronomo.com.br/upload/389528334-curiosidades-sobre-a-pizza-portuguesa.jpg"
+                "nome": "FRANGO COM CATUPIRY",
+                "desc": "MOLHO ESPECIAL, MUSSARELA, FRANGO DESFIADO, CATUPIRY, ORÉGANO E AZEITONA.",
+                "foto": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80"
             },
             {
-                nome: "Quatro Queijos",
-                desc: "Molho de tomate, mussarela, requeijão, parmesão ralado e provolone",
-                foto: "https://www.receitasnestle.com.br/sites/default/files/styles/recipe_detail_desktop_new/public/srh_recipes/d036cd01122da62bf581784f52d99b3a.jpg?itok=rLpIJBbu"
+                "nome": "MARGUERITA",
+                "desc": "MOLHO ESPECIAL, MUSSARELA, TOMATE, MANJERICÃO, ORÉGANO E AZEITONA.",
+                "foto": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80"
             },
             {
-                nome: "Bacon",
-                desc: "Molho de tomate, mussarela e bacon em cubos crocante",
-                foto: "https://www.seara.com.br/wp-content/uploads/2025/09/R0524_SL_pizza_de_bacon_com_requeijao-1200x675-1.webp"
+                "nome": "MUSSARELA",
+                "desc": "MOLHO ESPECIAL, MUSSARELA, TOMATE, ORÉGANO E AZEITONA.",
+                "foto": "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&w=800&q=80"
             },
             {
-                nome: "Moda da Casa",
-                desc: "Molho de tomate, mussarela, calabresa, bacon fatiado, cebola e pimentão",
-                foto: "https://i.ytimg.com/vi/Pv7LsXAoAv8/maxresdefault.jpg"
+                "nome": "PORTUGUESA",
+                "desc": "MOLHO ESPECIAL, MUSSARELA, PRESUNTO, OVOS, MILHO, CEBOLA, ORÉGANO E AZEITONA.",
+                "foto": "https://images.unsplash.com/photo-1593504049359-74330189a345?auto=format&fit=crop&w=800&q=80"
             }
+            // {
+            //     "nome": "CALABRESA",
+            //     "desc": "MOLHO ESPECIAL, MUSSARELA, CALABRESA, ORÉGANO, AZEITONA E CEBOLA.",
+            //     "foto": "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+            // {
+            //     nome: "MISTA",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, PRESUNTO, BACON, MILHO, OVOS, CEBOLA, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+            // {
+            //     nome: "NAPOLITANO",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, PRESUNTO, PARMESÃO, TOMATE, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+
+            // {
+            //     nome: "MUSSARELA",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, TOMATE, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+            // {
+            //     nome: "ATUM",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, TOMATE, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+            // {
+            //     nome: "3 QUEIJOS",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, PARMESÃO, CHEDDAR, CATUPIRY, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+            // {
+            //     nome: "A MODA DA CASA",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, FRANGO DESFIADO, PROVOLONE, MILHO, CREME DE LEITE, PALMITO, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+
+            // {
+            //     nome: "LOMBO CANADENSE",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, LOMBO (LOMBINHO), TOMATE, CATUPIRY, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+            // {
+            //     nome: "FRANGO COM CATUPIRY",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, FRANGO DESFIADO, CATUPIRY, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+            // {
+            //     nome: "FRANGO COM PALMITO",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, FRANGO DESFIADO, PALMITO, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+
+            // {
+            //     nome: "BAIANA",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, CALABRESA, PIMENTA, PIMENTÃO, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+            // {
+            //     nome: "TOSCANA",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, CALABRESA, OVO, CEBOLA, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+            // {
+            //     nome: "MARGUERITA",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, MANJERICÃO, TOMATE, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+
+            // {
+            //     nome: "COSTELA E CHEDDAR",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, COSTELA, CHEDDAR, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+            // {
+            //     nome: "ALHO AO OLEO",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, ALHO AO ÓLEO, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+            // {
+            //     nome: "BACON COM MILHO",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, BACON, MILHO, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+
+            // {
+            //     nome: "VEGETARIANA",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, CHAMPIGNON, TOMATE, CEBOLA E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+            // {
+            //     nome: "4 QUEIJOS",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, PARMESÃO, CATUPIRY, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // }
+            // {
+            //     nome: "PALMITO",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, PALMITO, TOMATE, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+            // {
+            //     nome: "STROGONOFF CARNE",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, CARNE, CREME DE LEITE, BATATA PALHA, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+            // {
+            //     nome: "STROGONOFF FRANGO",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, FRANGO DESFIADO, CREME DE LEITE, BATATA PALHA, ORÉGÃO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+            // {
+            //     nome: "CHURRASQUINHO",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, CONTRA FILÉ, VINAGRETE, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+            // {
+            //     nome: "TOMATE SECO",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, TOMATE SECO, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+            // {
+            //     nome: "BROCOLIS",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, BACON, BRÓCOLIS, ALHO FRITO, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+            // {
+            //     nome: "CARNE SECA C BANANA",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, CARNE SECA, BANANA FRITA, TOMATE, CEBOLA, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
+            // {
+            //     nome: "PEPPERONI",
+            //     desc: "MOLHO ESPECIAL, MUSSARELA, PEPPERONI, ORÉGANO E AZEITONA.",
+            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
+            // },
         ];
 
 
@@ -341,41 +515,61 @@
 
         function renderMenu() {
             renderBordas();
-            document.getElementById('pizzas').innerHTML = listaPizzas.map(p => `
-                <div class="product-card bg-white p-4 rounded-xl flex items-center gap-3 shadow-sm">
-                    <img src="${p.foto}" alt="${p.nome}" class="w-20 h-20 rounded-2xl object-cover flex-shrink-0">
-                    <div class="flex-1">
-                        <h3 class="font-bold text-primary text-lg">${p.nome}</h3>
-                        <p class="text-sm text-gray-500 italic">${p.desc}</p>
-                        <span class="font-bold text-xl text-primary font-sans">R$ ${p.preco.toFixed(2).replace('.', ',')}</span>
-                    </div>
-                    <button class="bg-primary text-white w-12 h-12 rounded-full text-2xl flex items-center justify-center shadow-lg font-bold"
-                        onclick="openSelectionModal(${p.max}, '${p.nome}', ${p.preco}, ${p.borda})">+</button>
-                </div>`).join('');
 
-            // document.getElementById('doces').innerHTML = listaDoces.map(d => `
-            //     <div class="product-card bg-white p-4 rounded-xl flex items-center gap-3 shadow-sm">
-            //         <img src="${d.foto}" alt="${d.nome}" class="w-20 h-20 rounded-2xl object-cover flex-shrink-0">
-            //         <div class="flex-1">
-            //             <h3 class="font-bold text-primary text-lg">${d.nome}</h3>
-            //             <p class="text-sm text-gray-500 italic">${d.desc}</p>
-            //             <span class="font-bold text-xl text-primary font-sans">R$ ${d.preco.toFixed(2).replace('.', ',')}</span>
-            //         </div>
-            //         <button class="bg-primary text-white w-12 h-12 rounded-full text-2xl flex items-center justify-center shadow-lg active:scale-90 font-bold"
-            //             onclick="addToCart('${d.nome}', ${d.preco})">+</button>
-            //     </div>`).join('');
-
-            document.getElementById('bebidas').innerHTML = listaBebidas.map(b => `
-                <div class="product-card bg-white p-4 rounded-xl flex items-center gap-3 shadow-sm">
-                    <img src="${b.foto}" alt="${b.nome}" class="w-16 h-16 rounded-2xl object-cover flex-shrink-0">
-                    <div class="flex-1">
-                        <h3 class="font-bold text-primary text-lg">${b.nome}</h3>
-                        <p class="text-sm text-gray-500 italic">${b.desc}</p>
-                        <span class="font-bold text-xl text-primary font-sans">R$ ${b.preco.toFixed(2).replace('.', ',')}</span>
+            // Lista de PIZZAS no estilo de linha, como nas screenshots
+            document.getElementById('pizzas').innerHTML = `
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="flex items-center justify-between px-4 py-3 border-b">
+                        <div class="flex items-center gap-2">
+                            <span class="text-yellow-500"><i class="fas fa-pizza-slice"></i></span>
+                            <span class="font-bold text-[11px] tracking-[0.25em] text-gray-700 uppercase">PIZZAS</span>
+                        </div>
+                        <i class="fas fa-chevron-up text-xs text-gray-400"></i>
                     </div>
-                    <button class="bg-primary text-white w-12 h-12 rounded-full text-2xl flex items-center justify-center shadow-lg active:scale-90 font-bold"
-                        onclick="addToCart('${b.nome}', ${b.preco})">+</button>
-                </div>`).join('');
+                    ${listaPizzas.map(p => `
+                        <div class="flex items-center px-4 py-3 border-b last:border-b-0">
+                            <img src="${p.foto}" alt="${p.nome}" class="w-14 h-14 rounded-full object-cover mr-3 border border-gray-200 flex-shrink-0">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-[13px] text-gray-800 uppercase">${p.nome}</h3>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-[13px] text-gray-800 whitespace-nowrap">R$ ${p.preco.toFixed(2).replace('.', ',')}</span>
+                                <button class="bg-primary text-white w-9 h-9 rounded-full text-lg flex items-center justify-center shadow-md font-bold"
+                                    onclick="openSelectionModal(${p.max}, '${p.nome}', ${p.preco}, ${p.borda})">+</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            // Doces continuam ocultos por enquanto (se quiser depois a gente replica o mesmo layout)
+            // document.getElementById('doces').innerHTML = ...
+
+            // Lista de BEBIDAS no mesmo estilo
+            document.getElementById('bebidas').innerHTML = `
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="flex items-center justify-between px-4 py-3 border-b">
+                        <div class="flex items-center gap-2">
+                            <span class="text-blue-500"><i class="fas fa-glass-cheers"></i></span>
+                            <span class="font-bold text-[11px] tracking-[0.25em] text-gray-700 uppercase">BEBIDAS</span>
+                        </div>
+                        <i class="fas fa-chevron-up text-xs text-gray-400"></i>
+                    </div>
+                    ${listaBebidas.map(b => `
+                        <div class="flex items-center px-4 py-3 border-b last:border-b-0">
+                            <img src="${b.foto}" alt="${b.nome}" class="w-12 h-12 rounded-full object-cover mr-3 border border-gray-200 flex-shrink-0">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-[13px] text-gray-800 uppercase">${b.nome}</h3>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-[13px] text-gray-800 whitespace-nowrap">R$ ${b.preco.toFixed(2).replace('.', ',')}</span>
+                                <button class="bg-primary text-white w-9 h-9 rounded-full text-lg flex items-center justify-center shadow-md active:scale-90 font-bold"
+                                    onclick="addToCart('${b.nome}', ${b.preco})">+</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
         }
 
         function openTab(id) {
@@ -413,6 +607,19 @@
                     <div class="flex-1 pr-2">
                         <span class="font-bold text-gray-700 text-sm font-sans block">${s.nome}</span>
                         <small class="text-[14px] text-gray-400 leading-tight block">${s.desc}</small>
+                        ${(() => {
+                    const upper = s.nome.toUpperCase();
+                    if (upper.includes('STROGONOFF')) {
+                        return '<small class="text-[11px] text-red-500 font-semibold block">+ R$ 5,00 adicional</small>';
+                    }
+                    if (upper.includes('CHURRASQUINHO')) {
+                        return '<small class="text-[11px] text-red-500 font-semibold block">+ R$ 8,00 adicional</small>';
+                    }
+                    if (upper.includes('COSTELA')) {
+                        return '<small class="text-[11px] text-red-500 font-semibold block">+ R$ 5,00 adicional</small>';
+                    }
+                    return '';
+                })()}
                     </div>
                     <div class="flex items-center gap-3 bg-gray-50 rounded-full px-2 py-1">
                         <button onclick="changeFlavorQty('${s.nome}', -1)" class="w-8 h-8 bg-white rounded-full shadow text-primary font-black text-lg">-</button>
@@ -456,9 +663,24 @@
 
         function confirmSelection() {
             const flavorsArray = [];
-            for (const [sabor, qtd] of Object.entries(flavorSelections)) { if (qtd > 0) flavorsArray.push(`${qtd}x ${sabor}`); }
+            let extraSabores = 0;
+            for (const [sabor, qtd] of Object.entries(flavorSelections)) {
+                if (qtd > 0) {
+                    flavorsArray.push(`${qtd}x ${sabor}`);
+                    const upper = sabor.toUpperCase();
+                    if (upper.includes('STROGONOFF')) {
+                        extraSabores += 5 * qtd;
+                    }
+                    if (upper.includes('CHURRASQUINHO')) {
+                        extraSabores += 8 * qtd;
+                    }
+                    if (upper.includes('COSTELA')) {
+                        extraSabores += 5 * qtd;
+                    }
+                }
+            }
             const bordaExtra = currentTask.selectedBorda !== 'Sem Borda' ? 10 : 0;
-            const precoFinal = currentTask.price + bordaExtra;
+            const precoFinal = currentTask.price + bordaExtra + extraSabores;
             cart.push({ nome: `${currentTask.name} (${flavorsArray.join(' + ')})`, borda: currentTask.selectedBorda, preco: precoFinal });
             updateUI();
             closeModal('selectionModal');
