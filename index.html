@@ -54,6 +54,7 @@
             <div id="alertIcon" class="text-6xl mb-4"></div>
             <h3 id="alertTitle" class="text-2xl font-bold text-gray-800 mb-2"></h3>
             <p id="alertMessage" class="text-gray-600 mb-8 leading-relaxed"></p>
+
             <div id="alertButtons" class="space-y-2">
                 <button id="alertBtnPrimary" onclick="closeAlert()"
                     class="w-full bg-primary text-white py-4 rounded-2xl font-bold uppercase shadow-lg active:scale-95">Entendido</button>
@@ -73,21 +74,117 @@
         </div>
     </header>
 
-    <nav class="tabs flex sticky top-0 z-50 bg-white border-t-2 shadow-lg font-sans">
-        <button id="btn-pizzas" class="btn-tab active uppercase text-[14px] text-black tracking-tighter"
-            onclick="openTab('pizzas')">Pizzas Salgadas</button>
-        <!-- <button id="btn-doces" class="btn-tab uppercase text-[14px] tracking-tighter" onclick="openTab('doces')">Pizzas
-            Doces</button> -->
-        <button id="btn-bebidas" class="btn-tab uppercase text-black text-[14px] tracking-tighter"
+    <nav
+        class="tabs flex sticky top-0 z-50 bg-white border-t-2 border-gray-200 shadow-lg font-sans overflow-x-auto whitespace-nowrap">
+        <button id="btn-mais-pedidas"
+            class="btn-tab text-black active uppercase text-[14px] tracking-tighter whitespace-nowrap shrink-0"
+            onclick="openTab('mais-pedidas')">Mais
+            Pedidas</button>
+        <button id="btn-combos"
+            class="btn-tab text-black uppercase text-[14px] tracking-tighter whitespace-nowrap shrink-0"
+            onclick="openTab('combos')">Combos</button>
+        <button id="btn-monte-sua-pizza"
+            class="btn-tab text-black uppercase text-[14px] tracking-tighter whitespace-nowrap shrink-0"
+            onclick="openTab('monte-sua-pizza')">Monte
+            sua Pizza</button>
+        <button id="btn-bebidas"
+            class="btn-tab uppercase text-black text-[14px] tracking-tighter whitespace-nowrap shrink-0"
             onclick="openTab('bebidas')">Bebidas</button>
-        <button id="btn-info" class="btn-tab uppercase text-black text-[14px] tracking-tighter"
+        <button id="btn-info"
+            class="btn-tab uppercase text-black text-[14px] tracking-tighter whitespace-nowrap shrink-0"
             onclick="openTab('info')">Mais Informações</button>
     </nav>
 
     <main class="container max-w-xl mx-auto p-4">
-        <div id="pizzas" class="category-section block space-y-4"></div>
-        <div id="doces" class="category-section hidden space-y-4"></div>
-        <div id="bebidas" class="category-section hidden space-y-4"></div>
+        <div id="mais-pedidas" class="category-section block space-y-4">
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="flex items-center justify-between px-4 py-3 border-b">
+                    <div class="flex items-center gap-2">
+                        <span class="text-red-500"><i class="fas fa-fire"></i></span>
+                        <span class="font-bold text-[11px] tracking-[0.25em] text-gray-700 uppercase">Mais
+                            Pedidas</span>
+                    </div>
+                    <i class="fas fa-chevron-up text-xs text-gray-400"></i>
+                </div>
+                <div class="flex items-center px-4 py-3 border-b last:border-b-0">
+                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80"
+                        alt="4 QUEIJOS"
+                        class="w-14 h-14 rounded-full object-cover mr-3 border border-gray-200 flex-shrink-0">
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-[13px] text-gray-800 uppercase mb-1">4 QUEIJOS</h3>
+                        <p class="text-[11px] text-gray-500 leading-snug">
+                            MOLHO ESPECIAL, MUSSARELA, PARMESÃO, CATUPIRY, ORÉGANO E AZEITONA.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold text-[13px] text-gray-800 whitespace-nowrap">R$ 52,90</span>
+                        <button
+                            class="bg-primary text-white w-9 h-9 rounded-full text-lg flex items-center justify-center shadow-md active:scale-90 font-bold"
+                            onclick="addToCart('Pizza 4 QUEIJOS', 52.90)">+</button>
+                    </div>
+                </div>
+                <div class="flex items-center px-4 py-3 border-b last:border-b-0">
+                    <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=800&q=80"
+                        alt="A MODA DA CASA"
+                        class="w-14 h-14 rounded-full object-cover mr-3 border border-gray-200 flex-shrink-0">
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-[13px] text-gray-800 uppercase mb-1">A MODA DA CASA</h3>
+                        <p class="text-[11px] text-gray-500 leading-snug">
+                            MOLHO ESPECIAL, MUSSARELA, FRANGO DESFIADO, MILHO, CATUPIRY, ORÉGANO E AZEITONA.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold text-[13px] text-gray-800 whitespace-nowrap">R$ 52,90</span>
+                        <button
+                            class="bg-primary text-white w-9 h-9 rounded-full text-lg flex items-center justify-center shadow-md active:scale-90 font-bold"
+                            onclick="addToCart('Pizza A MODA DA CASA', 52.90)">+</button>
+                    </div>
+                </div>
+                <div class="flex items-center px-4 py-3 border-b last:border-b-0">
+                    <img src="https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?auto=format&fit=crop&w=800&q=80"
+                        alt="BACON COM MILHO"
+                        class="w-14 h-14 rounded-full object-cover mr-3 border border-gray-200 flex-shrink-0">
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-[13px] text-gray-800 uppercase mb-1">BACON COM MILHO</h3>
+                        <p class="text-[11px] text-gray-500 leading-snug">
+                            MOLHO ESPECIAL, MUSSARELA, BACON, MILHO, ORÉGANO E AZEITONA.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold text-[13px] text-gray-800 whitespace-nowrap">R$ 52,90</span>
+                        <button
+                            class="bg-primary text-white w-9 h-9 rounded-full text-lg flex items-center justify-center shadow-md active:scale-90 font-bold"
+                            onclick="addToCart('Pizza BACON COM MILHO', 52.90)">+</button>
+                    </div>
+                </div>
+                <div class="flex items-center px-4 py-3 border-b last:border-b-0">
+                    <img src="https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=800&q=80"
+                        alt="CALABRESA"
+                        class="w-14 h-14 rounded-full object-cover mr-3 border border-gray-200 flex-shrink-0">
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-[13px] text-gray-800 uppercase mb-1">CALABRESA</h3>
+                        <p class="text-[11px] text-gray-500 leading-snug">
+                            MOLHO ESPECIAL, MUSSARELA, CALABRESA, CEBOLA, ORÉGANO E AZEITONA.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold text-[13px] text-gray-800 whitespace-nowrap">R$ 52,90</span>
+                        <button
+                            class="bg-primary text-white w-9 h-9 rounded-full text-lg flex items-center justify-center shadow-md active:scale-90 font-bold"
+                            onclick="addToCart('Pizza CALABRESA', 52.90)">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="combos" class="category-section hidden space-y-4">
+            Combos
+        </div>
+        <div id="monte-sua-pizza" class="category-section hidden space-y-4">
+            Monte sua Pizza
+        </div>
+        <div id="bebidas" class="category-section hidden space-y-4">
+            Bebidas
+        </div>
         <div id="info" class="category-section hidden space-y-4">
             <div class="bg-white rounded-2xl shadow-sm p-5 space-y-4">
                 <div class="flex items-start gap-3">
@@ -115,7 +212,7 @@
                         <p class="text-sm text-gray-700 leading-snug mb-2">
                             Tire dúvidas ou faça seu pedido também pelo WhatsApp.
                         </p>
-                        <a href="https://wa.me/5565992507339" target="_blank"
+                        <a href="https://wa.me/5565993443715" target="_blank"
                             class="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-full text-xs font-bold uppercase shadow-md active:scale-95">
                             <i class="fab fa-whatsapp text-base"></i>
                             Conversar no WhatsApp
@@ -248,44 +345,12 @@
             },
             {
                 id: 5,
-                nome: "Monte sua Pizza",
-                desc: "Pizza Inteira Salgada — Pode escolher 1 ou 2 sabores",
+                nome: "Pizza Grande 8 Fatias",
+                desc: "Pizza Inteira Salgada — Selecione até 2 sabores",
                 preco: 52.90,
                 max: 2,
                 borda: true,
                 foto: "https://swiftbr.vteximg.com.br/arquivos/ids/213885-636-636/618283-pizza-artesanal-calabresa_inn.jpg?v=639051131497770000"
-            }
-        ];
-
-
-        const listaDoces = [
-            {
-                id: 201,
-                nome: "Pizza Chocolate",
-                desc: "Chocolate ao leite",
-                preco: 45.90,
-                foto: "https://instagram.fcgb1-1.fna.fbcdn.net/v/t39.30808-6/435693923_18418922071048582_4461348753245569872_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&ig_cache_key=MzMzOTAyMzMyMjQ1NDk1NDc5Ng%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4OTU5LnNkci5DMyJ9&_nc_ohc=cCilaQPKcyEQ7kNvwGTgJpR&_nc_oc=AdnVu0_VKZ45NZ9T5UbJKmiTdLEfyo4A2BzaRlgD42F8TnD_DT6CxBhvmvUXP5jUVs-NLDxCG3XXmTDpzjr55J6E&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fcgb1-1.fna&_nc_gid=VPnOvX1AutAnU5i4H1Zi3Q&oh=00_Afv8WtgNaVRdXTVPmgbc3hCHZKF6F-kMnl-d3Yx6Bb0wAw&oe=699BA267"
-            },
-            {
-                id: 202,
-                nome: "Pizza Prestígio",
-                desc: "Chocolate com coco",
-                preco: 45.90,
-                foto: "https://instagram.fcgb1-1.fna.fbcdn.net/v/t51.75761-15/482910789_18073110325783580_361274072064261522_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&ig_cache_key=MzU4MjUyMTczNzI5ODIyNjk0MA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjExNzl4MTE3OS5zZHIuQzMifQ%3D%3D&_nc_ohc=4uyhmiVuQFIQ7kNvwE7KsJu&_nc_oc=AdnQTxWvQNpp_uxahC-a61uKfHG2S3YV8-SsGPDU9IJJbysOn1pkJtUpk9L6PE5LmeVNEtBlqKLQdawGwT7spYGt&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fcgb1-1.fna&_nc_gid=qBaEi_q13EtVyBnm1Mj05g&oh=00_Aft6gMZU49uQDjNwzFjolic_oFPpqR-DzJZqc46Rdn1e6A&oe=699B7877"
-            },
-            {
-                id: 203,
-                nome: "Pizza Romeu e Julieta",
-                desc: "Queijo com goiabada",
-                preco: 45.90,
-                foto: "https://beatoven.com.br/wp-content/uploads/2024/11/sq-romeu-e-julieta.jpg"
-            },
-            {
-                id: 204,
-                nome: "Pizza Banana c/ Canela",
-                desc: "Banana e açúcar",
-                preco: 45.90,
-                foto: "https://instagram.fcgb1-1.fna.fbcdn.net/v/t39.30808-6/494198820_1276102007857951_6511198047695237086_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=107&ig_cache_key=MzUwMTM2MzQwNTcxNTA0MTU3NA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjIwNDh4MjA0OC5zZHIuQzMifQ%3D%3D&_nc_ohc=pwSfVy8_KqQQ7kNvwH8XiQR&_nc_oc=AdlrlEq_Yd6d5YgF8LV2V_now3gh5aOsKiGg5fH0WpEfrycPI_Dkl8-QVY4CadVbgcxeEPjLmoWjS9zMW1EE6yVK&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fcgb1-1.fna&_nc_gid=7JdmDFen0NHQaPzYm11IGQ&oh=00_AfsvrM7RTTUf8FPJ16u9siDGrHioxeVGDrwtNrqlLggOfQ&oe=699B9786"
             }
         ];
 
@@ -362,6 +427,34 @@
                 "nome": "PORTUGUESA",
                 "desc": "MOLHO ESPECIAL, MUSSARELA, PRESUNTO, OVOS, MILHO, CEBOLA, ORÉGANO E AZEITONA.",
                 "foto": "https://images.unsplash.com/photo-1593504049359-74330189a345?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 201,
+                nome: "Pizza Chocolate",
+                desc: "Chocolate ao leite",
+                preco: 45.90,
+                foto: "https://instagram.fcgb1-1.fna.fbcdn.net/v/t39.30808-6/435693923_18418922071048582_4461348753245569872_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&ig_cache_key=MzMzOTAyMzMyMjQ1NDk1NDc5Ng%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4OTU5LnNkci5DMyJ9&_nc_ohc=cCilaQPKcyEQ7kNvwGTgJpR&_nc_oc=AdnVu0_VKZ45NZ9T5UbJKmiTdLEfyo4A2BzaRlgD42F8TnD_DT6CxBhvmvUXP5jUVs-NLDxCG3XXmTDpzjr55J6E&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fcgb1-1.fna&_nc_gid=VPnOvX1AutAnU5i4H1Zi3Q&oh=00_Afv8WtgNaVRdXTVPmgbc3hCHZKF6F-kMnl-d3Yx6Bb0wAw&oe=699BA267"
+            },
+            {
+                id: 202,
+                nome: "Pizza Prestígio",
+                desc: "Chocolate com coco",
+                preco: 45.90,
+                foto: "https://instagram.fcgb1-1.fna.fbcdn.net/v/t51.75761-15/482910789_18073110325783580_361274072064261522_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&ig_cache_key=MzU4MjUyMTczNzI5ODIyNjk0MA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjExNzl4MTE3OS5zZHIuQzMifQ%3D%3D&_nc_ohc=4uyhmiVuQFIQ7kNvwE7KsJu&_nc_oc=AdnQTxWvQNpp_uxahC-a61uKfHG2S3YV8-SsGPDU9IJJbysOn1pkJtUpk9L6PE5LmeVNEtBlqKLQdawGwT7spYGt&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fcgb1-1.fna&_nc_gid=qBaEi_q13EtVyBnm1Mj05g&oh=00_Aft6gMZU49uQDjNwzFjolic_oFPpqR-DzJZqc46Rdn1e6A&oe=699B7877"
+            },
+            {
+                id: 203,
+                nome: "Pizza Romeu e Julieta",
+                desc: "Queijo com goiabada",
+                preco: 45.90,
+                foto: "https://beatoven.com.br/wp-content/uploads/2024/11/sq-romeu-e-julieta.jpg"
+            },
+            {
+                id: 204,
+                nome: "Pizza Banana c/ Canela",
+                desc: "Banana e açúcar",
+                preco: 45.90,
+                foto: "https://instagram.fcgb1-1.fna.fbcdn.net/v/t39.30808-6/494198820_1276102007857951_6511198047695237086_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=107&ig_cache_key=MzUwMTM2MzQwNTcxNTA0MTU3NA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjIwNDh4MjA0OC5zZHIuQzMifQ%3D%3D&_nc_ohc=pwSfVy8_KqQQ7kNvwH8XiQR&_nc_oc=AdlrlEq_Yd6d5YgF8LV2V_now3gh5aOsKiGg5fH0WpEfrycPI_Dkl8-QVY4CadVbgcxeEPjLmoWjS9zMW1EE6yVK&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fcgb1-1.fna&_nc_gid=7JdmDFen0NHQaPzYm11IGQ&oh=00_AfsvrM7RTTUf8FPJ16u9siDGrHioxeVGDrwtNrqlLggOfQ&oe=699B9786"
             }
             // {
             //     "nome": "CALABRESA",
@@ -516,17 +609,20 @@
         function renderMenu() {
             renderBordas();
 
-            // Lista de PIZZAS no estilo de linha, como nas screenshots
-            document.getElementById('pizzas').innerHTML = `
+            const combos = listaPizzas.filter(p => p.id !== 5);
+            const monte = listaPizzas.find(p => p.id === 5);
+
+            // Lista de COMBOS usando listaPizzas (exceto Monte sua Pizza)
+            document.getElementById('combos').innerHTML = `
                 <div class="bg-white rounded-xl shadow-sm overflow-hidden">
                     <div class="flex items-center justify-between px-4 py-3 border-b">
                         <div class="flex items-center gap-2">
                             <span class="text-yellow-500"><i class="fas fa-pizza-slice"></i></span>
-                            <span class="font-bold text-[11px] tracking-[0.25em] text-gray-700 uppercase">PIZZAS</span>
+                            <span class="font-bold text-[11px] tracking-[0.25em] text-gray-700 uppercase">COMBOS</span>
                         </div>
                         <i class="fas fa-chevron-up text-xs text-gray-400"></i>
                     </div>
-                    ${listaPizzas.map(p => `
+                    ${combos.map(p => `
                         <div class="flex items-center px-4 py-3 border-b last:border-b-0">
                             <img src="${p.foto}" alt="${p.nome}" class="w-14 h-14 rounded-full object-cover mr-3 border border-gray-200 flex-shrink-0">
                             <div class="flex-1">
@@ -542,8 +638,32 @@
                 </div>
             `;
 
-            // Doces continuam ocultos por enquanto (se quiser depois a gente replica o mesmo layout)
-            // document.getElementById('doces').innerHTML = ...
+            // Monte sua Pizza em aba própria
+            if (monte) {
+                document.getElementById('monte-sua-pizza').innerHTML = `
+                    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                        <div class="flex items-center justify-between px-4 py-3 border-b">
+                            <div class="flex items-center gap-2">
+                                <span class="text-red-500"><i class="fas fa-pizza-slice"></i></span>
+                                <span class="font-bold text-[11px] tracking-[0.25em] text-gray-700 uppercase">MONTE SUA PIZZA</span>
+                            </div>
+                            <i class="fas fa-chevron-up text-xs text-gray-400"></i>
+                        </div>
+                        <div class="flex items-center px-4 py-3 border-b last:border-b-0">
+                            <img src="${monte.foto}" alt="${monte.nome}" class="w-14 h-14 rounded-full object-cover mr-3 border border-gray-200 flex-shrink-0">
+                            <div class="flex-1">
+                                <h3 class="font-semibold text-[13px] text-gray-800 uppercase">${monte.nome}</h3>
+                                <p class="text-[11px] text-gray-500 leading-snug">${monte.desc}</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="font-bold text-[13px] text-gray-800 whitespace-nowrap">R$ ${monte.preco.toFixed(2).replace('.', ',')}</span>
+                                <button class="bg-primary text-white w-9 h-9 rounded-full text-lg flex items-center justify-center shadow-md font-bold"
+                                    onclick="openSelectionModal(${monte.max}, '${monte.nome}', ${monte.preco}, ${monte.borda})">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
 
             // Lista de BEBIDAS no mesmo estilo
             document.getElementById('bebidas').innerHTML = `
@@ -799,7 +919,14 @@
             const total = cart.reduce((acc, item) => acc + item.preco, 0);
             msg += `\n*TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*`;
 
-            window.open(`https://wa.me/5565992507339?text=${encodeURIComponent(msg)}`);
+            window.open(`https://wa.me/5565993443715?text=${encodeURIComponent(msg)}`);
+
+            // Após enviar, limpar carrinho e formulário
+            cart = [];
+            updateUI();
+            clearForm();
+            closeModal('cartModal');
+            showAlert('Pedido enviado com sucesso!', 'success');
         }
 
         window.onload = renderMenu;
