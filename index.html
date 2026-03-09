@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="icon" type="image/png" href="./bellamassa.png">
 
+
     <script>
         tailwind.config = {
             theme: {
@@ -45,6 +46,28 @@
         .btn-tab { transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease; }
         .btn-tab.active { transform: scale(1.02); }
     </style>
+
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n;
+            n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = [];
+            t = b.createElement(e); t.async = !0;
+            t.src = v;
+            s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }
+            (window, document, 'script',
+                'https://connect.facebook.net/en_US/fbevents.js');
+
+        fbq('init', '1399982971879844');
+        fbq('track', 'PageView');
+
+    </script>
 </head>
 
 <body class="bg-brandBg text-gray-800 pb-24">
@@ -106,74 +129,7 @@
                     </div>
                     <i class="fas fa-chevron-up text-xs text-gray-400"></i>
                 </div>
-                <div class="flex items-center px-4 py-3 border-b last:border-b-0">
-                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80"
-                        alt="4 QUEIJOS"
-                        class="w-14 h-14 rounded-full object-cover mr-3 border border-gray-200 flex-shrink-0">
-                    <div class="flex-1">
-                        <h3 class="font-semibold text-[13px] text-gray-800 uppercase mb-1">4 QUEIJOS</h3>
-                        <p class="text-[11px] text-gray-500 leading-snug">
-                            MOLHO ESPECIAL, MUSSARELA, PARMESÃO, CATUPIRY, ORÉGANO E AZEITONA.
-                        </p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="font-bold text-[13px] text-gray-800 whitespace-nowrap">R$ 52,90</span>
-                        <button
-                            class="bg-primary text-white w-9 h-9 rounded-full text-lg flex items-center justify-center shadow-md active:scale-90 font-bold"
-                            onclick="addToCart('Pizza 4 QUEIJOS', 52.90)">+</button>
-                    </div>
-                </div>
-                <div class="flex items-center px-4 py-3 border-b last:border-b-0">
-                    <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=800&q=80"
-                        alt="A MODA DA CASA"
-                        class="w-14 h-14 rounded-full object-cover mr-3 border border-gray-200 flex-shrink-0">
-                    <div class="flex-1">
-                        <h3 class="font-semibold text-[13px] text-gray-800 uppercase mb-1">A MODA DA CASA</h3>
-                        <p class="text-[11px] text-gray-500 leading-snug">
-                            MOLHO ESPECIAL, MUSSARELA, FRANGO DESFIADO, MILHO, CATUPIRY, ORÉGANO E AZEITONA.
-                        </p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="font-bold text-[13px] text-gray-800 whitespace-nowrap">R$ 52,90</span>
-                        <button
-                            class="bg-primary text-white w-9 h-9 rounded-full text-lg flex items-center justify-center shadow-md active:scale-90 font-bold"
-                            onclick="addToCart('Pizza A MODA DA CASA', 52.90)">+</button>
-                    </div>
-                </div>
-                <div class="flex items-center px-4 py-3 border-b last:border-b-0">
-                    <img src="https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?auto=format&fit=crop&w=800&q=80"
-                        alt="BACON COM MILHO"
-                        class="w-14 h-14 rounded-full object-cover mr-3 border border-gray-200 flex-shrink-0">
-                    <div class="flex-1">
-                        <h3 class="font-semibold text-[13px] text-gray-800 uppercase mb-1">BACON COM MILHO</h3>
-                        <p class="text-[11px] text-gray-500 leading-snug">
-                            MOLHO ESPECIAL, MUSSARELA, BACON, MILHO, ORÉGANO E AZEITONA.
-                        </p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="font-bold text-[13px] text-gray-800 whitespace-nowrap">R$ 52,90</span>
-                        <button
-                            class="bg-primary text-white w-9 h-9 rounded-full text-lg flex items-center justify-center shadow-md active:scale-90 font-bold"
-                            onclick="addToCart('Pizza BACON COM MILHO', 52.90)">+</button>
-                    </div>
-                </div>
-                <div class="flex items-center px-4 py-3 border-b last:border-b-0">
-                    <img src="https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=800&q=80"
-                        alt="CALABRESA"
-                        class="w-14 h-14 rounded-full object-cover mr-3 border border-gray-200 flex-shrink-0">
-                    <div class="flex-1">
-                        <h3 class="font-semibold text-[13px] text-gray-800 uppercase mb-1">CALABRESA</h3>
-                        <p class="text-[11px] text-gray-500 leading-snug">
-                            MOLHO ESPECIAL, MUSSARELA, CALABRESA, CEBOLA, ORÉGANO E AZEITONA.
-                        </p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="font-bold text-[13px] text-gray-800 whitespace-nowrap">R$ 52,90</span>
-                        <button
-                            class="bg-primary text-white w-9 h-9 rounded-full text-lg flex items-center justify-center shadow-md active:scale-90 font-bold"
-                            onclick="addToCart('Pizza CALABRESA', 52.90)">+</button>
-                    </div>
-                </div>
+                <div id="maisPedidasList"></div>
             </div>
         </div>
         <div id="combos" class="category-section hidden space-y-4">
@@ -324,6 +280,19 @@
     </div>
 
     <script>
+        const listaMaisPedidas = [
+            {
+                "nome": "CALABRESA",
+                "desc": "MUSSARELA, CALABRESA E CEBOLA.",
+                "foto": "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                "nome": "BAICATU",
+                "desc": "REQUEIJÃO, PIMENTA CALABRESA E CALABRESA RALADO.",
+                "foto": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80"
+            },
+        ];
+
         const listaPizzas = [
             {
                 id: 1,
@@ -389,209 +358,71 @@
 
         const saboresSalgados = [
             {
-                "nome": "4 QUEIJOS",
-                "desc": "MOLHO ESPECIAL, MUSSARELA, PARMESÃO, CATUPIRY, ORÉGANO E AZEITONA.",
+                "nome": "ATUM",
+                "desc": "ATUM, MUSSARELA E CEBOLA.",
+                "foto": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                "nome": "BAICATU",
+                "desc": "REQUEIJÃO, PIMENTA CALABRESA E CALABRESA RALADO.",
                 "foto": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80"
             },
             {
-                "nome": "A MODA DA CASA",
-                "desc": "MOLHO ESPECIAL, MUSSARELA, FRANGO DESFIADO, MILHO, CATUPIRY, ORÉGANO E AZEITONA.",
-                "foto": "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                "nome": "BACON COM MILHO",
-                "desc": "MOLHO ESPECIAL, MUSSARELA, BACON, MILHO, ORÉGANO E AZEITONA.",
-                "foto": "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?auto=format&fit=crop&w=800&q=80"
-            },
-            {
                 "nome": "CALABRESA",
-                "desc": "MOLHO ESPECIAL, MUSSARELA, CALABRESA, CEBOLA, ORÉGANO E AZEITONA.",
+                "desc": "MUSSARELA, CALABRESA E CEBOLA.",
                 "foto": "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=800&q=80"
             },
             {
                 "nome": "FRANGO COM CATUPIRY",
-                "desc": "MOLHO ESPECIAL, MUSSARELA, FRANGO DESFIADO, CATUPIRY, ORÉGANO E AZEITONA.",
+                "desc": "MUSSARELA, CATUPIRY E TOMATE.",
                 "foto": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80"
             },
             {
                 "nome": "MARGUERITA",
-                "desc": "MOLHO ESPECIAL, MUSSARELA, TOMATE, MANJERICÃO, ORÉGANO E AZEITONA.",
+                "desc": "MUSSARELA, TOMATE E MANJERICÃO.",
                 "foto": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80"
             },
             {
                 "nome": "MUSSARELA",
-                "desc": "MOLHO ESPECIAL, MUSSARELA, TOMATE, ORÉGANO E AZEITONA.",
+                "desc": "MUSSARELA E TOMATE.",
                 "foto": "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&w=800&q=80"
             },
             {
                 "nome": "PORTUGUESA",
-                "desc": "MOLHO ESPECIAL, MUSSARELA, PRESUNTO, OVOS, MILHO, CEBOLA, ORÉGANO E AZEITONA.",
+                "desc": "MUSSARELA, PRESUNTO, OVO, ERVILHA, CEBOLA E TOMATE.",
                 "foto": "https://images.unsplash.com/photo-1593504049359-74330189a345?auto=format&fit=crop&w=800&q=80"
             },
             {
-                id: 201,
+                "nome": "QUATRO QUEIJOS",
+                "desc": "MUSSARELA, PROVOLONE, REQUEIJÃO E CHEDDAR.",
+                "foto": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                "nome": "SUPREMA",
+                "desc": "MILHO, BACON, MUSSARELA E REQUEIJÃO.",
+                "foto": "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?auto=format&fit=crop&w=800&q=80"
+            }
+        ];
+
+        const saboresDoces = [
+            {
                 nome: "Pizza Chocolate",
                 desc: "Chocolate ao leite",
-                preco: 45.90,
                 foto: "https://instagram.fcgb1-1.fna.fbcdn.net/v/t39.30808-6/435693923_18418922071048582_4461348753245569872_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&ig_cache_key=MzMzOTAyMzMyMjQ1NDk1NDc5Ng%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4OTU5LnNkci5DMyJ9&_nc_ohc=cCilaQPKcyEQ7kNvwGTgJpR&_nc_oc=AdnVu0_VKZ45NZ9T5UbJKmiTdLEfyo4A2BzaRlgD42F8TnD_DT6CxBhvmvUXP5jUVs-NLDxCG3XXmTDpzjr55J6E&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fcgb1-1.fna&_nc_gid=VPnOvX1AutAnU5i4H1Zi3Q&oh=00_Afv8WtgNaVRdXTVPmgbc3hCHZKF6F-kMnl-d3Yx6Bb0wAw&oe=699BA267"
             },
             {
-                id: 202,
                 nome: "Pizza Prestígio",
                 desc: "Chocolate com coco",
-                preco: 45.90,
                 foto: "https://instagram.fcgb1-1.fna.fbcdn.net/v/t51.75761-15/482910789_18073110325783580_361274072064261522_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&ig_cache_key=MzU4MjUyMTczNzI5ODIyNjk0MA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjExNzl4MTE3OS5zZHIuQzMifQ%3D%3D&_nc_ohc=4uyhmiVuQFIQ7kNvwE7KsJu&_nc_oc=AdnQTxWvQNpp_uxahC-a61uKfHG2S3YV8-SsGPDU9IJJbysOn1pkJtUpk9L6PE5LmeVNEtBlqKLQdawGwT7spYGt&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fcgb1-1.fna&_nc_gid=qBaEi_q13EtVyBnm1Mj05g&oh=00_Aft6gMZU49uQDjNwzFjolic_oFPpqR-DzJZqc46Rdn1e6A&oe=699B7877"
             },
             {
-                id: 203,
-                nome: "Pizza Romeu e Julieta",
-                desc: "Queijo com goiabada",
-                preco: 45.90,
-                foto: "https://beatoven.com.br/wp-content/uploads/2024/11/sq-romeu-e-julieta.jpg"
-            },
-            {
-                id: 204,
                 nome: "Pizza Banana c/ Canela",
                 desc: "Banana e açúcar",
-                preco: 45.90,
                 foto: "https://instagram.fcgb1-1.fna.fbcdn.net/v/t39.30808-6/494198820_1276102007857951_6511198047695237086_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=107&ig_cache_key=MzUwMTM2MzQwNTcxNTA0MTU3NA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjIwNDh4MjA0OC5zZHIuQzMifQ%3D%3D&_nc_ohc=pwSfVy8_KqQQ7kNvwH8XiQR&_nc_oc=AdlrlEq_Yd6d5YgF8LV2V_now3gh5aOsKiGg5fH0WpEfrycPI_Dkl8-QVY4CadVbgcxeEPjLmoWjS9zMW1EE6yVK&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fcgb1-1.fna&_nc_gid=7JdmDFen0NHQaPzYm11IGQ&oh=00_AfsvrM7RTTUf8FPJ16u9siDGrHioxeVGDrwtNrqlLggOfQ&oe=699B9786"
             }
-            // {
-            //     "nome": "CALABRESA",
-            //     "desc": "MOLHO ESPECIAL, MUSSARELA, CALABRESA, ORÉGANO, AZEITONA E CEBOLA.",
-            //     "foto": "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-            // {
-            //     nome: "MISTA",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, PRESUNTO, BACON, MILHO, OVOS, CEBOLA, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-            // {
-            //     nome: "NAPOLITANO",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, PRESUNTO, PARMESÃO, TOMATE, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-
-            // {
-            //     nome: "MUSSARELA",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, TOMATE, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-            // {
-            //     nome: "ATUM",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, TOMATE, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-            // {
-            //     nome: "3 QUEIJOS",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, PARMESÃO, CHEDDAR, CATUPIRY, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-            // {
-            //     nome: "A MODA DA CASA",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, FRANGO DESFIADO, PROVOLONE, MILHO, CREME DE LEITE, PALMITO, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-
-            // {
-            //     nome: "LOMBO CANADENSE",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, LOMBO (LOMBINHO), TOMATE, CATUPIRY, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-            // {
-            //     nome: "FRANGO COM CATUPIRY",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, FRANGO DESFIADO, CATUPIRY, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-            // {
-            //     nome: "FRANGO COM PALMITO",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, FRANGO DESFIADO, PALMITO, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-
-            // {
-            //     nome: "BAIANA",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, CALABRESA, PIMENTA, PIMENTÃO, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-            // {
-            //     nome: "TOSCANA",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, CALABRESA, OVO, CEBOLA, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-            // {
-            //     nome: "MARGUERITA",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, MANJERICÃO, TOMATE, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-
-            // {
-            //     nome: "COSTELA E CHEDDAR",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, COSTELA, CHEDDAR, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-            // {
-            //     nome: "ALHO AO OLEO",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, ALHO AO ÓLEO, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-            // {
-            //     nome: "BACON COM MILHO",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, BACON, MILHO, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-
-            // {
-            //     nome: "VEGETARIANA",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, CHAMPIGNON, TOMATE, CEBOLA E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-            // {
-            //     nome: "4 QUEIJOS",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, PARMESÃO, CATUPIRY, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // }
-            // {
-            //     nome: "PALMITO",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, PALMITO, TOMATE, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-            // {
-            //     nome: "STROGONOFF CARNE",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, CARNE, CREME DE LEITE, BATATA PALHA, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-            // {
-            //     nome: "STROGONOFF FRANGO",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, FRANGO DESFIADO, CREME DE LEITE, BATATA PALHA, ORÉGÃO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-            // {
-            //     nome: "CHURRASQUINHO",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, CONTRA FILÉ, VINAGRETE, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-            // {
-            //     nome: "TOMATE SECO",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, TOMATE SECO, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-            // {
-            //     nome: "BROCOLIS",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, BACON, BRÓCOLIS, ALHO FRITO, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-            // {
-            //     nome: "CARNE SECA C BANANA",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, CARNE SECA, BANANA FRITA, TOMATE, CEBOLA, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
-            // {
-            //     nome: "PEPPERONI",
-            //     desc: "MOLHO ESPECIAL, MUSSARELA, PEPPERONI, ORÉGANO E AZEITONA.",
-            //     foto: "https://swiftbr.vteximg.com.br/arquivos/ids/207855-636-636/618284-pizza-artesanal-de-mussarela_rec.jpg?v=638851842154900000"
-            // },
         ];
+
+        const todosSabores = [...saboresSalgados, ...saboresDoces];
 
 
 
@@ -606,8 +437,25 @@
             `).join('');
         }
 
+        function renderMaisPedidas() {
+            const precoFmt = (p) => p.toFixed(2).replace('.', ',');
+            document.getElementById('maisPedidasList').innerHTML = listaMaisPedidas.map(p => `
+                <div class="flex items-center px-4 py-3 border-b last:border-b-0">
+                    <img src="${p.foto}" alt="${p.nome.replace(/"/g, '&quot;')}" class="w-14 h-14 rounded-full object-cover mr-3 border border-gray-200 flex-shrink-0">
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-[13px] text-gray-800 uppercase mb-1">${p.nome}</h3>
+                        <p class="text-[11px] text-gray-500 leading-snug">${p.desc}</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold text-[13px] text-gray-800 whitespace-nowrap">R$ ${precoFmt(p.preco)}</span>
+                        <button class="bg-primary text-white w-9 h-9 rounded-full text-lg flex items-center justify-center shadow-md active:scale-90 font-bold" onclick="addToCart('Pizza ${p.nome.replace(/'/g, "\\'")}', ${p.preco})">+</button>
+                    </div>
+                </div>`).join('');
+        }
+
         function renderMenu() {
             renderBordas();
+            renderMaisPedidas();
 
             const combos = listaPizzas.filter(p => p.id !== 5);
             const monte = listaPizzas.find(p => p.id === 5);
@@ -711,7 +559,7 @@
         function openSelectionModal(max, name, price, hasBorda) {
             currentTask = { max, name, price, selectedBorda: 'Sem Borda', hasBorda };
             flavorSelections = {};
-            saboresSalgados.forEach(s => flavorSelections[s.nome] = 0);
+            todosSabores.forEach(s => flavorSelections[s.nome] = 0);
             document.getElementById('modalTitle').innerText = name;
             document.getElementById('stepBadge').innerText = "PASSO 1/2";
             renderFlavorSteps();
@@ -721,7 +569,7 @@
         }
 
         function renderFlavorSteps() {
-            document.getElementById('flavorContainer').innerHTML = saboresSalgados.map(s => `
+            document.getElementById('flavorContainer').innerHTML = todosSabores.map(s => `
                 <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-100 shadow-sm gap-3">
                     <img src="${s.foto}" alt="${s.nome}" class="w-14 h-14 rounded-xl object-cover flex-shrink-0">
                     <div class="flex-1 pr-2">
@@ -932,26 +780,7 @@
         window.onload = renderMenu;
     </script>
     <!-- Meta Pixel Code -->
-    <script>
-        !function (f, b, e, v, n, t, s) {
-            if (f.fbq) return; n = f.fbq = function () {
-                n.callMethod ?
-                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-            };
-            if (!f._fbq) f._fbq = n;
-            n.push = n; n.loaded = !0; n.version = '2.0';
-            n.queue = [];
-            t = b.createElement(e); t.async = !0;
-            t.src = v;
-            s = b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t, s)
-        }
-            (window, document, 'script',
-                'https://connect.facebook.net/en_US/fbevents.js');
 
-        fbq('init', '784923854077490');
-        fbq('track', 'PageView');
-    </script>
 
     <noscript>
         <img height="1" width="1" style="display:none"
