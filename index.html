@@ -658,7 +658,13 @@
         }
 
         function addToCart(name, price) {
+            fbq('track', 'AddToCart', {
+                content_name: name,
+                value: price,
+                currency: 'BRL'
+            });
             cart.push({ nome: name, preco: price, borda: '' });
+
             updateUI();
             showAlert('Produto adicionado ao carrinho!', 'success');
         }
@@ -770,6 +776,12 @@
             msg += `\n*TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*`;
 
             window.open(`https://wa.me/5565993443715?text=${encodeURIComponent(msg)}`);
+
+            fbq('track', 'Purchase', {
+                value: total,
+                currency: 'BRL',
+                content_name: 'Pedido Bella Massa'
+            });
 
             // Após enviar, limpar carrinho e formulário
             cart = [];
