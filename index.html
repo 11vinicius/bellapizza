@@ -88,14 +88,14 @@
         </div>
     </div>
     <header class="bg-white h-[100px] flex justify-between items-center shadow-md px-6 ">
-        <img src="logo2.png" alt="Bella Massa" class="w-[150px] rounded-md">
+        <img src="logo2.png" alt="Jet Pizza Delivery" class="w-[150px] rounded-md">
         <div class=" relative cursor-pointer" onclick="showCart()">
             <i class="fas fa-shopping-cart text-primary text-2xl"></i>
             <span id="cartBadge"
                 class="absolute -top-2 -right-2 bg-green-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden font-bold">0</span>
         </div>
-    </header>
 
+    </header>
     <nav
         class="tabs flex sticky top-0 z-50 bg-white border-t-2 border-gray-200 shadow-lg font-sans overflow-x-auto whitespace-nowrap">
         <button id="btn-mais-pedidas"
@@ -116,6 +116,10 @@
             class="btn-tab uppercase text-black text-[14px] tracking-tighter whitespace-nowrap shrink-0"
             onclick="openTab('info')">Mais Informações</button>
     </nav>
+    <div id="statusBanner"
+        class="w-full py-2 px-6 text-center text-xs font-bold uppercase tracking-widest transition-colors duration-500">
+        <span id="statusText">Verificando...</span>
+    </div>
 
     <main class="container max-w-xl mx-auto p-4">
         <div id="mais-pedidas" class="category-section block space-y-4">
@@ -150,7 +154,7 @@
                     <div>
                         <p class="text-xs font-bold tracking-[0.25em] uppercase text-gray-500 mb-1">Localização</p>
                         <p class="text-sm text-gray-700 leading-snug">
-                            Endereço da Bella Massa<br>
+                            Endereço da Jet Pizza<br>
                             <span class="text-gray-500 text-xs">Rua Rio de Janeiro N° 399 bairro Nova Várzea
                                 Grande</span>
                         </p>
@@ -291,6 +295,40 @@
     </div>
 
     <script>
+
+        function atualizarStatusFuncionamento() {
+            const banner = document.getElementById('statusBanner');
+            const texto = document.getElementById('statusText');
+
+            const agora = new Date();
+            const diaSemana = agora.getDay(); // 0 (Dom) a 6 (Sáb)
+            const hora = agora.getHours();
+            const minuto = agora.getMinutes();
+
+            // Mesma lógica do seu Bot: Quarta (3) a Domingo (0)
+            const diasAberto = [0, 3, 4, 5, 6];
+            const diaValido = diasAberto.includes(diaSemana);
+            const horarioValido = (hora === 18 && minuto >= 30) || (hora > 18 && hora <= 23);
+
+            if (diaValido && horarioValido) {
+                // Estágio Aberto: Verde
+                banner.className = "w-full py-2 px-6 text-center text-xs font-bold uppercase tracking-widest bg-green-600 text-white";
+                texto.innerHTML = "● Aberto Agora - Faça seu pedido!";
+            } else {
+                // Estágio Fechado: Vermelho
+                banner.className = "w-full py-2 px-6 text-center text-xs font-bold uppercase tracking-widest bg-red-600 text-white";
+
+                if (!diaValido) {
+                    texto.innerHTML = "🔴 Fechado - Abrimos de Quarta a Domingo";
+                } else {
+                    texto.innerHTML = "🔴 Fechado - Abrimos às 18:30";
+                }
+            }
+        }
+
+        // Chama a função ao carregar a página
+        window.addEventListener('load', atualizarStatusFuncionamento);
+
         window.addEventListener('load', function () {
             const loader = document.getElementById('loading-screen');
 
@@ -802,7 +840,7 @@
             fbq('track', 'Purchase', {
                 value: total,
                 currency: 'BRL',
-                content_name: 'Pedido Bella Massa'
+                content_name: 'Pedido Jet pizza'
             });
 
             // Após enviar, limpar carrinho e formulário
