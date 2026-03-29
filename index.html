@@ -68,6 +68,7 @@
         fbq('track', 'PageView');
 
     </script>
+
 </head>
 
 <body class="bg-brandBg text-gray-800 pb-24">
@@ -486,9 +487,6 @@
 
         const todosSabores = [...saboresSalgados, ...saboresDoces];
 
-
-
-
         let cart = [];
         let currentTask = { max: 0, name: '', price: 0, selectedBorda: 'Sem Borda', hasBorda: true };
         let flavorSelections = {};
@@ -628,6 +626,12 @@
             goToStep(1);
             document.getElementById('selectionModal').classList.remove('hidden');
             document.getElementById('selectionModal').classList.add('flex');
+            fbq('track', 'ViewContent', {
+                content_name: name,
+                value: price,
+                currency: 'BRL',
+                content_type: 'product'
+            });
         }
 
         function renderFlavorSteps() {
@@ -712,18 +716,34 @@
             const bordaExtra = currentTask.selectedBorda !== 'Sem Borda' ? 10 : 0;
             const precoFinal = currentTask.price + bordaExtra + extraSabores;
             cart.push({ nome: `${currentTask.name} (${flavorsArray.join(' + ')})`, borda: currentTask.selectedBorda, preco: precoFinal });
+            fbq('track', 'AddToCart', {
+                content_name: currentTask.name,
+                value: precoFinal,
+                currency: 'BRL',
+                contents: flavorsArray.map(f => ({
+                    id: f,
+                    quantity: 1
+                })),
+                content_type: 'product'
+            });
             updateUI();
             closeModal('selectionModal');
             showAlert('Produto adicionado ao carrinho!', 'success');
         }
 
         function addToCart(name, price) {
+
+            cart.push({ nome: name, preco: price, borda: '' });
             fbq('track', 'AddToCart', {
                 content_name: name,
                 value: price,
-                currency: 'BRL'
+                currency: 'BRL',
+                contents: [{
+                    id: name,
+                    quantity: 1
+                }],
+                content_type: 'product'
             });
-            cart.push({ nome: name, preco: price, borda: '' });
 
             updateUI();
             showAlert('Produto adicionado ao carrinho!', 'success');
@@ -744,6 +764,7 @@
         }
 
         function showCart() {
+            fbq('track', 'ViewCart');
             const list = document.getElementById('cartList');
             const actions = document.getElementById('cartActions');
             const emptyMsg = document.getElementById('emptyCartMsg');
@@ -819,7 +840,7 @@
                 return showAlert("Por favor, preencha Nome, Celular, Endereço e Pagamento.");
             }
 
-            let msg = `*NOVO PEDIDO - BELLA MASSA*\n`;
+            let msg = `*NOVO PEDIDO - JET PIZZA DELIVERY*\n`;
             msg += `*Cliente:* ${nome}\n`;
             msg += `*Celular:* ${celular}\n`;
             msg += `*Endereço:* ${endereco}\n`;
@@ -835,12 +856,18 @@
             const total = cart.reduce((acc, item) => acc + item.preco, 0);
             msg += `\n*TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*`;
 
+            fbq('track', 'InitiateCheckout');
+
             window.open(`https://wa.me/5565993443715?text=${encodeURIComponent(msg)}`);
 
             fbq('track', 'Purchase', {
                 value: total,
                 currency: 'BRL',
-                content_name: 'Pedido Jet pizza'
+                contents: cart.map(item => ({
+                    id: item.nome,
+                    quantity: 1
+                })),
+                content_type: 'product'
             });
 
             // Após enviar, limpar carrinho e formulário
