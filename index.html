@@ -45,9 +45,17 @@
         @layer components {
             .btn-tab { @apply ml-4 mr-2 py-2 text-white font-bold transition-all border-b-2 border-transparent; }
             .btn-tab.active { @apply bg-white/20 border-black; }
-            .modal-container { @apply fixed inset-0 bg-black/70 z-[1000] flex items-center justify-center hidden p-4; }
+            .modal-container { 
+                @apply fixed inset-0 bg-black/70 z-[1000] flex items-center justify-center hidden; 
+                /* Removi o p-4 para o conteúdo encostar nas bordas da tela */
+            }
+
             .modal-content-center { 
-                @apply bg-brandBg w-full max-w-md p-6 rounded-[2rem] max-h-[90vh] overflow-y-auto shadow-2xl animate-[popIn_0.2s_ease-out];
+                @apply bg-brandBg w-full max-w-full h-full p-6 overflow-y-auto animate-[popIn_0.2s_ease-out];
+                /* 1. Troquei max-w-md por max-w-full
+                2. Adicionei h-full para ocupar a altura toda também (opcional)
+                3. Removi o rounded-[2rem] caso queira estilo tela cheia total
+                */
                 scrollbar-width: none; 
                 -ms-overflow-style: none; 
             }
@@ -55,6 +63,8 @@
             .flavor-card { @apply bg-white border-2 border-transparent p-4 rounded-xl text-center cursor-pointer shadow-sm font-semibold transition-all; }
             .flavor-card.selected { @apply border-primary bg-[#fde8e7] text-primary; }
             .modal-alert-content { @apply bg-white rounded-3xl p-8 w-full max-w-xs text-center shadow-2xl animate-[popIn_0.2s_ease-out]; }
+            .refri-opt { @apply bg-white border-2 border-transparent p-4 rounded-xl flex items-center cursor-pointer shadow-sm transition-all mb-2; }
+            .refri-opt.selected { @apply border-primary bg-[#fde8e7]; }
         }
         @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         @keyframes tabFadeIn {
@@ -65,9 +75,6 @@
         .btn-tab { transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease; }
         .btn-tab.active { transform: scale(1.02); }
     </style>
-
-
-
 </head>
 
 <body class="bg-brandBg text-gray-800 pb-24">
@@ -186,34 +193,68 @@
     <div id="selectionModal" class="modal-container" onclick="handleOutsideClick(event)">
         <div class="modal-content-center">
             <div id="step1">
+                <div class="flex justify-end mb-4">
+                    <button onclick="closeModal('selectionModal')"><i class="fas fa-times text-2xl"></i></button>
+                </div>
                 <div class="flex justify-between items-center mb-4">
                     <h2 id="modalTitle" class="text-xl font-bold text-primary italic">Sabores</h2>
                     <span id="stepBadge"
-                        class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold">PASSO 1/2</span>
+                        class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold">PASSO 1/3</span>
                 </div>
                 <div id="flavorContainer" class="space-y-2 mb-6"></div>
-                <div class="flex gap-2">
-                    <button class="flex-1 bg-gray-200 text-gray-500 py-3 rounded-xl font-bold uppercase text-xs"
-                        onclick="closeModal('selectionModal')">Sair</button>
-                    <button class="flex-1 bg-primary text-white py-3 rounded-xl font-bold uppercase text-xs shadow-md"
-                        onclick="goToStep(2)">Próximo</button>
+                <div class="flex justify-end">
+                    <div class="flex w-44 gap-2">
+                        <button class="flex-1 bg-gray-200 text-gray-500 py-3 rounded-xl font-bold uppercase text-xs"
+                            onclick="closeModal('selectionModal')">Sair</button>
+                        <button
+                            class="flex-1 bg-primary text-white py-3 rounded-xl font-bold uppercase text-xs shadow-md"
+                            onclick="goToStep(2)">Próximo</button>
+                    </div>
                 </div>
             </div>
             <div id="step2" class="hidden">
+                <div class="flex justify-end mb-4">
+                    <button onclick="closeModal('selectionModal')"><i class="fas fa-times text-2xl"></i></button>
+                </div>
                 <div class="flex justify-between items-center mb-2">
                     <h2 class="text-xl font-bold text-primary italic">Borda</h2>
                     <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold">PASSO
-                        2/2</span>
+                        2/3</span>
                 </div>
                 <p class="text-sm text-gray-500 mb-4">Borda recheada: <strong class="text-primary">+ R$ 10,00</strong>
                 </p>
                 <div id="bordaContainer" class="grid grid-cols-1 gap-2 mb-6"></div>
-                <div class="flex gap-2">
-                    <button
-                        class="flex-1 bg-white border border-gray-200 text-gray-400 py-3 rounded-xl font-bold uppercase text-xs"
-                        onclick="goToStep(1)">Voltar</button>
-                    <button class="flex-1 bg-primary text-white py-3 rounded-xl font-bold uppercase text-xs shadow-md"
-                        onclick="confirmSelection()">Concluir</button>
+                <div class="flex justify-end">
+                    <div class="flex w-44 gap-2">
+                        <button
+                            class="flex-1 bg-white border border-gray-200 text-gray-400 py-3 rounded-xl font-bold uppercase text-xs"
+                            onclick="goToStep(1)">Voltar</button>
+                        <button
+                            class="flex-1 bg-primary text-white py-3 rounded-xl font-bold uppercase text-xs shadow-md"
+                            onclick="goToStep(3)">Próximo</button>
+                    </div>
+                </div>
+            </div>
+            <div id="step3" class="hidden">
+                <div class="flex justify-end mb-4">
+                    <button onclick="closeModal('selectionModal')"><i class="fas fa-times text-2xl"></i></button>
+                </div>
+                <div class="flex justify-between items-center mb-2">
+                    <h2 class="text-xl font-bold text-primary italic">Bebida?</h2>
+                    <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold">PASSO
+                        3/3</span>
+                </div>
+                <p class="text-sm text-gray-500 mb-4">Deseja adicionar algo para beber?</p>
+                <div id="refriSelectionContainer" class="space-y-2 mb-6"></div>
+                <div class="flex justify-end">
+                    <div class="flex w-44 gap-2">
+                        <button
+                            class="flex-1 bg-white border border-gray-200 text-gray-400 py-3 rounded-xl font-bold uppercase text-xs"
+                            onclick="goToStep(2)">Voltar</button>
+                        <button
+                            class="flex-1 bg-primary text-white py-3 rounded-xl font-bold uppercase text-xs shadow-md"
+                            onclick="confirmSelection()">Concluir</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -228,13 +269,18 @@
                             class="fas fa-times text-xl"></i></button>
                 </div>
                 <div id="cartList" class="space-y-3 mb-6"></div>
-                <div id="cartActions" class="flex gap-2 hidden">
-                    <button class="flex-1 bg-gray-200 text-gray-500 py-4 rounded-2xl font-bold uppercase text-xs"
-                        onclick="closeModal('cartModal')">Comprar +</button>
-                    <button id="btnNextCart"
-                        class="flex-1 bg-primary text-white py-4 rounded-2xl font-bold uppercase text-xs shadow-lg"
-                        onclick="switchCartStep(2)">Finalizar</button>
+                <div class="flex justify-end">
+                    <div id="cartActions" class="flex w-52 gap-2 hidden">
+                        <button
+                            class="flex-1 bg-white border border-gray-200 text-gray-400 py-3 rounded-xl font-bold uppercase text-xs"
+                            onclick="closeModal('cartModal')">Comprar +</button>
+                        <button id="btnNextCart"
+                            class="flex-1 bg-primary text-white py-3 rounded-xl font-bold uppercase text-xs shadow-md"
+                            onclick="switchCartStep(2)">Finalizar</button>
+                    </div>
                 </div>
+
+
                 <div id="emptyCartMsg" class="text-center py-10 hidden">
                     <i class="fas fa-shopping-basket text-gray-300 text-5xl mb-4"></i>
                     <p class="text-gray-400 font-semibold mb-6">Seu carrinho está vazio</p>
@@ -301,23 +347,19 @@
             const texto = document.getElementById('statusText');
 
             const agora = new Date();
-            const diaSemana = agora.getDay(); // 0 (Dom) a 6 (Sáb)
+            const diaSemana = agora.getDay();
             const hora = agora.getHours();
             const minuto = agora.getMinutes();
 
-            // Mesma lógica do seu Bot: Quarta (3) a Domingo (0)
             const diasAberto = [0, 3, 4, 5, 6];
             const diaValido = diasAberto.includes(diaSemana);
             const horarioValido = (hora === 18 && minuto >= 30) || (hora > 18 && hora <= 23);
 
             if (diaValido && horarioValido) {
-                // Estágio Aberto: Verde
                 banner.className = "w-full py-2 px-6 text-center text-xs font-bold uppercase tracking-widest bg-green-600 text-white";
                 texto.innerHTML = "● Aberto Agora - Faça seu pedido!";
             } else {
-                // Estágio Fechado: Vermelho
                 banner.className = "w-full py-2 px-6 text-center text-xs font-bold uppercase tracking-widest bg-red-600 text-white";
-
                 if (!diaValido) {
                     texto.innerHTML = "🔴 Fechado - Abrimos de Quarta a Domingo";
                 } else {
@@ -326,162 +368,53 @@
             }
         }
 
-        // Chama a função ao carregar a página
         window.addEventListener('load', atualizarStatusFuncionamento);
 
         window.addEventListener('load', function () {
             const loader = document.getElementById('loading-screen');
-
-            // Pequeno delay de 500ms para garantir que a transição seja suave
             setTimeout(() => {
                 loader.style.opacity = '0';
                 setTimeout(() => {
                     loader.style.display = 'none';
-                }, 500); // Tempo da transição de fade-out
+                }, 500);
             }, 2000);
         });
+
         const listaMaisPedidas = [
-            {
-                "nome": "CALABRESA",
-                "desc": "MUSSARELA, CALABRESA E CEBOLA.",
-                "foto": "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=800&q=80",
-                "preco": 52.90
-            },
-            {
-                "nome": "BAICATU",
-                "desc": "REQUEIJÃO, PIMENTA CALABRESA E CALABRESA RALADO.",
-                "foto": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80",
-                "preco": 52.90
-            }
+            { "nome": "CALABRESA", "desc": "MUSSARELA, CALABRESA E CEBOLA.", "foto": "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=800&q=80", "preco": 52.90 },
+            { "nome": "BAICATU", "desc": "REQUEIJÃO, PIMENTA CALABRESA E CALABRESA RALADO.", "foto": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80", "preco": 52.90 }
         ];
 
         const listaPizzas = [
-            {
-                id: 1,
-                nome: "Combo 3 Pizzas",
-                desc: "Escolha até 3 sabores",
-                preco: 99.90,
-                max: 3,
-                borda: true,
-                foto: "https://img.uenicdn.com/cdn-cgi/image/width=1024,fit=crop,f=auto/image/upload/v1544801901/category/shutterstock_571691737.jpg"
-            },
-            {
-                id: 2,
-                nome: "Combo 2 Pizzas",
-                desc: "Escolha até 2 sabores",
-                preco: 79.90,
-                max: 2,
-                borda: true,
-                foto: "https://s3.us-west-2.amazonaws.com/whatsmenu/production/pizzariahamburgueriameatsvespasiano/products/494508/t2pizzajpg"
-            },
-            {
-                id: 5,
-                nome: "Pizza Grande 8 Fatias",
-                desc: "Pizza Inteira Salgada — Selecione até 2 sabores",
-                preco: 52.90,
-                max: 2,
-                borda: true,
-                foto: "https://swiftbr.vteximg.com.br/arquivos/ids/213885-636-636/618283-pizza-artesanal-calabresa_inn.jpg?v=639051131497770000"
-            }
+            { id: 1, nome: "Combo 3 Pizzas", desc: "Escolha até 3 sabores", preco: 99.90, max: 3, borda: true, foto: "https://img.uenicdn.com/cdn-cgi/image/width=1024,fit=crop,f=auto/image/upload/v1544801901/category/shutterstock_571691737.jpg" },
+            { id: 2, nome: "Combo 2 Pizzas", desc: "Escolha até 2 sabores", preco: 79.90, max: 2, borda: true, foto: "https://s3.us-west-2.amazonaws.com/whatsmenu/production/pizzariahamburgueriameatsvespasiano/products/494508/t2pizzajpg" },
+            { id: 5, nome: "Pizza Grande 8 Fatias", desc: "Pizza Inteira Salgada — Selecione até 2 sabores", preco: 52.90, max: 2, borda: true, foto: "https://swiftbr.vteximg.com.br/arquivos/ids/213885-636-636/618283-pizza-artesanal-calabresa_inn.jpg?v=639051131497770000" }
         ];
-
 
         const listaBebidas = [
-            {
-                id: 101,
-                nome: "Coca-Cola 2L",
-                desc: "Geladinha",
-                preco: 14.00,
-                foto: "https://swiftbr.vteximg.com.br/arquivos/ids/208244-636-636/622530-coca-cola-garrafa_mck.jpg?v=638862948323200000"
-            },
-            {
-                id: 102,
-                nome: "Kitubaiana 2L",
-                desc: "Maraja ",
-                preco: 12.00,
-                foto: "https://marajarefrigerantes.com.br/storage/2022/11/Kitunaina-2L.png"
-            },
-            {
-                id: 104,
-                nome: "Coca-Cola Lata",
-                desc: "350ml",
-                preco: 6.00,
-                foto: "https://swiftbr.vteximg.com.br/arquivos/ids/212288-636-636/622532-coca-cola-lata_mck.jpg?v=638995819113070000"
-            }
+            { id: 101, nome: "Coca-Cola 2L", desc: "Geladinha", preco: 14.00, foto: "https://swiftbr.vteximg.com.br/arquivos/ids/208244-636-636/622530-coca-cola-garrafa_mck.jpg?v=638862948323200000" },
+            { id: 102, nome: "Kitubaiana 2L", desc: "Maraja", preco: 12.00, foto: "https://marajarefrigerantes.com.br/storage/2022/11/Kitunaina-2L.png" },
+            { id: 104, nome: "Coca-Cola Lata", desc: "350ml", preco: 6.00, foto: "https://swiftbr.vteximg.com.br/arquivos/ids/212288-636-636/622532-coca-cola-lata_mck.jpg?v=638995819113070000" }
         ];
 
-        const listaBordas = [
-            'Sem Borda',
-            'Catupiry',
-            'Cheddar',
-            'Creme de Alho'
-        ];
-
+        const listaBordas = ['Sem Borda', 'Catupiry', 'Cheddar', 'Creme de Alho'];
 
         const saboresSalgados = [
-            {
-                "nome": "ATUM",
-                "desc": "ATUM, MUSSARELA E CEBOLA.",
-                "foto": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                "nome": "BAICATU",
-                "desc": "REQUEIJÃO, PIMENTA CALABRESA E CALABRESA RALADO.",
-                "foto": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                "nome": "CALABRESA",
-                "desc": "MUSSARELA, CALABRESA E CEBOLA.",
-                "foto": "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                "nome": "FRANGO COM CATUPIRY",
-                "desc": "MUSSARELA, CATUPIRY E TOMATE.",
-                "foto": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                "nome": "MARGUERITA",
-                "desc": "MUSSARELA, TOMATE E MANJERICÃO.",
-                "foto": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                "nome": "MUSSARELA",
-                "desc": "MUSSARELA E TOMATE.",
-                "foto": "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                "nome": "PORTUGUESA",
-                "desc": "MUSSARELA, PRESUNTO, OVO, ERVILHA, CEBOLA E TOMATE.",
-                "foto": "https://images.unsplash.com/photo-1593504049359-74330189a345?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                "nome": "QUATRO QUEIJOS",
-                "desc": "MUSSARELA, PROVOLONE, REQUEIJÃO E CHEDDAR.",
-                "foto": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80"
-            },
-            {
-                "nome": "SUPREMA",
-                "desc": "MILHO, BACON, MUSSARELA E REQUEIJÃO.",
-                "foto": "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?auto=format&fit=crop&w=800&q=80"
-            }
+            { "nome": "ATUM", "desc": "ATUM, MUSSARELA E CEBOLA.", "foto": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80" },
+            { "nome": "BAICATU", "desc": "REQUEIJÃO, PIMENTA CALABRESA E CALABRESA RALADO.", "foto": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80" },
+            { "nome": "CALABRESA", "desc": "MUSSARELA, CALABRESA E CEBOLA.", "foto": "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=800&q=80" },
+            { "nome": "FRANGO COM CATUPIRY", "desc": "MUSSARELA, CATUPIRY E TOMATE.", "foto": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80" },
+            { "nome": "MARGUERITA", "desc": "MUSSARELA, TOMATE E MANJERICÃO.", "foto": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80" },
+            { "nome": "MUSSARELA", "desc": "MUSSARELA E TOMATE.", "foto": "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&w=800&q=80" },
+            { "nome": "PORTUGUESA", "desc": "MUSSARELA, PRESUNTO, OVO, ERVILHA, CEBOLA E TOMATE.", "foto": "https://images.unsplash.com/photo-1593504049359-74330189a345?auto=format&fit=crop&w=800&q=80" },
+            { "nome": "QUATRO QUEIJOS", "desc": "MUSSARELA, PROVOLONE, REQUEIJÃO E CHEDDAR.", "foto": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80" },
+            { "nome": "SUPREMA", "desc": "MILHO, BACON, MUSSARELA E REQUEIJÃO.", "foto": "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?auto=format&fit=crop&w=800&q=80" }
         ];
 
         const saboresDoces = [
-            {
-                nome: "Pizza Chocolate",
-                desc: "Chocolate ao leite",
-                foto: "https://instagram.fcgb1-1.fna.fbcdn.net/v/t39.30808-6/435693923_18418922071048582_4461348753245569872_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&ig_cache_key=MzMzOTAyMzMyMjQ1NDk1NDc5Ng%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjE0NDB4OTU5LnNkci5DMyJ9&_nc_ohc=cCilaQPKcyEQ7kNvwGTgJpR&_nc_oc=AdnVu0_VKZ45NZ9T5UbJKmiTdLEfyo4A2BzaRlgD42F8TnD_DT6CxBhvmvUXP5jUVs-NLDxCG3XXmTDpzjr55J6E&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fcgb1-1.fna&_nc_gid=VPnOvX1AutAnU5i4H1Zi3Q&oh=00_Afv8WtgNaVRdXTVPmgbc3hCHZKF6F-kMnl-d3Yx6Bb0wAw&oe=699BA267"
-            },
-            {
-                nome: "Pizza Prestígio",
-                desc: "Chocolate com coco",
-                foto: "https://instagram.fcgb1-1.fna.fbcdn.net/v/t51.75761-15/482910789_18073110325783580_361274072064261522_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=111&ig_cache_key=MzU4MjUyMTczNzI5ODIyNjk0MA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjExNzl4MTE3OS5zZHIuQzMifQ%3D%3D&_nc_ohc=4uyhmiVuQFIQ7kNvwE7KsJu&_nc_oc=AdnQTxWvQNpp_uxahC-a61uKfHG2S3YV8-SsGPDU9IJJbysOn1pkJtUpk9L6PE5LmeVNEtBlqKLQdawGwT7spYGt&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fcgb1-1.fna&_nc_gid=qBaEi_q13EtVyBnm1Mj05g&oh=00_Aft6gMZU49uQDjNwzFjolic_oFPpqR-DzJZqc46Rdn1e6A&oe=699B7877"
-            },
-            {
-                nome: "Pizza Banana c/ Canela",
-                desc: "Banana e açúcar",
-                foto: "https://instagram.fcgb1-1.fna.fbcdn.net/v/t39.30808-6/494198820_1276102007857951_6511198047695237086_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=107&ig_cache_key=MzUwMTM2MzQwNTcxNTA0MTU3NA%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6InhwaWRzLjIwNDh4MjA0OC5zZHIuQzMifQ%3D%3D&_nc_ohc=pwSfVy8_KqQQ7kNvwH8XiQR&_nc_oc=AdlrlEq_Yd6d5YgF8LV2V_now3gh5aOsKiGg5fH0WpEfrycPI_Dkl8-QVY4CadVbgcxeEPjLmoWjS9zMW1EE6yVK&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fcgb1-1.fna&_nc_gid=7JdmDFen0NHQaPzYm11IGQ&oh=00_AfsvrM7RTTUf8FPJ16u9siDGrHioxeVGDrwtNrqlLggOfQ&oe=699B9786"
-            }
+            { nome: "Pizza Chocolate", desc: "Chocolate ao leite", foto: "https://via.placeholder.com/150" },
+            { nome: "Pizza Prestígio", desc: "Chocolate com coco", foto: "https://via.placeholder.com/150" },
+            { nome: "Pizza Banana c/ Canela", desc: "Banana e açúcar", foto: "https://via.placeholder.com/150" }
         ];
 
         const todosSabores = [...saboresSalgados, ...saboresDoces];
@@ -496,30 +429,76 @@
             `).join('');
         }
 
+        // Objeto para armazenar as quantidades das bebidas no modal
+        let bebidaSelections = {};
+
+        function renderRefriSelection() {
+            const container = document.getElementById('refriSelectionContainer');
+            if (!container) return;
+
+            // Resetamos as seleções ao abrir o modal (opcional, dependendo da sua lógica)
+            listaBebidas.forEach(b => {
+                if (!bebidaSelections[b.nome]) bebidaSelections[b.nome] = 0;
+            });
+
+            // Mapeia as bebidas com os botões de +/- identicos aos da pizza
+            container.innerHTML = listaBebidas.map(b => `
+        <div class="flavor-card flex items-center justify-between p-3 mb-2 gap-3 !text-left">
+            <img src="${b.foto}" class="w-14 h-14 rounded-xl object-cover flex-shrink-0">
+            <div class="flex-1 min-w-0">
+                <span class="font-bold text-gray-700 text-[13px] block uppercase truncate">${b.nome}</span>
+                <span class="text-[12px] text-green-600 font-bold">+ R$ ${b.preco.toFixed(2).replace('.', ',')}</span>
+            </div>
+            <div class="flex items-center gap-3 bg-gray-100 rounded-full px-2 py-1 flex-shrink-0">
+                <button onclick="changeBebidaQty('${b.nome}', -1)" class="w-7 h-7 bg-white rounded-full shadow-sm font-black text-primary active:scale-90 transition-transform">-</button>
+                <span id="qty-bebida-${b.nome}" class="font-bold text-sm min-w-[12px] text-center">${bebidaSelections[b.nome] || 0}</span>
+                <button onclick="changeBebidaQty('${b.nome}', 1)" class="w-7 h-7 bg-white rounded-full shadow-sm font-black text-primary active:scale-90 transition-transform">+</button>
+            </div>
+        </div>
+    `).join('');
+        }
+
+        // Função para mudar quantidade da bebida (igual à da pizza)
+        function changeBebidaQty(nome, delta) {
+            if (!bebidaSelections[nome]) bebidaSelections[nome] = 0;
+
+            const novaQtd = bebidaSelections[nome] + delta;
+            if (novaQtd < 0) return; // Não permite menor que zero
+
+            bebidaSelections[nome] = novaQtd;
+            document.getElementById(`qty-bebida-${nome}`).innerText = novaQtd;
+        }
+
+        function selectRefri(element, refri) {
+            document.querySelectorAll('.refri-opt').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedRefri = refri;
+        }
+
         function renderMaisPedidas() {
             const precoFmt = (p) => p.toFixed(2).replace('.', ',');
             document.getElementById('maisPedidasList').innerHTML = listaMaisPedidas.map(p => `
                 <div class="flex items-center px-4 py-3 border-b last:border-b-0">
-                    <img src="${p.foto}" alt="${p.nome.replace(/"/g, '&quot;')}" class="w-14 h-14 rounded-full object-cover mr-3 border border-gray-200 flex-shrink-0">
+                    <img src="${p.foto}" alt="${p.nome}" class="w-14 h-14 rounded-full object-cover mr-3 border border-gray-200 flex-shrink-0">
                     <div class="flex-1">
                         <h3 class="font-semibold text-[13px] text-gray-800 uppercase mb-1">${p.nome}</h3>
                         <p class="text-[11px] text-gray-500 leading-snug">${p.desc}</p>
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="font-bold text-[13px] text-gray-800 whitespace-nowrap">R$ ${precoFmt(p.preco)}</span>
-                        <button class="bg-primary text-white w-9 h-9 rounded-full text-lg flex items-center justify-center shadow-md active:scale-90 font-bold" onclick="addToCart('Pizza ${p.nome.replace(/'/g, "\\'")}', ${p.preco})">+</button>
+                        <button class="bg-primary text-white w-9 h-9 rounded-full text-lg flex items-center justify-center shadow-md font-bold" onclick="addToCart('Pizza ${p.nome}', ${p.preco})">+</button>
                     </div>
                 </div>`).join('');
         }
 
         function renderMenu() {
             renderBordas();
+            renderRefriSelection();
             renderMaisPedidas();
 
             const combos = listaPizzas.filter(p => p.id !== 5);
             const monte = listaPizzas.find(p => p.id === 5);
 
-            // Lista de COMBOS usando listaPizzas (exceto Monte sua Pizza)
             document.getElementById('combos').innerHTML = `
                 <div class="bg-white rounded-xl shadow-sm overflow-hidden">
                     <div class="flex items-center justify-between px-4 py-3 border-b">
@@ -527,71 +506,50 @@
                             <span class="text-yellow-500"><i class="fas fa-pizza-slice"></i></span>
                             <span class="font-bold text-[11px] tracking-[0.25em] text-gray-700 uppercase">COMBOS</span>
                         </div>
-                        <i class="fas fa-chevron-up text-xs text-gray-400"></i>
                     </div>
                     ${combos.map(p => `
                         <div class="flex items-center px-4 py-3 border-b last:border-b-0">
-                            <img src="${p.foto}" alt="${p.nome}" class="w-14 h-14 rounded-full object-cover mr-3 border border-gray-200 flex-shrink-0">
-                            <div class="flex-1">
-                                <h3 class="font-semibold text-[13px] text-gray-800 uppercase">${p.nome}</h3>
-                            </div>
+                            <img src="${p.foto}" class="w-14 h-14 rounded-full object-cover mr-3 border border-gray-200">
+                            <div class="flex-1 font-semibold text-[13px] text-gray-800 uppercase">${p.nome}</div>
                             <div class="flex items-center gap-2">
-                                <span class="font-bold text-[13px] text-gray-800 whitespace-nowrap">R$ ${p.preco.toFixed(2).replace('.', ',')}</span>
-                                <button class="bg-primary text-white w-9 h-9 rounded-full text-lg flex items-center justify-center shadow-md font-bold"
-                                    onclick="openSelectionModal(${p.max}, '${p.nome}', ${p.preco}, ${p.borda})">+</button>
+                                <span class="font-bold text-[13px]">R$ ${p.preco.toFixed(2).replace('.', ',')}</span>
+                                <button class="bg-primary text-white w-9 h-9 rounded-full font-bold" onclick="openSelectionModal(${p.max}, '${p.nome}', ${p.preco}, ${p.borda})">+</button>
                             </div>
                         </div>
                     `).join('')}
                 </div>
             `;
 
-            // Monte sua Pizza em aba própria
             if (monte) {
                 document.getElementById('monte-sua-pizza').innerHTML = `
                     <div class="bg-white rounded-xl shadow-sm overflow-hidden">
                         <div class="flex items-center justify-between px-4 py-3 border-b">
-                            <div class="flex items-center gap-2">
-                                <span class="text-red-500"><i class="fas fa-pizza-slice"></i></span>
-                                <span class="font-bold text-[11px] tracking-[0.25em] text-gray-700 uppercase">MONTE SUA PIZZA</span>
-                            </div>
-                            <i class="fas fa-chevron-up text-xs text-gray-400"></i>
+                            <div class="flex items-center gap-2"><span class="text-red-500"><i class="fas fa-pizza-slice"></i></span><span class="font-bold text-[11px] uppercase tracking-widest">MONTE SUA PIZZA</span></div>
                         </div>
-                        <div class="flex items-center px-4 py-3 border-b last:border-b-0">
-                            <img src="${monte.foto}" alt="${monte.nome}" class="w-14 h-14 rounded-full object-cover mr-3 border border-gray-200 flex-shrink-0">
-                            <div class="flex-1">
-                                <h3 class="font-semibold text-[13px] text-gray-800 uppercase">${monte.nome}</h3>
-                                <p class="text-[11px] text-gray-500 leading-snug">${monte.desc}</p>
-                            </div>
+                        <div class="flex items-center px-4 py-3">
+                            <img src="${monte.foto}" class="w-14 h-14 rounded-full mr-3 border">
+                            <div class="flex-1 font-semibold text-[13px] uppercase">${monte.nome}</div>
                             <div class="flex items-center gap-2">
-                                <span class="font-bold text-[13px] text-gray-800 whitespace-nowrap">R$ ${monte.preco.toFixed(2).replace('.', ',')}</span>
-                                <button class="bg-primary text-white w-9 h-9 rounded-full text-lg flex items-center justify-center shadow-md font-bold"
-                                    onclick="openSelectionModal(${monte.max}, '${monte.nome}', ${monte.preco}, ${monte.borda})">+</button>
+                                <span class="font-bold">R$ ${monte.preco.toFixed(2).replace('.', ',')}</span>
+                                <button class="bg-primary text-white w-9 h-9 rounded-full font-bold" onclick="openSelectionModal(${monte.max}, '${monte.nome}', ${monte.preco}, ${monte.borda})">+</button>
                             </div>
                         </div>
                     </div>
                 `;
             }
 
-            // Lista de BEBIDAS no mesmo estilo
             document.getElementById('bebidas').innerHTML = `
                 <div class="bg-white rounded-xl shadow-sm overflow-hidden">
                     <div class="flex items-center justify-between px-4 py-3 border-b">
-                        <div class="flex items-center gap-2">
-                            <span class="text-blue-500"><i class="fas fa-glass-cheers"></i></span>
-                            <span class="font-bold text-[11px] tracking-[0.25em] text-gray-700 uppercase">BEBIDAS</span>
-                        </div>
-                        <i class="fas fa-chevron-up text-xs text-gray-400"></i>
+                        <div class="flex items-center gap-2"><span class="text-blue-500"><i class="fas fa-glass-cheers"></i></span><span class="font-bold text-[11px] uppercase tracking-widest">BEBIDAS</span></div>
                     </div>
                     ${listaBebidas.map(b => `
                         <div class="flex items-center px-4 py-3 border-b last:border-b-0">
-                            <img src="${b.foto}" alt="${b.nome}" class="w-12 h-12 rounded-full object-cover mr-3 border border-gray-200 flex-shrink-0">
-                            <div class="flex-1">
-                                <h3 class="font-semibold text-[13px] text-gray-800 uppercase">${b.nome}</h3>
-                            </div>
+                            <img src="${b.foto}" class="w-12 h-12 rounded-full mr-3 border">
+                            <div class="flex-1 font-semibold text-[13px] uppercase">${b.nome}</div>
                             <div class="flex items-center gap-2">
-                                <span class="font-bold text-[13px] text-gray-800 whitespace-nowrap">R$ ${b.preco.toFixed(2).replace('.', ',')}</span>
-                                <button class="bg-primary text-white w-9 h-9 rounded-full text-lg flex items-center justify-center shadow-md active:scale-90 font-bold"
-                                    onclick="addToCart('${b.nome}', ${b.preco})">+</button>
+                                <span class="font-bold">R$ ${b.preco.toFixed(2).replace('.', ',')}</span>
+                                <button class="bg-primary text-white w-9 h-9 rounded-full font-bold" onclick="addToCart('${b.nome}', ${b.preco})">+</button>
                             </div>
                         </div>
                     `).join('')}
@@ -600,66 +558,39 @@
         }
 
         function openTab(id) {
-            document.querySelectorAll('.category-section').forEach(s => {
-                s.classList.add('hidden');
-                s.classList.remove('block', 'tab-enter');
-            });
+            document.querySelectorAll('.category-section').forEach(s => s.classList.add('hidden'));
             document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
-            const target = document.getElementById(id);
-            target.classList.remove('hidden');
-            target.classList.add('block', 'tab-enter');
+            document.getElementById(id).classList.remove('hidden');
             document.getElementById('btn-' + id).classList.add('active');
-            target.addEventListener('animationend', function onEnd() {
-                target.classList.remove('tab-enter');
-                target.removeEventListener('animationend', onEnd);
-            }, { once: true });
         }
 
         function openSelectionModal(max, name, price, hasBorda) {
             currentTask = { max, name, price, selectedBorda: 'Sem Borda', hasBorda };
             flavorSelections = {};
+            selectedRefri = null; // Reseta escolha anterior
             todosSabores.forEach(s => flavorSelections[s.nome] = 0);
             document.getElementById('modalTitle').innerText = name;
-            document.getElementById('stepBadge').innerText = "PASSO 1/2";
             renderFlavorSteps();
+            renderRefriSelection();
             goToStep(1);
             document.getElementById('selectionModal').classList.remove('hidden');
             document.getElementById('selectionModal').classList.add('flex');
-            fbq('track', 'ViewContent', {
-                content_name: name,
-                value: price,
-                currency: 'BRL',
-                content_type: 'product'
-            });
         }
 
         function renderFlavorSteps() {
             document.getElementById('flavorContainer').innerHTML = todosSabores.map(s => `
-                <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-gray-100 shadow-sm gap-3">
-                    <img src="${s.foto}" alt="${s.nome}" class="w-14 h-14 rounded-xl object-cover flex-shrink-0">
-                    <div class="flex-1 pr-2">
-                        <span class="font-bold text-gray-700 text-sm font-sans block">${s.nome}</span>
-                        <small class="text-[14px] text-gray-400 leading-tight block">${s.desc}</small>
-                        ${(() => {
-                    const upper = s.nome.toUpperCase();
-                    if (upper.includes('STROGONOFF')) {
-                        return '<small class="text-[11px] text-red-500 font-semibold block">+ R$ 5,00 adicional</small>';
-                    }
-                    if (upper.includes('CHURRASQUINHO')) {
-                        return '<small class="text-[11px] text-red-500 font-semibold block">+ R$ 8,00 adicional</small>';
-                    }
-                    if (upper.includes('COSTELA')) {
-                        return '<small class="text-[11px] text-red-500 font-semibold block">+ R$ 5,00 adicional</small>';
-                    }
-                    return '';
-                })()}
-                    </div>
-                    <div class="flex items-center gap-3 bg-gray-50 rounded-full px-2 py-1">
-                        <button onclick="changeFlavorQty('${s.nome}', -1)" class="w-8 h-8 bg-white rounded-full shadow text-primary font-black text-lg">-</button>
-                        <span id="qty-${s.nome}" class="font-bold min-w-[15px] text-center text-sm font-sans">0</span>
-                        <button onclick="changeFlavorQty('${s.nome}', 1)" class="w-8 h-8 bg-white rounded-full shadow text-primary font-black text-lg">+</button>
-                    </div>
-                </div>`).join('');
+        <div class="flavor-card flex items-center justify-between p-3 mb-2 gap-3 !text-left">
+            <img src="${s.foto}" class="w-14 h-14 rounded-xl object-cover flex-shrink-0">
+            <div class="flex-1 min-w-0">
+                <span class="font-bold text-gray-700 text-sm block uppercase truncate">${s.nome}</span>
+                <p class="text-[11px] text-gray-400 leading-tight line-clamp-2">${s.desc}</p>
+            </div>
+            <div class="flex items-center gap-3 bg-gray-100 rounded-full px-2 py-1 flex-shrink-0">
+                <button onclick="changeFlavorQty('${s.nome}', -1)" class="w-7 h-7 bg-white rounded-full shadow-sm font-black text-primary active:scale-90 transition-transform">-</button>
+                <span id="qty-${s.nome}" class="font-bold text-sm min-w-[12px] text-center">0</span>
+                <button onclick="changeFlavorQty('${s.nome}', 1)" class="w-7 h-7 bg-white rounded-full shadow-sm font-black text-primary active:scale-90 transition-transform">+</button>
+            </div>
+        </div>`).join('');
         }
 
         function changeFlavorQty(sabor, delta) {
@@ -668,24 +599,17 @@
             if (delta < 0 && flavorSelections[sabor] <= 0) return;
             flavorSelections[sabor] += delta;
             document.getElementById(`qty-${sabor}`).innerText = flavorSelections[sabor];
-            document.getElementById('modalSubtitle').innerText = `Selecionado: ${totalSelected + delta} de ${currentTask.max}`;
         }
 
         function goToStep(step) {
             if (step === 2) {
                 const total = Object.values(flavorSelections).reduce((a, b) => a + b, 0);
-                if (total < 1 || total > currentTask.max) {
-                    const msg = currentTask.max === 1
-                        ? 'Selecione 1 sabor.'
-                        : `Selecione de 1 a ${currentTask.max} sabores.`;
-                    return showAlert(msg);
-                }
-                document.getElementById('step1').classList.add('hidden');
-                document.getElementById('step2').classList.remove('hidden');
-            } else {
-                document.getElementById('step1').classList.remove('hidden');
-                document.getElementById('step2').classList.add('hidden');
+                if (total < 1) return showAlert('Selecione pelo menos 1 sabor.');
             }
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.add('hidden');
+            document.getElementById('step' + step).classList.remove('hidden');
         }
 
         function selectBorda(element, borda) {
@@ -695,57 +619,48 @@
         }
 
         function confirmSelection() {
+            // 1. Processa Sabores da Pizza
             const flavorsArray = [];
-            let extraSabores = 0;
             for (const [sabor, qtd] of Object.entries(flavorSelections)) {
+                if (qtd > 0) flavorsArray.push(`${qtd}x ${sabor}`);
+            }
+
+            const bordaExtra = currentTask.selectedBorda !== 'Sem Borda' ? 10 : 0;
+            const precoFinalPizza = currentTask.price + bordaExtra;
+
+            // Adiciona a Pizza ao Carrinho
+            cart.push({
+                nome: `${currentTask.name} (${flavorsArray.join(' + ')})`,
+                borda: currentTask.selectedBorda,
+                preco: precoFinalPizza
+            });
+
+            // 2. Processa Bebidas Selecionadas (Nova Lógica)
+            for (const [nome, qtd] of Object.entries(bebidaSelections)) {
                 if (qtd > 0) {
-                    flavorsArray.push(`${qtd}x ${sabor}`);
-                    const upper = sabor.toUpperCase();
-                    if (upper.includes('STROGONOFF')) {
-                        extraSabores += 5 * qtd;
-                    }
-                    if (upper.includes('CHURRASQUINHO')) {
-                        extraSabores += 8 * qtd;
-                    }
-                    if (upper.includes('COSTELA')) {
-                        extraSabores += 5 * qtd;
+                    const dadosBebida = listaBebidas.find(b => b.nome === nome);
+                    for (let i = 0; i < qtd; i++) {
+                        cart.push({
+                            nome: dadosBebida.nome,
+                            preco: dadosBebida.preco,
+                            borda: ''
+                        });
                     }
                 }
             }
-            const bordaExtra = currentTask.selectedBorda !== 'Sem Borda' ? 10 : 0;
-            const precoFinal = currentTask.price + bordaExtra + extraSabores;
-            cart.push({ nome: `${currentTask.name} (${flavorsArray.join(' + ')})`, borda: currentTask.selectedBorda, preco: precoFinal });
-            fbq('track', 'AddToCart', {
-                content_name: currentTask.name,
-                value: precoFinal,
-                currency: 'BRL',
-                contents: flavorsArray.map(f => ({
-                    id: f,
-                    quantity: 1
-                })),
-                content_type: 'product'
-            });
+
+            // Reset das seleções para o próximo uso
+            bebidaSelections = {};
+
             updateUI();
             closeModal('selectionModal');
-            showAlert('Produto adicionado ao carrinho!', 'success');
+            showAlert('Adicionado com sucesso!', 'success');
         }
 
         function addToCart(name, price) {
-
             cart.push({ nome: name, preco: price, borda: '' });
-            fbq('track', 'AddToCart', {
-                content_name: name,
-                value: price,
-                currency: 'BRL',
-                contents: [{
-                    id: name,
-                    quantity: 1
-                }],
-                content_type: 'product'
-            });
-
             updateUI();
-            showAlert('Produto adicionado ao carrinho!', 'success');
+            showAlert('Adicionado ao carrinho!', 'success');
         }
 
         function updateUI() {
@@ -753,21 +668,15 @@
             document.getElementById('totalDisplay').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
             const badge = document.getElementById('cartBadge');
             badge.innerText = cart.length;
-            cart.length > 0 ? badge.classList.remove('hidden') : badge.classList.add('hidden');
-        }
-
-        function switchCartStep(step) {
-            if (step === 2 && cart.length === 0) return;
-            document.getElementById('cartStep1').classList.toggle('hidden', step === 2);
-            document.getElementById('cartStep2').classList.toggle('hidden', step === 1);
+            badge.classList.toggle('hidden', cart.length === 0);
         }
 
         function showCart() {
-            fbq('track', 'ViewCart');
             const list = document.getElementById('cartList');
             const actions = document.getElementById('cartActions');
             const emptyMsg = document.getElementById('emptyCartMsg');
-            switchCartStep(1);
+            document.getElementById('cartStep1').classList.remove('hidden');
+            document.getElementById('cartStep2').classList.add('hidden');
             if (cart.length === 0) {
                 list.innerHTML = "";
                 actions.classList.add('hidden');
@@ -776,10 +685,10 @@
                 emptyMsg.classList.add('hidden');
                 actions.classList.remove('hidden');
                 list.innerHTML = cart.map((item, i) => `
-                <div class="flex justify-between items-center bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
-                    <div><b class="text-primary text-sm uppercase block">${item.nome}</b>
-                    ${item.borda ? `<small class="text-gray-400 font-bold text-[10px]">Borda: ${item.borda}${item.borda !== 'Sem Borda' ? ' (+ R$ 10,00)' : ''}</small>` : ''}</div>
-                    <div class="text-right ml-4"><b class="block text-primary text-sm font-sans">R$ ${item.preco.toFixed(2).replace('.', ',')}</b>
+                <div class="flex justify-between items-center bg-white p-4 rounded-2xl border mb-2">
+                    <div><b class="text-sm uppercase block">${item.nome}</b>
+                    ${item.borda ? `<small class="text-gray-400 font-bold text-[10px]">Borda: ${item.borda}</small>` : ''}</div>
+                    <div class="text-right"><b>R$ ${item.preco.toFixed(2).replace('.', ',')}</b><br>
                     <button onclick="removeItem(${i})" class="text-red-400 text-[10px] font-black uppercase">Remover</button></div>
                 </div>`).join('');
             }
@@ -787,33 +696,19 @@
             document.getElementById('cartModal').classList.add('flex');
         }
 
+        function switchCartStep(step) {
+            document.getElementById('cartStep1').classList.toggle('hidden', step === 2);
+            document.getElementById('cartStep2').classList.toggle('hidden', step === 1);
+        }
+
         function removeItem(i) { cart.splice(i, 1); updateUI(); showCart(); }
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
         function handleOutsideClick(event) { if (event.target.classList.contains('modal-container')) closeModal(event.target.id); }
-
-        function clearForm() {
-            document.getElementById('nome').value = '';
-            document.getElementById('celular').value = '';
-            document.getElementById('endereco').value = '';
-            document.getElementById('pagamento').value = '';
-            document.getElementById('obs').value = '';
-        }
 
         function showAlert(message, type = 'error') {
             document.getElementById('alertIcon').innerHTML = type === 'success' ? '✨' : '🔔';
             document.getElementById('alertTitle').innerText = type === 'success' ? 'Sucesso!' : 'Atenção';
             document.getElementById('alertMessage').innerText = message;
-            const btnPrimary = document.getElementById('alertBtnPrimary');
-            const btnCart = document.getElementById('alertBtnCart');
-            if (type === 'success') {
-                btnPrimary.innerText = "Continuar";
-                btnCart.classList.remove('hidden');
-                btnPrimary.onclick = function () { clearForm(); closeAlert(); };
-            } else {
-                btnPrimary.innerText = "Entendido";
-                btnCart.classList.add('hidden');
-                btnPrimary.onclick = closeAlert;
-            }
             document.getElementById('alertModal').classList.remove('hidden');
             document.getElementById('alertModal').classList.add('flex');
         }
@@ -824,8 +719,6 @@
             if (v.length > 11) v = v.slice(0, 11);
             if (v.length > 10) v = v.replace(/^(\d{2})(\d{5})(\d{4}).*/, "($1) $2-$3");
             else if (v.length > 6) v = v.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, "($1) $2-$3");
-            else if (v.length > 2) v = v.replace(/^(\d{2})(\d{0,5}).*/, "($1) $2");
-            else if (v.length > 0) v = v.replace(/^(\d*)/, "($1");
             input.value = v;
         }
 
@@ -834,60 +727,25 @@
             const celular = document.getElementById('celular').value.trim();
             const endereco = document.getElementById('endereco').value.trim();
             const pagamento = document.getElementById('pagamento').value;
-
-            if (!nome || !celular || !endereco || !pagamento) {
-                return showAlert("Por favor, preencha Nome, Celular, Endereço e Pagamento.");
-            }
+            if (!nome || !celular || !endereco || !pagamento) return showAlert("Preencha todos os campos.");
 
             let msg = `*NOVO PEDIDO - JET PIZZA DELIVERY*\n`;
-            msg += `*Cliente:* ${nome}\n`;
-            msg += `*Celular:* ${celular}\n`;
-            msg += `*Endereço:* ${endereco}\n`;
-            msg += `*Pagamento:* ${pagamento}\n`;
-            const obs = document.getElementById('obs').value.trim();
-            if (obs) msg += `*Obs:* ${obs}\n`;
-
-            msg += `\n*ITENS:*\n`;
+            msg += `*Cliente:* ${nome}\n*Endereço:* ${endereco}\n*Pagamento:* ${pagamento}\n\n*ITENS:*\n`;
             cart.forEach(item => {
                 msg += `• ${item.nome} ${item.borda ? '(Borda: ' + item.borda + ')' : ''}\n`;
             });
-
             const total = cart.reduce((acc, item) => acc + item.preco, 0);
             msg += `\n*TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*`;
 
-            fbq('track', 'InitiateCheckout');
-
             window.open(`https://wa.me/5565993443715?text=${encodeURIComponent(msg)}`);
-
-            fbq('track', 'Purchase', {
-                value: total,
-                currency: 'BRL',
-                contents: cart.map(item => ({
-                    id: item.nome,
-                    quantity: 1
-                })),
-                content_type: 'product'
-            });
-
-            // Após enviar, limpar carrinho e formulário
             cart = [];
             updateUI();
-            clearForm();
             closeModal('cartModal');
             showAlert('Pedido enviado com sucesso!', 'success');
         }
 
         window.onload = renderMenu;
     </script>
-    <!-- Meta Pixel Code -->
-
-
-    <noscript>
-        <img height="1" width="1" style="display:none"
-            src="https://www.facebook.com/tr?id=784923854077490&ev=PageView&noscript=1" />
-    </noscript>
-    <!-- End Meta Pixel Code -->
-
 </body>
 
 </html>
