@@ -732,7 +732,7 @@
             let msg = `*NOVO PEDIDO - JET PIZZA DELIVERY*\n`;
             msg += `*Cliente:* ${nome}\n*Endereço:* ${endereco}\n*Pagamento:* ${pagamento}\n\n*ITENS:*\n`;
             cart.forEach(item => {
-                msg += `• ${item.nome} ${item.borda ? '(Borda: ' + item.borda + ')' : ''}\n`;
+                msg += `- ${item.nome} ${item.borda ? '(Borda: ' + item.borda + ')' : ''}\n\n\n`;
             });
             const total = cart.reduce((acc, item) => acc + item.preco, 0);
             msg += `\n*TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*`;
