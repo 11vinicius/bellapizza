@@ -47,15 +47,10 @@
             .btn-tab.active { @apply bg-white/20 border-black; }
             .modal-container { 
                 @apply fixed inset-0 bg-black/70 z-[1000] flex items-center justify-center hidden; 
-                /* Removi o p-4 para o conteúdo encostar nas bordas da tela */
             }
 
             .modal-content-center { 
                 @apply bg-brandBg w-full max-w-full h-full p-6 overflow-y-auto animate-[popIn_0.2s_ease-out];
-                /* 1. Troquei max-w-md por max-w-full
-                2. Adicionei h-full para ocupar a altura toda também (opcional)
-                3. Removi o rounded-[2rem] caso queira estilo tela cheia total
-                */
                 scrollbar-width: none; 
                 -ms-overflow-style: none; 
             }
@@ -192,70 +187,51 @@
 
     <div id="selectionModal" class="modal-container" onclick="handleOutsideClick(event)">
         <div class="modal-content-center">
-            <div id="step1">
-                <div class="flex justify-end mb-4">
-                    <button onclick="closeModal('selectionModal')"><i class="fas fa-times text-2xl"></i></button>
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 id="modalTitle" class="text-2xl font-bold text-primary italic uppercase tracking-tighter">
+                        Sabores</h2>
+                    <p id="modalSubtitle" class="text-[10px] font-bold text-gray-400 tracking-widest uppercase">
+                        Personalize seu pedido</p>
                 </div>
-                <div class="flex justify-between items-center mb-4">
-                    <h2 id="modalTitle" class="text-xl font-bold text-primary italic">Sabores</h2>
-                    <span id="stepBadge"
-                        class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold">PASSO 1/3</span>
-                </div>
-                <div id="flavorContainer" class="space-y-2 mb-6"></div>
-                <div class="flex justify-end">
-                    <div class="flex w-44 gap-2">
-                        <button class="flex-1 bg-gray-200 text-gray-500 py-3 rounded-xl font-bold uppercase text-xs"
-                            onclick="closeModal('selectionModal')">Sair</button>
-                        <button
-                            class="flex-1 bg-primary text-white py-3 rounded-xl font-bold uppercase text-xs shadow-md"
-                            onclick="goToStep(2)">Próximo</button>
-                    </div>
-                </div>
+                <button onclick="closeModal('selectionModal')"><i
+                        class="fas fa-times text-2xl text-gray-400"></i></button>
             </div>
-            <div id="step2" class="hidden">
-                <div class="flex justify-end mb-4">
-                    <button onclick="closeModal('selectionModal')"><i class="fas fa-times text-2xl"></i></button>
+
+            <div class="mb-8">
+                <div class="flex items-center gap-2 mb-4">
+                    <span
+                        class="bg-primary text-white w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold">1</span>
+                    <h3 class="font-bold text-gray-700 uppercase text-xs tracking-widest">Escolha os Sabores</h3>
                 </div>
-                <div class="flex justify-between items-center mb-2">
-                    <h2 class="text-xl font-bold text-primary italic">Borda</h2>
-                    <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold">PASSO
-                        2/3</span>
-                </div>
-                <p class="text-sm text-gray-500 mb-4">Borda recheada: <strong class="text-primary">+ R$ 10,00</strong>
-                </p>
-                <div id="bordaContainer" class="grid grid-cols-1 gap-2 mb-6"></div>
-                <div class="flex justify-end">
-                    <div class="flex w-44 gap-2">
-                        <button
-                            class="flex-1 bg-white border border-gray-200 text-gray-400 py-3 rounded-xl font-bold uppercase text-xs"
-                            onclick="goToStep(1)">Voltar</button>
-                        <button
-                            class="flex-1 bg-primary text-white py-3 rounded-xl font-bold uppercase text-xs shadow-md"
-                            onclick="goToStep(3)">Próximo</button>
-                    </div>
-                </div>
+                <div id="flavorContainer" class="space-y-2"></div>
             </div>
-            <div id="step3" class="hidden">
-                <div class="flex justify-end mb-4">
-                    <button onclick="closeModal('selectionModal')"><i class="fas fa-times text-2xl"></i></button>
+
+            <div id="bordaSection" class="mb-8">
+                <div class="flex items-center gap-2 mb-4">
+                    <span
+                        class="bg-primary text-white w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold">2</span>
+                    <h3 class="font-bold text-gray-700 uppercase text-xs tracking-widest">Borda Recheada? <span
+                            class="text-green-600 ml-1 text-[9px]">+ R$ 10,00</span></h3>
                 </div>
-                <div class="flex justify-between items-center mb-2">
-                    <h2 class="text-xl font-bold text-primary italic">Bebida?</h2>
-                    <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold">PASSO
-                        3/3</span>
+                <div id="bordaContainer" class="grid grid-cols-2 gap-2"></div>
+            </div>
+
+            <div class="mb-8">
+                <div class="flex items-center gap-2 mb-4">
+                    <span
+                        class="bg-primary text-white w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold">3</span>
+                    <h3 class="font-bold text-gray-700 uppercase text-xs tracking-widest">Adicionar Bebida?</h3>
                 </div>
-                <p class="text-sm text-gray-500 mb-4">Deseja adicionar algo para beber?</p>
-                <div id="refriSelectionContainer" class="space-y-2 mb-6"></div>
-                <div class="flex justify-end">
-                    <div class="flex w-44 gap-2">
-                        <button
-                            class="flex-1 bg-white border border-gray-200 text-gray-400 py-3 rounded-xl font-bold uppercase text-xs"
-                            onclick="goToStep(2)">Voltar</button>
-                        <button
-                            class="flex-1 bg-primary text-white py-3 rounded-xl font-bold uppercase text-xs shadow-md"
-                            onclick="confirmSelection()">Concluir</button>
-                    </div>
-                </div>
+                <div id="refriSelectionContainer" class="space-y-2"></div>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-4 border-t sticky bottom-0 bg-brandBg">
+                <button class="px-8 bg-gray-200 text-gray-500 py-4 rounded-2xl font-bold uppercase text-xs"
+                    onclick="closeModal('selectionModal')">Cancelar</button>
+                <button
+                    class="px-8 bg-primary text-white py-4 rounded-2xl font-bold uppercase text-xs shadow-lg active:scale-95"
+                    onclick="confirmSelection()">Confirmar Tudo</button>
             </div>
         </div>
     </div>
@@ -408,7 +384,7 @@
             { "nome": "MUSSARELA", "desc": "MUSSARELA E TOMATE.", "foto": "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&w=800&q=80" },
             { "nome": "PORTUGUESA", "desc": "MUSSARELA, PRESUNTO, OVO, ERVILHA, CEBOLA E TOMATE.", "foto": "https://images.unsplash.com/photo-1593504049359-74330189a345?auto=format&fit=crop&w=800&q=80" },
             { "nome": "QUATRO QUEIJOS", "desc": "MUSSARELA, PROVOLONE, REQUEIJÃO E CHEDDAR.", "foto": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80" },
-            { "nome": "SUPREMA", "desc": "MILHO, BACON, MUSSARELA E REQUEIJÃO.", "foto": "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?auto=format&fit=crop&w=800&q=80" }
+            { "nome": "SUPREMA", "desc": "MILHO, BACON, MUSSARELA e REQUEIJÃO.", "foto": "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?auto=format&fit=crop&w=800&q=80" }
         ];
 
         const saboresDoces = [
@@ -422,26 +398,18 @@
         let cart = [];
         let currentTask = { max: 0, name: '', price: 0, selectedBorda: 'Sem Borda', hasBorda: true };
         let flavorSelections = {};
+        let bebidaSelections = {};
 
         function renderBordas() {
             document.getElementById('bordaContainer').innerHTML = listaBordas.map(b => `
-                <div class="flavor-card borda-opt" onclick="selectBorda(this, '${b}')">${b}</div>
+                <div class="flavor-card borda-opt ${currentTask.selectedBorda === b ? 'selected' : ''}" onclick="selectBorda(this, '${b}')">${b}</div>
             `).join('');
         }
-
-        // Objeto para armazenar as quantidades das bebidas no modal
-        let bebidaSelections = {};
 
         function renderRefriSelection() {
             const container = document.getElementById('refriSelectionContainer');
             if (!container) return;
 
-            // Resetamos as seleções ao abrir o modal (opcional, dependendo da sua lógica)
-            listaBebidas.forEach(b => {
-                if (!bebidaSelections[b.nome]) bebidaSelections[b.nome] = 0;
-            });
-
-            // Mapeia as bebidas com os botões de +/- identicos aos da pizza
             container.innerHTML = listaBebidas.map(b => `
         <div class="flavor-card flex items-center justify-between p-3 mb-2 gap-3 !text-left">
             <img src="${b.foto}" class="w-14 h-14 rounded-xl object-cover flex-shrink-0">
@@ -454,25 +422,15 @@
                 <span id="qty-bebida-${b.nome}" class="font-bold text-sm min-w-[12px] text-center">${bebidaSelections[b.nome] || 0}</span>
                 <button onclick="changeBebidaQty('${b.nome}', 1)" class="w-7 h-7 bg-white rounded-full shadow-sm font-black text-primary active:scale-90 transition-transform">+</button>
             </div>
-        </div>
-    `).join('');
+        </div>`).join('');
         }
 
-        // Função para mudar quantidade da bebida (igual à da pizza)
         function changeBebidaQty(nome, delta) {
             if (!bebidaSelections[nome]) bebidaSelections[nome] = 0;
-
             const novaQtd = bebidaSelections[nome] + delta;
-            if (novaQtd < 0) return; // Não permite menor que zero
-
+            if (novaQtd < 0) return;
             bebidaSelections[nome] = novaQtd;
             document.getElementById(`qty-bebida-${nome}`).innerText = novaQtd;
-        }
-
-        function selectRefri(element, refri) {
-            document.querySelectorAll('.refri-opt').forEach(el => el.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedRefri = refri;
         }
 
         function renderMaisPedidas() {
@@ -492,33 +450,25 @@
         }
 
         function renderMenu() {
-            renderBordas();
-            renderRefriSelection();
             renderMaisPedidas();
-
             const combos = listaPizzas.filter(p => p.id !== 5);
             const monte = listaPizzas.find(p => p.id === 5);
 
             document.getElementById('combos').innerHTML = `
                 <div class="bg-white rounded-xl shadow-sm overflow-hidden">
                     <div class="flex items-center justify-between px-4 py-3 border-b">
-                        <div class="flex items-center gap-2">
-                            <span class="text-yellow-500"><i class="fas fa-pizza-slice"></i></span>
-                            <span class="font-bold text-[11px] tracking-[0.25em] text-gray-700 uppercase">COMBOS</span>
-                        </div>
+                        <div class="flex items-center gap-2"><span class="text-yellow-500"><i class="fas fa-pizza-slice"></i></span><span class="font-bold text-[11px] uppercase tracking-widest">COMBOS</span></div>
                     </div>
                     ${combos.map(p => `
                         <div class="flex items-center px-4 py-3 border-b last:border-b-0">
                             <img src="${p.foto}" class="w-14 h-14 rounded-full object-cover mr-3 border border-gray-200">
-                            <div class="flex-1 font-semibold text-[13px] text-gray-800 uppercase">${p.nome}</div>
+                            <div class="flex-1 font-semibold text-[13px] uppercase">${p.nome}</div>
                             <div class="flex items-center gap-2">
                                 <span class="font-bold text-[13px]">R$ ${p.preco.toFixed(2).replace('.', ',')}</span>
                                 <button class="bg-primary text-white w-9 h-9 rounded-full font-bold" onclick="openSelectionModal(${p.max}, '${p.nome}', ${p.preco}, ${p.borda})">+</button>
                             </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
+                        </div>`).join('')}
+                </div>`;
 
             if (monte) {
                 document.getElementById('monte-sua-pizza').innerHTML = `
@@ -534,8 +484,7 @@
                                 <button class="bg-primary text-white w-9 h-9 rounded-full font-bold" onclick="openSelectionModal(${monte.max}, '${monte.nome}', ${monte.preco}, ${monte.borda})">+</button>
                             </div>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             }
 
             document.getElementById('bebidas').innerHTML = `
@@ -551,10 +500,8 @@
                                 <span class="font-bold">R$ ${b.preco.toFixed(2).replace('.', ',')}</span>
                                 <button class="bg-primary text-white w-9 h-9 rounded-full font-bold" onclick="addToCart('${b.nome}', ${b.preco})">+</button>
                             </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
+                        </div>`).join('')}
+                </div>`;
         }
 
         function openTab(id) {
@@ -567,12 +514,17 @@
         function openSelectionModal(max, name, price, hasBorda) {
             currentTask = { max, name, price, selectedBorda: 'Sem Borda', hasBorda };
             flavorSelections = {};
-            selectedRefri = null; // Reseta escolha anterior
+            bebidaSelections = {};
             todosSabores.forEach(s => flavorSelections[s.nome] = 0);
+
             document.getElementById('modalTitle').innerText = name;
+            document.getElementById('modalSubtitle').innerText = `Selecione até ${max} sabores`;
+            document.getElementById('bordaSection').classList.toggle('hidden', !hasBorda);
+
             renderFlavorSteps();
+            renderBordas();
             renderRefriSelection();
-            goToStep(1);
+
             document.getElementById('selectionModal').classList.remove('hidden');
             document.getElementById('selectionModal').classList.add('flex');
         }
@@ -601,17 +553,6 @@
             document.getElementById(`qty-${sabor}`).innerText = flavorSelections[sabor];
         }
 
-        function goToStep(step) {
-            if (step === 2) {
-                const total = Object.values(flavorSelections).reduce((a, b) => a + b, 0);
-                if (total < 1) return showAlert('Selecione pelo menos 1 sabor.');
-            }
-            document.getElementById('step1').classList.add('hidden');
-            document.getElementById('step2').classList.add('hidden');
-            document.getElementById('step3').classList.add('hidden');
-            document.getElementById('step' + step).classList.remove('hidden');
-        }
-
         function selectBorda(element, borda) {
             document.querySelectorAll('.borda-opt').forEach(el => el.classList.remove('selected'));
             element.classList.add('selected');
@@ -619,38 +560,30 @@
         }
 
         function confirmSelection() {
-            // 1. Processa Sabores da Pizza
             const flavorsArray = [];
             for (const [sabor, qtd] of Object.entries(flavorSelections)) {
                 if (qtd > 0) flavorsArray.push(`${qtd}x ${sabor}`);
             }
 
+            if (flavorsArray.length === 0) return showAlert('Selecione pelo menos 1 sabor.');
+
             const bordaExtra = currentTask.selectedBorda !== 'Sem Borda' ? 10 : 0;
             const precoFinalPizza = currentTask.price + bordaExtra;
 
-            // Adiciona a Pizza ao Carrinho
             cart.push({
                 nome: `${currentTask.name} (${flavorsArray.join(' + ')})`,
                 borda: currentTask.selectedBorda,
                 preco: precoFinalPizza
             });
 
-            // 2. Processa Bebidas Selecionadas (Nova Lógica)
             for (const [nome, qtd] of Object.entries(bebidaSelections)) {
                 if (qtd > 0) {
                     const dadosBebida = listaBebidas.find(b => b.nome === nome);
                     for (let i = 0; i < qtd; i++) {
-                        cart.push({
-                            nome: dadosBebida.nome,
-                            preco: dadosBebida.preco,
-                            borda: ''
-                        });
+                        cart.push({ nome: dadosBebida.nome, preco: dadosBebida.preco, borda: '' });
                     }
                 }
             }
-
-            // Reset das seleções para o próximo uso
-            bebidaSelections = {};
 
             updateUI();
             closeModal('selectionModal');
@@ -732,7 +665,7 @@
             let msg = `*NOVO PEDIDO - JET PIZZA DELIVERY*\n`;
             msg += `*Cliente:* ${nome}\n*Endereço:* ${endereco}\n*Pagamento:* ${pagamento}\n\n*ITENS:*\n`;
             cart.forEach(item => {
-                msg += `- ${item.nome} ${item.borda ? '(Borda: ' + item.borda + ')' : ''}\n\n\n`;
+                msg += `- ${item.nome} ${item.borda ? '(Borda: ' + item.borda + ')' : ''}\n\n`;
             });
             const total = cart.reduce((acc, item) => acc + item.preco, 0);
             msg += `\n*TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*`;
