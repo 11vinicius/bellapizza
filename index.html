@@ -90,7 +90,7 @@
         </div>
     </div>
     <header class="bg-white h-[100px] flex justify-between items-center shadow-md px-6 ">
-        <img src="logo2.png" alt="Jet Pizza Delivery" class="w-[150px] rounded-md">
+        <img src="logo1.png" alt="Jet Pizza Delivery" class="w-[150px] rounded-md">
         <div class=" relative cursor-pointer" onclick="showCart()">
             <i class="fas fa-shopping-cart text-primary text-2xl"></i>
             <span id="cartBadge"
@@ -306,14 +306,14 @@
     <div id="loading-screen"
         class="fixed inset-0 z-[9999] bg-primary/40 backdrop-blur-sm flex flex-col items-center justify-center transition-opacity duration-500">
         <div class="relative w-[200px] h-[200px]">
-            <div class="w-full h-full border-4 border-white/20 border-t-white rounded-full animate-spin">
+            <div class="w-full h-full border-8 border-red-500/20 border-t-red-500 rounded-full animate-spin">
             </div>
 
-            <img src="loading.png" class="absolute inset-0 m-auto w-[150px] h-[150px] object-contain" />
+            <img src="logo1.png" class="absolute inset-0 m-auto w-[160px] h-[160px] object-contain" />
         </div>
-        <h2 class="text-white mt-6 font-bold tracking-[0.3em] uppercase italic text-sm animate-pulse">
+        <!-- <h2 class="text-white mt-6 font-bold tracking-[0.3em] uppercase italic text-sm animate-pulse">
             Preparando seu Pedido...
-        </h2>
+        </h2> -->
     </div>
 
     <script>
@@ -628,6 +628,11 @@
                 </div>`).join('');
             }
             document.getElementById('cartModal').classList.remove('hidden');
+            fbq('track', 'ViewCart', {
+                value: total,
+                currency: 'BRL',
+                content_type: 'product'
+            });
             document.getElementById('cartModal').classList.add('flex');
         }
 
