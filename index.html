@@ -586,6 +586,7 @@
             }
 
             updateUI();
+            fbq('track', 'AddToCart', { content_name: currentTask.name, value: totalPizza, currency: 'BRL' });
             closeModal('selectionModal');
             showAlert('Adicionado com sucesso!', 'success');
         }
@@ -593,6 +594,7 @@
         function addToCart(name, price) {
             cart.push({ nome: name, preco: price, borda: '' });
             updateUI();
+            fbq('track', 'AddToCart', { content_name: name, value: price, currency: 'BRL' });
             showAlert('Adicionado ao carrinho!', 'success');
         }
 
@@ -632,6 +634,7 @@
         function switchCartStep(step) {
             document.getElementById('cartStep1').classList.toggle('hidden', step === 2);
             document.getElementById('cartStep2').classList.toggle('hidden', step === 1);
+            fbq('track', 'InitiateCheckout', { value: total, currency: 'BRL' });
         }
 
         function removeItem(i) { cart.splice(i, 1); updateUI(); showCart(); }
@@ -673,6 +676,12 @@
             window.open(`https://wa.me/5565993443715?text=${encodeURIComponent(msg)}`);
             cart = [];
             updateUI();
+            fbq('track', 'Purchase', {
+                value: total,
+                currency: 'BRL',
+                content_name: 'Pedido Jet Pizza',
+                num_items: cart.length
+            });
             closeModal('cartModal');
             showAlert('Pedido enviado com sucesso!', 'success');
         }
