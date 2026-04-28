@@ -211,12 +211,12 @@
                 <div id="refriSelectionContainer" class="space-y-2"></div>
             </div>
 
-            <div class="flex justify-end gap-3 pt-4 border-t sticky bottom-0 bg-brandBg">
-                <button class="px-8 bg-gray-200 text-gray-500 py-4 rounded-2xl font-bold uppercase text-xs"
+            <div class="flex justify-end bg-white p-4 border-t bottom-0 rounded-t-2xl">
+                <button class="px-8 bg-gray-200 text-gray-500 py-4 mx-4 rounded-2xl font-bold uppercase text-xs"
                     onclick="closeModal('selectionModal')">Cancelar</button>
                 <button
                     class="px-8 bg-primary text-white py-4 rounded-2xl font-bold uppercase text-xs shadow-lg active:scale-95"
-                    onclick="confirmSelection()">Confirmar Tudo</button>
+                    onclick="confirmSelection()">Confirmar Pedido</button>
             </div>
         </div>
     </div>
@@ -304,20 +304,20 @@
         ];
 
         const listaBebidas = [
-            { id: 101, nome: "Coca-Cola 2L", preco: 14.00, foto: "https://swiftbr.vteximg.com.br/arquivos/ids/208244-636-636/622530-coca-cola-garrafa_mck.jpg?v=638862948323200000" },
-            { id: 102, nome: "Kitubaiana 2L", preco: 12.00, foto: "https://marajarefrigerantes.com.br/storage/2022/11/Kitunaina-2L.png" },
-            { id: 104, nome: "Coca-Cola Lata", preco: 6.00, foto: "https://swiftbr.vteximg.com.br/arquivos/ids/212288-636-636/622532-coca-cola-lata_mck.jpg?v=638995819113070000" }
+            { id: 101, nome: "Coca-Cola 2L", preco: 14.00, foto: "./pizzas/cocacola.jpg" },
+            { id: 102, nome: "Kitubaiana 2L", preco: 12.00, foto: "./pizzas/kitubaina.jpg" },
+            { id: 104, nome: "Coca-Cola Lata", preco: 6.00, foto: "./pizzas/cocalata.jpg" }
         ];
 
         const saboresSalgados = [
             { "nome": "ATUM", "desc": "ATUM, MUSSARELA E CEBOLA.", "foto": "./pizzas/atum.jpg" },
             { "nome": "BAICATU", "desc": "REQUEIJÃO, PIMENTA CALABRESA E CALABRESA RALADO.", "foto": "./pizzas/baiacatu.jpg" },
-            { "nome": "CALABRESA", "desc": "", "foto": "./pizzas/calabresa.jpg" },
-            { "nome": "FRANGO COM CATUPIRY", "desc": "MUSSARELA, CATUPIRY E TOMATE.", "foto": "./pizzas/frangocomcatupiry.jpg" },
-            { "nome": "MARGUERITA", "desc": "MUSSARELA, TOMATE E MANJERICÃO.", "foto": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80" },
-            { "nome": "MUSSARELA", "desc": "MUSSARELA E TOMATE.", "foto": "./pussarela.jpg" },
+            { "nome": "CALABRESA", "desc": "MUSSARELA, CALABRESA, CEBOLA", "foto": "./pizzas/calabresa.jpg" },
+            { "nome": "FRANGO COM CATUPIRY", "desc": "MUSSARELA, FRANGO DESFIADO, CATUPIRY E TOMATE.", "foto": "./pizzas/frango.jpg" },
+            { "nome": "MARGUERITA", "desc": "MUSSARELA, TOMATE E MANJERICÃO.", "foto": "./pizzas/marguerita.jpg" },
+            { "nome": "MUSSARELA", "desc": "MUSSARELA e TOMATE.", "foto": "./pizzas/mussarela.jpg" },
             { "nome": "PORTUGUESA", "desc": "MUSSARELA, PRESUNTO, OVO, ERVILHA, CEBOLA E TOMATE.", "foto": "./pizzas/portuguesa.jpg" },
-            { "nome": "QUATRO QUEIJOS", "desc": "MUSSARELA, PROVOLONE, REQUEIJÃO E CHEDDAR.", "foto": "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80" },
+            { "nome": "QUATRO QUEIJOS", "desc": "MUSSARELA, PROVOLONE, REQUEIJÃO E CHEDDAR.", "foto": "./pizzas/4queijo.jpg" },
             { "nome": "SUPREMA", "desc": "MILHO, BACON, MUSSARELA e REQUEIJÃO.", "foto": "./pizzas/suprema.jpg" }
         ];
 
@@ -379,6 +379,18 @@
             document.getElementById('modalTitle').innerText = name;
             document.getElementById('modalSubtitle').innerText = `Selecione até ${max} sabores`;
             document.getElementById('bordaSection').classList.toggle('hidden', !hasBorda);
+
+            // --- DISPARO DO PIXEL: VIEWCONTENT ---
+            if (typeof fbq === 'function') {
+                fbq('track', 'ViewContent', {
+                    content_name: name,
+                    content_type: 'product',
+                    value: price,
+                    currency: 'BRL'
+                });
+            }
+            // ------------------------------------
+
             renderFlavorSteps();
             renderBordas();
             renderRefriSelection();
@@ -477,6 +489,16 @@
         }
 
         function addToCart(name, price) {
+            // --- DISPARO DO PIXEL: VIEWCONTENT ---
+            if (typeof fbq === 'function') {
+                fbq('track', 'ViewContent', {
+                    content_name: name,
+                    content_type: 'product',
+                    value: price,
+                    currency: 'BRL'
+                });
+            }
+            // ------------------------------------
             cart.push({ nome: name, preco: price, borda: '' });
             if (typeof fbq === 'function') fbq('track', 'AddToCart', { content_name: name, value: price, currency: 'BRL' });
             updateUI();
@@ -549,18 +571,43 @@
             const celular = document.getElementById('celular').value.trim();
             const endereco = document.getElementById('endereco').value.trim();
             const pagamento = document.getElementById('pagamento').value;
+
             if (!nome || !celular || !endereco || !pagamento) return showAlert("Preencha todos os campos.");
 
             const total = cart.reduce((acc, item) => acc + item.preco, 0);
-            if (typeof fbq === 'function') fbq('track', 'Purchase', { value: total, currency: 'BRL', content_name: 'Pedido Jet Pizza' });
+
+            // --- DISPARO DO PIXEL (AJUSTADO) ---
+            if (typeof fbq === 'function') {
+                fbq('track', 'Purchase', {
+                    value: total,
+                    currency: 'BRL',
+                    content_name: 'Pedido Jet Pizza',
+                    content_type: 'product',
+                    contents: cart.map(item => ({
+                        id: item.nome,
+                        quantity: 1,
+                        item_price: item.preco
+                    }))
+                });
+            }
+            // ------------------------------------
 
             let msg = `*NOVO PEDIDO - JET PIZZA DELIVERY*\n`;
             msg += `*Cliente:* ${nome}\n*Endereço:* ${endereco}\n*Pagamento:* ${pagamento}\n\n*ITENS:*\n`;
-            cart.forEach(item => { msg += `- ${item.nome} ${item.borda ? '(Borda: ' + item.borda + ')' : ''}\n\n`; });
+
+            cart.forEach(item => {
+                msg += `- ${item.nome} ${item.borda ? '(Borda: ' + item.borda + ')' : ''}\n`;
+            });
+
             msg += `\n*TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*`;
 
+            // Redirecionamento
             window.open(`https://wa.me/5565993443715?text=${encodeURIComponent(msg)}`);
-            cart = []; updateUI(); closeModal('cartModal');
+
+            // Limpeza e UI
+            cart = [];
+            updateUI();
+            closeModal('cartModal');
             showAlert('Pedido enviado com sucesso!', 'success');
         }
 
