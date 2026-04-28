@@ -260,13 +260,20 @@
                         oninput="maskCelular(this)" maxlength="15">
                     <input type="text" id="endereco" placeholder="Endereço Completo"
                         class="w-full p-4 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm">
-                    <select id="pagamento"
+
+                    <select id="pagamento" onchange="toggleTroco()"
                         class="w-full p-4 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm">
                         <option value="" disabled selected>Forma de Pagamento</option>
                         <option value="Pix">Pix</option>
                         <option value="Cartão">Cartão</option>
                         <option value="Dinheiro">Dinheiro</option>
                     </select>
+
+                    <div id="trocoContainer" class="hidden">
+                        <input type="number" name="" id="troco" placeholder="Troco para quanto?"
+                            class="w-full p-4 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm">
+                    </div>
+
                     <textarea id="obs" placeholder="Alguma observação?"
                         class="w-full p-4 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm h-20"></textarea>
                 </div>
@@ -334,6 +341,17 @@
         let currentTask = { max: 0, name: '', price: 0, selectedBorda: 'Sem Borda', hasBorda: true };
         let flavorSelections = {};
         let bebidaSelections = {};
+
+        function toggleTroco() {
+            const pagamento = document.getElementById('pagamento').value;
+            const trocoContainer = document.getElementById('trocoContainer');
+            if (pagamento === 'Dinheiro') {
+                trocoContainer.classList.remove('hidden');
+            } else {
+                trocoContainer.classList.add('hidden');
+                document.getElementById('troco').value = ''; // Limpa o valor se mudar de ideia
+            }
+        }
 
         // --- FUNÇÕES DE STATUS E UI ---
         function atualizarStatusFuncionamento() {
@@ -571,40 +589,43 @@
             const celular = document.getElementById('celular').value.trim();
             const endereco = document.getElementById('endereco').value.trim();
             const pagamento = document.getElementById('pagamento').value;
+            const troco = document.getElementById('troco').value.trim(); // Captura o troco
+            const obs = document.getElementById('obs').value.trim();
 
-            if (!nome || !celular || !endereco || !pagamento) return showAlert("Preencha todos os campos.");
+            if (!nome || !celular || !endereco || !pagamento) return showAlert("Preencha todos os campos obrigatórios.");
 
             const total = cart.reduce((acc, item) => acc + item.preco, 0);
 
-            // --- DISPARO DO PIXEL (AJUSTADO) ---
+            // Pixel de Compra (opcional, mantendo seu padrão)
             if (typeof fbq === 'function') {
-                fbq('track', 'Purchase', {
-                    value: total,
-                    currency: 'BRL',
-                    content_name: 'Pedido Jet Pizza',
-                    content_type: 'product',
-                    contents: cart.map(item => ({
-                        id: item.nome,
-                        quantity: 1,
-                        item_price: item.preco
-                    }))
-                });
+                fbq('track', 'Purchase', { value: total, currency: 'BRL' });
             }
-            // ------------------------------------
 
             let msg = `*NOVO PEDIDO - JET PIZZA DELIVERY*\n`;
-            msg += `*Cliente:* ${nome}\n*Endereço:* ${endereco}\n*Pagamento:* ${pagamento}\n\n*ITENS:*\n`;
+            msg += `----------------------------------\n`;
+            msg += `*Cliente:* ${nome}\n`;
+            msg += `*WhatsApp:* ${celular}\n`;
+            msg += `*Endereço:* ${endereco}\n`;
+            msg += `*Pagamento:* ${pagamento}\n`;
 
+            // LÓGICA DO TROCO: Adiciona à mensagem se for dinheiro e houver valor
+            if (pagamento === 'Dinheiro' && troco) {
+                msg += `*Troco para:* R$ ${parseFloat(troco).toFixed(2).replace('.', ',')}\n`;
+            }
+
+            if (obs) msg += `*Observação:* ${obs}\n`;
+
+            msg += `\n*ITENS:*\n`;
             cart.forEach(item => {
                 msg += `- ${item.nome} ${item.borda ? '(Borda: ' + item.borda + ')' : ''}\n`;
             });
 
             msg += `\n*TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*`;
 
-            // Redirecionamento
+            // Abre o link do WhatsApp
             window.open(`https://wa.me/5565993443715?text=${encodeURIComponent(msg)}`);
 
-            // Limpeza e UI
+            // Limpa o carrinho e fecha o modal após o envio
             cart = [];
             updateUI();
             closeModal('cartModal');
