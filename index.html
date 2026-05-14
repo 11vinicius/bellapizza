@@ -258,8 +258,13 @@
                     <input type="tel" id="celular" placeholder="Seu Celular"
                         class="w-full p-4 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm"
                         oninput="maskCelular(this)" maxlength="15">
-                    <input type="text" id="endereco" placeholder="Endereço Completo"
-                        class="w-full p-4 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm">
+                    <div class="relative" onclick="getPosicao()">
+                        <input type="text" id="endereco" placeholder="Clique aqui para preencher o endereço" readonly
+                            class="w-full p-4 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm cursor-pointer">
+                        <div class="absolute right-4 top-1/2 -translate-y-1/2 text-primary pointer-events-none">
+                            <i class="fas fa-location-dot"></i>
+                        </div>
+                    </div>
 
                     <select id="pagamento" onchange="toggleTroco()"
                         class="w-full p-4 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm">
@@ -351,6 +356,55 @@
                 trocoContainer.classList.add('hidden');
                 document.getElementById('troco').value = ''; // Limpa o valor se mudar de ideia
             }
+        }
+
+        function getPosicao() {
+            if (!navigator.geolocation) {
+                return showAlert("Seu navegador não suporta geolocalização.");
+            }
+
+            // Mostra um aviso visual de que está carregando
+            const btn = event.currentTarget;
+            const icon = btn.querySelector('i');
+            icon.className = "fas fa-spinner animate-spin";
+
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+
+                    try {
+                        // Usando a API gratuita do OpenStreetMap (Nominatim)
+                        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                        const data = await response.json();
+
+                        if (data.display_name) {
+                            // Preenche o campo de endereço
+                            document.getElementById('endereco').value = data.display_name;
+                            // showAlert("Localização encontrada!", "success");
+                        }
+                    } catch (error) {
+                        // showAlert("Erro ao converter coordenadas em endereço.");
+                    } finally {
+                        icon.className = "fas fa-location-dot";
+                    }
+                },
+                (error) => {
+                    icon.className = "fas fa-location-dot";
+                    switch (error.code) {
+                        case error.PERMISSION_DENIED:
+                            showAlert("Você precisa permitir o acesso à localização.");
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            showAlert("Informações de localização indisponíveis.");
+                            break;
+                        case error.TIMEOUT:
+                            showAlert("Tempo limite esgotado ao buscar localização.");
+                            break;
+                    }
+                },
+                { enableHighAccuracy: true, timeout: 5000 }
+            );
         }
 
         // --- FUNÇÕES DE STATUS E UI ---
