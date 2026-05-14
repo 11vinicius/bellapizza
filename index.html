@@ -359,14 +359,18 @@
         }
 
         function getPosicao() {
+            const campoEndereco = document.getElementById('endereco');
+
+            // Se o navegador não suportar, libera o campo imediatamente
             if (!navigator.geolocation) {
-                return showAlert("Seu navegador não suporta geolocalização.");
+                campoEndereco.removeAttribute('readonly');
+                campoEndereco.placeholder = "Digite seu endereço completo";
+                return showAlert("Seu navegador não suporta geolocalização. Por favor, digite o endereço.");
             }
 
-            // Mostra um aviso visual de que está carregando
-            const btn = event.currentTarget;
-            const icon = btn.querySelector('i');
-            icon.className = "fas fa-spinner animate-spin";
+            // Feedback visual de carregamento
+            campoEndereco.value = "Buscando localização...";
+            campoEndereco.classList.add('animate-pulse');
 
             navigator.geolocation.getCurrentPosition(
                 async (position) => {
@@ -374,37 +378,41 @@
                     const lon = position.coords.longitude;
 
                     try {
-                        // Usando a API gratuita do OpenStreetMap (Nominatim)
                         const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
                         const data = await response.json();
 
                         if (data.display_name) {
-                            // Preenche o campo de endereço
-                            document.getElementById('endereco').value = data.display_name;
-                            // showAlert("Localização encontrada!", "success");
+                            campoEndereco.value = data.display_name;
+                            // IMPORTANTE: Remove o readonly para o cliente ajustar o número/casa
+                            campoEndereco.removeAttribute('readonly');
+                            campoEndereco.classList.remove('animate-pulse');
+                            campoEndereco.focus();
                         }
                     } catch (error) {
-                        // showAlert("Erro ao converter coordenadas em endereço.");
-                    } finally {
-                        icon.className = "fas fa-location-dot";
+                        // Em caso de erro na API de mapas, libera para digitação
+                        liberarCampoParaDigitacao("Erro ao converter coordenadas. Digite manualmente.");
                     }
                 },
                 (error) => {
-                    icon.className = "fas fa-location-dot";
-                    switch (error.code) {
-                        case error.PERMISSION_DENIED:
-                            showAlert("Você precisa permitir o acesso à localização.");
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            showAlert("Informações de localização indisponíveis.");
-                            break;
-                        case error.TIMEOUT:
-                            showAlert("Tempo limite esgotado ao buscar localização.");
-                            break;
+                    // Em caso de erro de permissão ou sinal, libera para digitação
+                    let msg = "Não foi possível obter localização. Digite seu endereço.";
+                    if (error.code === error.PERMISSION_DENIED) {
+                        msg = "Localização negada. Por favor, digite o endereço.";
                     }
+                    liberarCampoParaDigitacao(msg);
                 },
-                { enableHighAccuracy: true, timeout: 5000 }
+                { enableHighAccuracy: true, timeout: 7000 }
             );
+
+            // Função auxiliar interna para resetar o campo em caso de falha
+            function liberarCampoParaDigitacao(mensagem) {
+                campoEndereco.value = "";
+                campoEndereco.placeholder = "Digite seu endereço completo";
+                campoEndereco.removeAttribute('readonly');
+                campoEndereco.classList.remove('animate-pulse');
+                campoEndereco.focus();
+                showAlert(mensagem);
+            }
         }
 
         // --- FUNÇÕES DE STATUS E UI ---
