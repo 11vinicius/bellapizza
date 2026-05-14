@@ -258,11 +258,12 @@
                     <input type="tel" id="celular" placeholder="Seu Celular"
                         class="w-full p-4 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm"
                         oninput="maskCelular(this)" maxlength="15">
-                    <div class="relative">
+                    <div class="relative w-full">
                         <input type="text" id="endereco" placeholder="Digite seu endereço completo"
-                            class="w-full p-4 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm pr-12">
+                            class="w-full p-4 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm pr-12 relative z-10">
+
                         <button onclick="getPosicao()" type="button"
-                            class="absolute right-2 top-1/2 -translate-y-1/2 text-primary p-2 hover:bg-gray-200 rounded-full transition-colors"
+                            class="absolute right-0 top-0 h-full w-12 flex items-center justify-center text-primary z-20 active:bg-gray-200 rounded-r-xl transition-colors"
                             title="Pegar localização atual">
                             <i class="fas fa-location-dot" id="locIcon"></i>
                         </button>
