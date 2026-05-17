@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
@@ -42,8 +42,8 @@
     </script>
     <style type="text/tailwindcss">
         @layer components {
-            .btn-tab { @apply ml-4 mr-2 py-2 text-white font-bold transition-all border-b-2 border-transparent; }
-            .btn-tab.active { @apply bg-white/20 border-black; }
+            .btn-tab { @apply ml-4 mr-2 py-2 text-black font-bold transition-all border-b-2 border-transparent uppercase text-[14px] tracking-tighter whitespace-nowrap shrink-0 cursor-pointer; }
+            .btn-tab.active { @apply border-primary; }
             .modal-container { 
                 @apply fixed inset-0 bg-black/70 z-[1000] flex items-center justify-center hidden; 
             }
@@ -61,12 +61,7 @@
             .refri-opt.selected { @apply border-primary bg-[#fde8e7]; }
         }
         @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        @keyframes tabFadeIn {
-            from { opacity: 0; transform: translateY(14px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .category-section.tab-enter { animation: tabFadeIn 0.35s ease-out forwards; }
-        .btn-tab { transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease; }
+        .btn-tab { transition: border-color 0.2s ease, transform 0.15s ease; }
         .btn-tab.active { transform: scale(1.02); }
     </style>
 </head>
@@ -100,21 +95,13 @@
 
     <nav
         class="tabs flex sticky top-0 z-50 bg-white border-t-2 border-gray-200 shadow-lg font-sans overflow-x-auto whitespace-nowrap">
-        <button id="btn-mais-pedidas"
-            class="btn-tab text-black active uppercase text-[14px] tracking-tighter whitespace-nowrap shrink-0"
-            onclick="openTab('mais-pedidas')">Mais Pedidas</button>
-        <button id="btn-combos"
-            class="btn-tab text-black uppercase text-[14px] tracking-tighter whitespace-nowrap shrink-0"
-            onclick="openTab('combos')">Combos</button>
-        <button id="btn-monte-sua-pizza"
-            class="btn-tab text-black uppercase text-[14px] tracking-tighter whitespace-nowrap shrink-0"
-            onclick="openTab('monte-sua-pizza')">Monte sua Pizza</button>
-        <button id="btn-bebidas"
-            class="btn-tab uppercase text-black text-[14px] tracking-tighter whitespace-nowrap shrink-0"
-            onclick="openTab('bebidas')">Bebidas</button>
-        <button id="btn-info"
-            class="btn-tab uppercase text-black text-[14px] tracking-tighter whitespace-nowrap shrink-0"
-            onclick="openTab('info')">Mais Informações</button>
+        <a onclick="scrollToIndexAndCenter('mais-pedidas')" id="btn-mais-pedidas" class="btn-tab active">Mais
+            Pedidas</a>
+        <a onclick="scrollToIndexAndCenter('combos')" id="btn-combos" class="btn-tab">Combos</a>
+        <a onclick="scrollToIndexAndCenter('monte-sua-pizza')" id="btn-monte-sua-pizza" class="btn-tab">Monte sua
+            Pizza</a>
+        <a onclick="scrollToIndexAndCenter('bebidas')" id="btn-bebidas" class="btn-tab">Bebidas</a>
+        <a onclick="scrollToIndexAndCenter('info')" id="btn-info" class="btn-tab">Mais Informações</a>
     </nav>
 
     <div id="statusBanner"
@@ -122,8 +109,9 @@
         <span id="statusText">Verificando...</span>
     </div>
 
-    <main class="container max-w-xl mx-auto p-4">
-        <div id="mais-pedidas" class="category-section block space-y-4">
+    <main class="container max-w-xl mx-auto p-4 space-y-8 pb-[60vh]">
+
+        <div id="mais-pedidas" class="category-section">
             <div class="bg-white rounded-xl shadow-sm overflow-hidden">
                 <div class="flex items-center justify-between px-4 py-3 border-b">
                     <div class="flex items-center gap-2">
@@ -136,11 +124,13 @@
             </div>
         </div>
 
-        <div id="combos" class="category-section hidden space-y-4"></div>
-        <div id="monte-sua-pizza" class="category-section hidden space-y-4"></div>
-        <div id="bebidas" class="category-section hidden space-y-4"></div>
+        <div id="combos" class="category-section"></div>
 
-        <div id="info" class="category-section hidden space-y-4">
+        <div id="monte-sua-pizza" class="category-section"></div>
+
+        <div id="bebidas" class="category-section"></div>
+
+        <div id="info" class="category-section">
             <div class="bg-white rounded-2xl shadow-sm p-5 space-y-4">
                 <div class="flex items-start gap-3">
                     <div
@@ -261,7 +251,6 @@
                     <div class="relative w-full">
                         <input type="text" id="endereco" placeholder="Digite seu endereço completo"
                             class="w-full p-4 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm pr-12 relative z-10">
-
                         <button onclick="getPosicao()" type="button"
                             class="absolute right-0 top-0 h-full w-12 flex items-center justify-center text-primary z-20 active:bg-gray-200 rounded-r-xl transition-colors"
                             title="Pegar localização atual">
@@ -278,18 +267,20 @@
                     </select>
 
                     <div id="trocoContainer" class="hidden">
-                        <input type="number" name="" id="troco" placeholder="Troco para quanto?"
+                        <input type="number" id="troco" placeholder="Troco para quanto?"
                             class="w-full p-4 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm">
                     </div>
 
                     <textarea id="obs" placeholder="Alguma observação?"
                         class="w-full p-4 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm h-20"></textarea>
                 </div>
-                <button
-                    class="w-full bg-green-600 text-white py-4 rounded-2xl font-bold uppercase flex items-center justify-center gap-3 shadow-lg active:scale-95"
-                    onclick="sendWhatsApp()">
-                    <i class="fab fa-whatsapp text-xl"></i> Enviar Pedido
-                </button>
+                <div class="flex justify-end w-full mt-4">
+
+                    <button class="w-28 bg-green-600 text-white py-3 rounded-xl  font-bold uppercase text-xs shadow-md"
+                        onclick="sendWhatsApp()">
+                        Enviar Pedido
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -314,14 +305,14 @@
         // --- CONFIGURAÇÃO E DADOS ---
         const listaPizzas = [
             { id: 1, nome: "Combo 3 Pizzas", desc: "Escolha até 3 sabores", preco: 99.90, max: 3, borda: true, foto: "./pizzas/3pizzas.jpg" },
-            { id: 2, nome: "Combo 2 Pizzas", desc: "Escolha até 2 sabores", preco: 79.90, max: 2, borda: true, foto: "./pizzas/2pizzas.jpg" },
+            { id: 2, nome: "Combo 2 Pizzas", desc: "Escolha até 2 sabores", preco: 79.90, max: 2, border: true, foto: "./pizzas/2pizzas.jpg" },
             { id: 5, nome: "Pizza Grande 8 Fatias", desc: "Salgada — Até 2 sabores", preco: 52.90, max: 2, borda: true, foto: "./pizzas/montesuapizza.jpg" }
         ];
 
         const listaBebidas = [
             { id: 101, nome: "Coca-Cola 2L", preco: 14.00, foto: "./pizzas/cocacola.jpg" },
             { id: 102, nome: "Kitubaiana 2L", preco: 12.00, foto: "./pizzas/kitubaina.jpg" },
-            { id: 104, nome: "Coca-Cola Lata", preco: 6.00, foto: "./pizzas/cocalata.jpg" }
+            { id: 104, nome: "Coca-Cola Lata", preco: 6.00, foto: "./pocalata.jpg" }
         ];
 
         const saboresSalgados = [
@@ -357,21 +348,17 @@
                 trocoContainer.classList.remove('hidden');
             } else {
                 trocoContainer.classList.add('hidden');
-                document.getElementById('troco').value = ''; // Limpa o valor se mudar de ideia
+                document.getElementById('troco').value = '';
             }
         }
 
         function getPosicao() {
             const campoEndereco = document.getElementById('endereco');
-
-            // Se o navegador não suportar, libera o campo imediatamente
             if (!navigator.geolocation) {
                 campoEndereco.removeAttribute('readonly');
                 campoEndereco.placeholder = "Digite seu endereço completo";
                 return showAlert("Seu navegador não suporta geolocalização. Por favor, digite o endereço.");
             }
-
-            // Feedback visual de carregamento
             campoEndereco.value = "Buscando localização...";
             campoEndereco.classList.add('animate-pulse');
 
@@ -379,25 +366,20 @@
                 async (position) => {
                     const lat = position.coords.latitude;
                     const lon = position.coords.longitude;
-
                     try {
                         const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
                         const data = await response.json();
-
                         if (data.display_name) {
                             campoEndereco.value = data.display_name;
-                            // IMPORTANTE: Remove o readonly para o cliente ajustar o número/casa
                             campoEndereco.removeAttribute('readonly');
                             campoEndereco.classList.remove('animate-pulse');
                             campoEndereco.focus();
                         }
                     } catch (error) {
-                        // Em caso de erro na API de mapas, libera para digitação
                         liberarCampoParaDigitacao("Erro ao converter coordenadas. Digite manualmente.");
                     }
                 },
                 (error) => {
-                    // Em caso de erro de permissão ou sinal, libera para digitação
                     let msg = "Não foi possível obter localização. Digite seu endereço.";
                     if (error.code === error.PERMISSION_DENIED) {
                         msg = "Localização negada. Por favor, digite o endereço.";
@@ -407,14 +389,12 @@
                 { enableHighAccuracy: true, timeout: 7000 }
             );
 
-            // Função auxiliar interna para resetar o campo em caso de falha
             function liberarCampoParaDigitacao(mensagem) {
                 campoEndereco.value = "";
                 campoEndereco.placeholder = "Digite seu endereço completo";
                 campoEndereco.removeAttribute('readonly');
                 campoEndereco.classList.remove('animate-pulse');
                 campoEndereco.focus();
-                // showAlert(mensagem);
             }
         }
 
@@ -446,14 +426,40 @@
             renderMenu();
         });
 
-        // --- LOGICA DO CARRINHO E MODAL ---
-        function openTab(id) {
-            document.querySelectorAll('.category-section').forEach(s => s.classList.add('hidden'));
+        // --- LÓGICA DE NAVEGAÇÃO DE MENU COM CENTRALIZAÇÃO VERTICAL ---
+        function setActiveTab(id) {
             document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.remove('hidden');
-            document.getElementById('btn-' + id).classList.add('active');
+            const activeBtn = document.getElementById('btn-' + id);
+            if (activeBtn) activeBtn.classList.add('active');
         }
 
+        function scrollToIndexAndCenter(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                const elementRect = element.getBoundingClientRect();
+                const absoluteElementTop = elementRect.top + window.pageYOffset;
+                const middlePosition = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2);
+
+                window.scrollTo({
+                    top: middlePosition,
+                    behavior: 'smooth'
+                });
+                setActiveTab(elementId);
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.category-section');
+            const scrollPos = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+
+            sections.forEach(sec => {
+                if (sec.offsetTop - (window.innerHeight / 2) <= scrollPos && (sec.offsetTop + sec.offsetHeight - (window.innerHeight / 2)) > scrollPos) {
+                    setActiveTab(sec.id);
+                }
+            });
+        });
+
+        // --- LÓGICA DE PRODUTOS, SELEÇÕES E CARRINHO ---
         function openSelectionModal(max, name, price, hasBorda) {
             currentTask = { max, name, price, selectedBorda: 'Sem Borda', hasBorda };
             flavorSelections = {};
@@ -463,7 +469,6 @@
             document.getElementById('modalSubtitle').innerText = `Selecione até ${max} sabores`;
             document.getElementById('bordaSection').classList.toggle('hidden', !hasBorda);
 
-            // --- DISPARO DO PIXEL: VIEWCONTENT ---
             if (typeof fbq === 'function') {
                 fbq('track', 'ViewContent', {
                     content_name: name,
@@ -472,7 +477,6 @@
                     currency: 'BRL'
                 });
             }
-            // ------------------------------------
 
             renderFlavorSteps();
             renderBordas();
@@ -511,10 +515,10 @@
             `).join('');
         }
 
-        function selectBorda(element, borda) {
+        function selectBorda(element, border) {
             document.querySelectorAll('.borda-opt').forEach(el => el.classList.remove('selected'));
             element.classList.add('selected');
-            currentTask.selectedBorda = borda;
+            currentTask.selectedBorda = border;
         }
 
         function renderRefriSelection() {
@@ -572,7 +576,6 @@
         }
 
         function addToCart(name, price) {
-            // --- DISPARO DO PIXEL: VIEWCONTENT ---
             if (typeof fbq === 'function') {
                 fbq('track', 'ViewContent', {
                     content_name: name,
@@ -581,7 +584,6 @@
                     currency: 'BRL'
                 });
             }
-            // ------------------------------------
             cart.push({ nome: name, preco: price, borda: '' });
             if (typeof fbq === 'function') fbq('track', 'AddToCart', { content_name: name, value: price, currency: 'BRL' });
             updateUI();
@@ -641,6 +643,10 @@
         }
         function closeAlert() { document.getElementById('alertModal').classList.add('hidden'); }
 
+        document.getElementById('alertModal').addEventListener('click', function (e) {
+            if (e.target === this) closeAlert();
+        });
+
         function maskCelular(input) {
             let v = input.value.replace(/\D/g, "");
             if (v.length > 11) v = v.slice(0, 11);
@@ -654,14 +660,13 @@
             const celular = document.getElementById('celular').value.trim();
             const endereco = document.getElementById('endereco').value.trim();
             const pagamento = document.getElementById('pagamento').value;
-            const troco = document.getElementById('troco').value.trim(); // Captura o troco
+            const troco = document.getElementById('troco').value.trim();
             const obs = document.getElementById('obs').value.trim();
 
             if (!nome || !celular || !endereco || !pagamento) return showAlert("Preencha todos os campos obrigatórios.");
 
             const total = cart.reduce((acc, item) => acc + item.preco, 0);
 
-            // Pixel de Compra (opcional, mantendo seu padrão)
             if (typeof fbq === 'function') {
                 fbq('track', 'Purchase', { value: total, currency: 'BRL' });
             }
@@ -673,7 +678,6 @@
             msg += `*Endereço:* ${endereco}\n`;
             msg += `*Pagamento:* ${pagamento}\n`;
 
-            // LÓGICA DO TROCO: Adiciona à mensagem se for dinheiro e houver valor
             if (pagamento === 'Dinheiro' && troco) {
                 msg += `*Troco para:* R$ ${parseFloat(troco).toFixed(2).replace('.', ',')}\n`;
             }
@@ -687,10 +691,8 @@
 
             msg += `\n*TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*`;
 
-            // Abre o link do WhatsApp
             window.open(`https://wa.me/5565993443715?text=${encodeURIComponent(msg)}`);
 
-            // Limpa o carrinho e fecha o modal após o envio
             cart = [];
             updateUI();
             closeModal('cartModal');
