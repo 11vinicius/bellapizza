@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="icon" type="image/png" href="./icon.png">
 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
     <script>
         !function (f, b, e, v, n, t, s) {
             if (f.fbq) return; n = f.fbq = function () {
@@ -59,6 +62,13 @@
             .modal-alert-content { @apply bg-white rounded-3xl p-8 w-full max-w-xs text-center shadow-2xl animate-[popIn_0.2s_ease-out]; }
             .refri-opt { @apply bg-white border-2 border-transparent p-4 rounded-xl flex items-center cursor-pointer shadow-sm transition-all mb-2; }
             .refri-opt.selected { @apply border-primary bg-[#fde8e7]; }
+            
+            .autocomplete-items {
+                @apply absolute border border-gray-200 border-t-0 z-[9999] top-full left-0 right-0 bg-white rounded-b-xl max-h-48 overflow-y-auto shadow-xl;
+            }
+            .autocomplete-items div {
+                @apply p-3 cursor-pointer text-sm border-b border-gray-50 last:border-0 hover:bg-gray-100 text-left text-gray-700 font-normal;
+            }
         }
         @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .btn-tab { transition: border-color 0.2s ease, transform 0.15s ease; }
@@ -242,20 +252,28 @@
                     <button onclick="switchCartStep(1)" class="text-gray-400"><i
                             class="fas fa-arrow-left text-xl"></i></button>
                 </div>
-                <div class="space-y-3 bg-white p-4 rounded-3xl border border-gray-100 shadow-inner mb-6">
+                <div class="space-y-3 bg-white p-4 rounded-3xl border border-gray-100 shadow-inner mb-6 relative">
                     <input type="text" id="nome" placeholder="Seu Nome"
                         class="w-full p-4 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm">
                     <input type="tel" id="celular" placeholder="Seu Celular"
                         class="w-full p-4 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm"
                         oninput="maskCelular(this)" maxlength="15">
+
                     <div class="relative w-full">
-                        <input type="text" id="endereco" placeholder="Digite seu endereço completo"
+                        <input type="text" id="endereco" placeholder="Digite seu endereço completo" autocomplete="off"
                             class="w-full p-4 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm pr-12 relative z-10">
+                        <div id="autocomplete-list" class="autocomplete-items hidden"></div>
                         <button onclick="getPosicao()" type="button"
                             class="absolute right-0 top-0 h-full w-12 flex items-center justify-center text-primary z-20 active:bg-gray-200 rounded-r-xl transition-colors"
                             title="Pegar localização atual">
                             <i class="fas fa-location-dot" id="locIcon"></i>
                         </button>
+                    </div>
+
+                    <div id="freteInfoContainer"
+                        class="hidden flex justify-between p-3 text-xs font-bold text-gray-600 bg-gray-50 rounded-xl border border-dashed">
+                        <span id="freteDistancia">Distância: -- km</span>
+                        <span id="freteValor" class="text-green-600">Frete: R$ 0,00</span>
                     </div>
 
                     <select id="pagamento" onchange="toggleTroco()"
@@ -275,9 +293,8 @@
                         class="w-full p-4 rounded-xl border border-gray-100 bg-gray-50 outline-primary text-sm h-20"></textarea>
                 </div>
                 <div class="flex justify-end w-full mt-4">
-
-                    <button class="w-28 bg-green-600 text-white py-3 rounded-xl  font-bold uppercase text-xs shadow-md"
-                        onclick="sendWhatsApp()">
+                    <button class="w-28 bg-green-600 text-white py-3 rounded-xl font-bold uppercase text-xs shadow-md"
+                        onclick="validarEEnviarPedido()">
                         Enviar Pedido
                     </button>
                 </div>
@@ -294,7 +311,7 @@
     </div>
 
     <div id="loading-screen"
-        class="fixed inset-0 z-[9999] bg-primary/40 backdrop-blur-sm flex flex-col items-center justify-center transition-opacity duration-500">
+        class="fixed inset-0 z-[9999] bg-primary/40 backdrop-blur-sm flex flex-col items-center justify-center transition-opacity duration-500 hidden opacity-0">
         <div class="relative w-[200px] h-[200px]">
             <div class="w-full h-full border-8 border-red-500/20 border-t-red-500 rounded-full animate-spin"></div>
             <img src="logo1.png" class="absolute inset-0 m-auto w-[160px] h-[160px] object-contain" />
@@ -302,7 +319,6 @@
     </div>
 
     <script>
-        // --- CONFIGURAÇÃO E DADOS ---
         const listaPizzas = [
             { id: 1, nome: "Combo 3 Pizzas", desc: "Escolha até 3 sabores", preco: 99.90, max: 3, borda: true, foto: "./pizzas/3pizzas.jpg" },
             { id: 2, nome: "Combo 2 Pizzas", desc: "Escolha até 2 sabores", preco: 79.90, max: 2, border: true, foto: "./pizzas/2pizzas.jpg" },
@@ -341,6 +357,163 @@
         let flavorSelections = {};
         let bebidaSelections = {};
 
+        let valorFreteGlobal = 0;
+        let distanciaGlobal = "";
+
+        const latPizzaria = -15.65345;
+        const lonPizzaria = -56.14631;
+        const GEOAPIFY_API_KEY = "4c26af0b677a4559bca615139325b8c1";
+
+        // Funções de manipulação do Loading Screen existente
+        function abrirLoading() {
+            const loader = document.getElementById('loading-screen');
+            if (loader) {
+                loader.classList.remove('hidden');
+                setTimeout(() => loader.classList.add('opacity-100'), 10);
+            }
+        }
+
+        function fecharLoading() {
+            const loader = document.getElementById('loading-screen');
+            if (loader) {
+                loader.classList.remove('opacity-100');
+                setTimeout(() => loader.classList.add('hidden'), 500);
+            }
+        }
+
+        window.addEventListener('load', () => {
+            atualizarStatusFuncionamento();
+            renderMenu();
+
+            // Exibe o loading inicial por 1.5s
+            abrirLoading();
+            setTimeout(fecharLoading, 1500);
+
+            const inputEndereco = document.getElementById('endereco');
+            const listContainer = document.getElementById('autocomplete-list');
+            let currentTimeout;
+
+            inputEndereco.addEventListener('input', function () {
+                const query = this.value.trim();
+                clearTimeout(currentTimeout);
+
+                if (query.length < 3) {
+                    listContainer.classList.add('hidden');
+                    return;
+                }
+
+                currentTimeout = setTimeout(() => {
+                    const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(query)}&bias=proximity:${lonPizzaria},${latPizzaria}&lang=pt&limit=5&apiKey=${GEOAPIFY_API_KEY}`;
+
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            listContainer.innerHTML = '';
+                            if (!data.features || data.features.length === 0) {
+                                listContainer.classList.add('hidden');
+                                return;
+                            }
+
+                            data.features.forEach(feature => {
+                                const label = feature.properties.formatted;
+                                const coordinates = feature.geometry.coordinates;
+
+                                const item = document.createElement('div');
+                                item.innerHTML = label;
+
+                                item.addEventListener('mousedown', (e) => {
+                                    e.preventDefault();
+                                    inputEndereco.value = label;
+                                    listContainer.classList.add('hidden');
+                                    calcularDistanciaHaversine(coordinates[1], coordinates[0]);
+                                });
+                                listContainer.appendChild(item);
+                            });
+                            listContainer.classList.remove('hidden');
+                        });
+                }, 300);
+            });
+
+            document.addEventListener('click', (e) => {
+                if (e.target !== inputEndereco) listContainer.classList.add('hidden');
+            });
+        });
+
+        async function forçarCalculoPorTexto(texto) {
+            const url = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(texto)}&bias=proximity:${lonPizzaria},${latPizzaria}&limit=1&apiKey=${GEOAPIFY_API_KEY}`;
+            try {
+                let r = await fetch(url);
+                let data = await r.json();
+                if (data.features && data.features.length > 0) {
+                    const coord = data.features[0].geometry.coordinates;
+                    calcularDistanciaHaversine(coord[1], coord[0]);
+                    return true;
+                }
+            } catch (e) {
+                console.error("Erro na busca de endereço forçada:", e);
+            }
+            return false;
+        }
+
+        function calcularDistanciaHaversine(latDestino, lonDestino) {
+            const R = 6371;
+            const dLat = (latDestino - latPizzaria) * Math.PI / 180;
+            const dLon = (lonDestino - lonPizzaria) * Math.PI / 180;
+
+            const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(latPizzaria * Math.PI / 180) * Math.cos(latDestino * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            let distanciaKm = R * c;
+
+            distanciaKm = distanciaKm * 1.35; // Multiplicador urbano de rota real
+            distanciaGlobal = `${distanciaKm.toFixed(1)} km`;
+
+            if (distanciaKm <= 3.0) {
+                valorFreteGlobal = 7.00;
+            } else {
+                const kmAdicional = distanciaKm - 3.0;
+                valorFreteGlobal = 7.00 + (kmAdicional * 2.00);
+            }
+
+            document.getElementById('freteInfoContainer').classList.remove('hidden');
+            document.getElementById('freteDistancia').innerText = `Distância aprox: ${distanciaGlobal}`;
+            document.getElementById('freteValor').innerText = `Frete: R$ ${valorFreteGlobal.toFixed(2).replace('.', ',')}`;
+
+            updateUI();
+        }
+
+        // ================= FLOW SÍNCRONO DE ENVIO DO PEDIDO CORRIGIDO =================
+        async function validarEEnviarPedido() {
+            const nome = document.getElementById('nome').value.trim();
+            const celular = document.getElementById('celular').value.trim();
+            const endereco = document.getElementById('endereco').value.trim();
+            const pagamento = document.getElementById('pagamento').value;
+
+            if (!nome || !celular || !endereco || !pagamento) {
+                showAlert("Por favor, preencha todos os campos obrigatórios para a entrega.");
+                return;
+            }
+
+            // 1. Abre imediatamente a sua tela de Loading existente
+            abrirLoading();
+
+            // 2. Se o frete ainda não foi calculado (ex: o usuário digitou e clicou direto em enviar)
+            if (valorFreteGlobal === 0) {
+                await forçarCalculoPorTexto(endereco);
+            }
+
+            // 3. Pequena pausa controlada com a logo girando para passar credibilidade operacional ao cliente
+            setTimeout(() => {
+                // 4. Dispara a mensagem estruturada com o frete e totais somados perfeitamente
+                sendWhatsApp();
+
+                // 5. Oculta o loading
+                fecharLoading();
+            }, 1200);
+        }
+
         function toggleTroco() {
             const pagamento = document.getElementById('pagamento').value;
             const trocoContainer = document.getElementById('trocoContainer');
@@ -355,9 +528,8 @@
         function getPosicao() {
             const campoEndereco = document.getElementById('endereco');
             if (!navigator.geolocation) {
-                campoEndereco.removeAttribute('readonly');
                 campoEndereco.placeholder = "Digite seu endereço completo";
-                return showAlert("Seu navegador não suporta geolocalização. Por favor, digite o endereço.");
+                return showAlert("Seu navegador não suporta geolocalização.");
             }
             campoEndereco.value = "Buscando localização...";
             campoEndereco.classList.add('animate-pulse');
@@ -370,35 +542,27 @@
                         const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
                         const data = await response.json();
                         if (data.display_name) {
-                            campoEndereco.value = data.display_name;
-                            campoEndereco.removeAttribute('readonly');
+                            const formatado = data.address.road ? `${data.address.road}${data.address.house_number ? ', ' + data.address.house_number : ''} - ${data.address.suburb || ''}` : data.display_name;
+                            campoEndereco.value = formatado;
                             campoEndereco.classList.remove('animate-pulse');
-                            campoEndereco.focus();
+                            calcularDistanciaHaversine(lat, lon);
                         }
                     } catch (error) {
-                        liberarCampoParaDigitacao("Erro ao converter coordenadas. Digite manualmente.");
+                        liberarCampoParaDigitacao();
                     }
                 },
-                (error) => {
-                    let msg = "Não foi possível obter localização. Digite seu endereço.";
-                    if (error.code === error.PERMISSION_DENIED) {
-                        msg = "Localização negada. Por favor, digite o endereço.";
-                    }
-                    liberarCampoParaDigitacao(msg);
-                },
+                (error) => { liberarCampoParaDigitacao(); },
                 { enableHighAccuracy: true, timeout: 7000 }
             );
 
-            function liberarCampoParaDigitacao(mensagem) {
+            function liberarCampoParaDigitacao() {
                 campoEndereco.value = "";
                 campoEndereco.placeholder = "Digite seu endereço completo";
-                campoEndereco.removeAttribute('readonly');
                 campoEndereco.classList.remove('animate-pulse');
                 campoEndereco.focus();
             }
         }
 
-        // --- FUNÇÕES DE STATUS E UI ---
         function atualizarStatusFuncionamento() {
             const banner = document.getElementById('statusBanner');
             const texto = document.getElementById('statusText');
@@ -410,23 +574,17 @@
             const diaValido = diasAberto.includes(diaSemana);
             const horarioValido = (hora === 18 && minuto >= 30) || (hora > 18 && hora <= 23);
 
-            if (diaValido && horarioValido) {
-                banner.className = "w-full py-2 px-6 text-center text-xs font-bold uppercase tracking-widest bg-green-600 text-white";
-                texto.innerHTML = "● Aberto Agora - Faça seu pedido!";
-            } else {
-                banner.className = "w-full py-2 px-6 text-center text-xs font-bold uppercase tracking-widest bg-red-600 text-white";
-                texto.innerHTML = !diaValido ? "🔴 Fechado - Abrimos de Quarta a Domingo" : "🔴 Fechado - Abrimos às 18:30";
+            if (banner && texto) {
+                if (diaValido && horarioValido) {
+                    banner.className = "w-full py-2 px-6 text-center text-xs font-bold uppercase tracking-widest bg-green-600 text-white";
+                    texto.innerHTML = "● Aberto Agora - Faça seu pedido!";
+                } else {
+                    banner.className = "w-full py-2 px-6 text-center text-xs font-bold uppercase tracking-widest bg-red-600 text-white";
+                    texto.innerHTML = !diaValido ? "🔴 Fechado - Abrimos de Quarta a Domingo" : "🔴 Fechado - Abrimos às 18:30";
+                }
             }
         }
 
-        window.addEventListener('load', () => {
-            atualizarStatusFuncionamento();
-            const loader = document.getElementById('loading-screen');
-            setTimeout(() => { loader.style.opacity = '0'; setTimeout(() => loader.style.display = 'none', 500); }, 2000);
-            renderMenu();
-        });
-
-        // --- LÓGICA DE NAVEGAÇÃO DE MENU COM CENTRALIZAÇÃO VERTICAL ---
         function setActiveTab(id) {
             document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
             const activeBtn = document.getElementById('btn-' + id);
@@ -440,17 +598,14 @@
                 const absoluteElementTop = elementRect.top + window.pageYOffset;
                 const middlePosition = absoluteElementTop - (window.innerHeight / 2) + (elementRect.height / 2);
 
-                window.scrollTo({
-                    top: middlePosition,
-                    behavior: 'smooth'
-                });
+                window.scrollTo({ top: middlePosition, behavior: 'smooth' });
                 setActiveTab(elementId);
             }
         }
 
         window.addEventListener('scroll', () => {
             const sections = document.querySelectorAll('.category-section');
-            const scrollPos = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollPos = window.scrollY || document.documentElement.scrollTop;
 
             sections.forEach(sec => {
                 if (sec.offsetTop - (window.innerHeight / 2) <= scrollPos && (sec.offsetTop + sec.offsetHeight - (window.innerHeight / 2)) > scrollPos) {
@@ -459,7 +614,6 @@
             });
         });
 
-        // --- LÓGICA DE PRODUTOS, SELEÇÕES E CARRINHO ---
         function openSelectionModal(max, name, price, hasBorda) {
             currentTask = { max, name, price, selectedBorda: 'Sem Borda', hasBorda };
             flavorSelections = {};
@@ -470,12 +624,7 @@
             document.getElementById('bordaSection').classList.toggle('hidden', !hasBorda);
 
             if (typeof fbq === 'function') {
-                fbq('track', 'ViewContent', {
-                    content_name: name,
-                    content_type: 'product',
-                    value: price,
-                    currency: 'BRL'
-                });
+                fbq('track', 'ViewContent', { content_name: name, content_type: 'product', value: price, currency: 'BRL' });
             }
 
             renderFlavorSteps();
@@ -576,14 +725,6 @@
         }
 
         function addToCart(name, price) {
-            if (typeof fbq === 'function') {
-                fbq('track', 'ViewContent', {
-                    content_name: name,
-                    content_type: 'product',
-                    value: price,
-                    currency: 'BRL'
-                });
-            }
             cart.push({ nome: name, preco: price, borda: '' });
             if (typeof fbq === 'function') fbq('track', 'AddToCart', { content_name: name, value: price, currency: 'BRL' });
             updateUI();
@@ -591,8 +732,9 @@
         }
 
         function updateUI() {
-            const total = cart.reduce((acc, item) => acc + item.preco, 0);
-            document.getElementById('totalDisplay').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+            const totalItens = cart.reduce((acc, item) => acc + item.preco, 0);
+            const totalComFrete = totalItens + valorFreteGlobal;
+            document.getElementById('totalDisplay').innerText = `R$ ${totalComFrete.toFixed(2).replace('.', ',')}`;
             const badge = document.getElementById('cartBadge');
             badge.innerText = cart.length;
             badge.classList.toggle('hidden', cart.length === 0);
@@ -604,7 +746,6 @@
             const emptyMsg = document.getElementById('emptyCartMsg');
             document.getElementById('cartStep1').classList.remove('hidden');
             document.getElementById('cartStep2').classList.add('hidden');
-            const total = cart.reduce((acc, item) => acc + item.preco, 0);
 
             if (cart.length === 0) {
                 list.innerHTML = ""; actions.classList.add('hidden'); emptyMsg.classList.remove('hidden');
@@ -617,20 +758,29 @@
                     <div class="text-right"><b>R$ ${item.preco.toFixed(2).replace('.', ',')}</b><br>
                     <button onclick="removeItem(${i})" class="text-red-400 text-[10px] font-black uppercase">Remover</button></div>
                 </div>`).join('');
-                if (typeof fbq === 'function') fbq('track', 'ViewCart', { value: total, currency: 'BRL' });
             }
             document.getElementById('cartModal').classList.remove('hidden');
             document.getElementById('cartModal').classList.add('flex');
+            updateUI();
         }
 
         function switchCartStep(step) {
-            const total = cart.reduce((acc, item) => acc + item.preco, 0);
             document.getElementById('cartStep1').classList.toggle('hidden', step === 2);
             document.getElementById('cartStep2').classList.toggle('hidden', step === 1);
-            if (step === 2 && typeof fbq === 'function') fbq('track', 'InitiateCheckout', { value: total, currency: 'BRL' });
+            updateUI();
         }
 
-        function removeItem(i) { cart.splice(i, 1); updateUI(); showCart(); }
+        function removeItem(i) {
+            cart.splice(i, 1);
+            if (cart.length === 0) {
+                valorFreteGlobal = 0;
+                distanciaGlobal = "";
+                document.getElementById('freteInfoContainer').classList.add('hidden');
+            }
+            updateUI();
+            showCart();
+        }
+
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
         function handleOutsideClick(event) { if (event.target.classList.contains('modal-container')) closeModal(event.target.id); }
 
@@ -642,10 +792,6 @@
             document.getElementById('alertModal').classList.add('flex');
         }
         function closeAlert() { document.getElementById('alertModal').classList.add('hidden'); }
-
-        document.getElementById('alertModal').addEventListener('click', function (e) {
-            if (e.target === this) closeAlert();
-        });
 
         function maskCelular(input) {
             let v = input.value.replace(/\D/g, "");
@@ -663,12 +809,11 @@
             const troco = document.getElementById('troco').value.trim();
             const obs = document.getElementById('obs').value.trim();
 
-            if (!nome || !celular || !endereco || !pagamento) return showAlert("Preencha todos os campos obrigatórios.");
-
-            const total = cart.reduce((acc, item) => acc + item.preco, 0);
+            const totalItens = cart.reduce((acc, item) => acc + item.preco, 0);
+            const totalGeral = totalItens + valorFreteGlobal;
 
             if (typeof fbq === 'function') {
-                fbq('track', 'Purchase', { value: total, currency: 'BRL' });
+                fbq('track', 'Purchase', { value: totalGeral, currency: 'BRL' });
             }
 
             let msg = `*NOVO PEDIDO - JET PIZZA DELIVERY*\n`;
@@ -689,11 +834,24 @@
                 msg += `- ${item.nome} ${item.borda ? '(Borda: ' + item.borda + ')' : ''}\n`;
             });
 
-            msg += `\n*TOTAL: R$ ${total.toFixed(2).replace('.', ',')}*`;
+            msg += `\n----------------------------------\n`;
+            msg += `*Subtotal:* R$ ${totalItens.toFixed(2).replace('.', ',')}\n`;
+
+            if (valorFreteGlobal > 0) {
+                msg += `*Frete (${distanciaGlobal}):* R$ ${valorFreteGlobal.toFixed(2).replace('.', ',')}\n`;
+            } else {
+                msg += `*Frete:* A combinar\n`;
+            }
+
+            msg += `*TOTAL DO PEDIDO: R$ ${totalGeral.toFixed(2).replace('.', ',')}*`;
 
             window.open(`https://wa.me/5565993443715?text=${encodeURIComponent(msg)}`);
 
+            // Limpa o carrinho após finalizar o pedido com sucesso
             cart = [];
+            valorFreteGlobal = 0;
+            distanciaGlobal = "";
+            document.getElementById('freteInfoContainer').classList.add('hidden');
             updateUI();
             closeModal('cartModal');
             showAlert('Pedido enviado com sucesso!', 'success');
